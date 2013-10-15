@@ -4,6 +4,7 @@ var fs = require('fs');
 
 // file is included here:
 eval(fs.readFileSync('ticket.js')+'');
+eval(fs.readFileSync('user.js'));
 
 app.configure(function(){
   app.use(express.bodyParser());
