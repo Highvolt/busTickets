@@ -33,13 +33,14 @@ public class MainActivity extends Activity implements OnClickListener{
 	private static final UUID MY_UUID = UUID.fromString("00000003-3713-11e3-aa6e-0800200c9a66");
 	private ArrayList<BluetoothDevice> devs=null;
 	public static String QRresult="pt.fe.up.cmov.QRCODE";
-	private static IntentFilter filterQR=null;
+	
 	
 	
 	private void qrProcess(Intent intent) {
 	    	String action = intent.getAction();
 	    	Log.d("MainActivity",intent.getStringExtra("pt.cmov.qrCode"));
 	    	final String qr=intent.getStringExtra("pt.cmov.qrCode");
+	    	
 	    	MainActivity.this.runOnUiThread(new Runnable() {
 				
 				@Override
@@ -212,7 +213,9 @@ public class MainActivity extends Activity implements OnClickListener{
 			startDiscovery();
 			break;
 		case 2:
-			if(data.getAction()==QRresult){
+			Log.d("MainActivity", "Returned "+data.getAction()+" == "+MainActivity.QRresult);
+			if(data.getAction().equals(MainActivity.QRresult)){
+				Log.d("MainActivity", "Process QR");
 				qrProcess(data);
 			}
 			

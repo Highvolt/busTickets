@@ -135,7 +135,7 @@ public class CaptureActivity extends DecoderActivity {
 
        // TextView contentsTextView = (TextView) findViewById(R.id.contents_text_view);
         //CharSequence displayContents = resultHandler.getDisplayContents();
-        //Log.d("Result", "Found "+resultHandler.getDisplayContents()+".");
+        Log.d("Result", "Found "+resultHandler.getDisplayContents()+".");
         Intent intent = new Intent();
         intent.setAction(pt.fe.up.cmov.busticket.client.MainActivity.QRresult);
         intent.putExtra("pt.cmov.qrCode", resultHandler.getDisplayContents());
