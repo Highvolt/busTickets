@@ -1,10 +1,16 @@
 package pt.fe.up.cmov.busticket.client;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.os.ParcelUuid;
@@ -33,8 +39,9 @@ public class MainActivity extends Activity implements OnClickListener{
 	private static final UUID MY_UUID = UUID.fromString("00000003-3713-11e3-aa6e-0800200c9a66");
 	private ArrayList<BluetoothDevice> devs=null;
 	public static String QRresult="pt.fe.up.cmov.QRCODE";
-	
-	
+	private JSONObject lastValue=null;
+	private BluetoothSocket devS;
+	private Boolean connected=false;
 	
 	private void qrProcess(Intent intent) {
 	    	String action = intent.getAction();
@@ -51,6 +58,14 @@ public class MainActivity extends Activity implements OnClickListener{
 					
 				}
 			});
+	    	try {
+				lastValue=new JSONObject(qr);
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				lastValue=null;
+			}
+	    
 	    	
 	}
 	
@@ -192,7 +207,7 @@ public class MainActivity extends Activity implements OnClickListener{
     	{
     		// Bluetooth is enabled.
     		if (blueAdapter.isEnabled()) {
-    			startDiscovery();
+    			connectToValidator();
     		}
     		else
     		{
@@ -204,13 +219,71 @@ public class MainActivity extends Activity implements OnClickListener{
     	}
     }
 	
+	private void connectToValidator() {
+		if(lastValue!=null){
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						BluetoothDevice dev=blueAdapter.getRemoteDevice(lastValue.getString("mac"));
+						devS=dev.createInsecureRfcommSocketToServiceRecord(UUID.fromString(lastValue.getString("UUID")));
+						connected=false;
+						new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								try {
+									Thread.sleep(5000);
+									if(connected==false){
+										devS.close();
+										Log.d("Bluetooth Timeout", "Time out validator connection");
+									}
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								
+							}
+						}).start();
+						devS.connect();
+						connected=true;
+						Log.d("Bluetooth connect","Connection with device "+devS.getRemoteDevice().getAddress()+" successful");
+						Thread.sleep(100);
+						OutputStreamWriter bo=new OutputStreamWriter(devS.getOutputStream());
+						bo.write('h');
+						bo.flush();
+						bo.close();
+						devS.close();
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						Log.d("Bluetooth connect", "Connection Failed");
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				}
+			}).start();
+			
+		}
+	}
+
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
     	super.onActivityResult(requestCode, resultCode, data);
     	Log.d("MainActivity","Return "+requestCode);
     	switch (requestCode) {
 		case REQUEST_DISCOVERABLE_RESULT:
-			startDiscovery();
+			//startDiscovery();
+			connectToValidator();
 			break;
 		case 2:
 			Log.d("MainActivity", "Returned "+data.getAction()+" == "+MainActivity.QRresult);

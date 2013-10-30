@@ -3,6 +3,9 @@ package pt.fe.up.cmov.validator;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
@@ -14,7 +17,10 @@ import android.preference.PreferenceManager.OnActivityResultListener;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.Display;
@@ -24,13 +30,18 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
 	
 	private static final int EnableBluetooth=4;
-	private static final String my_UUID="00003100-0000-1000-8000-00805F9B34FB";
+	private static final String my_UUID="00001140-0000-1000-8000-00805F9B34FB";
 	QRCodeEncoder qrCodeEncoder = null;
 	BluetoothAdapter blueAdapter=null;
+	ServerService serverService=null;
+	private static String otp="0000";
+	public static String bluetoothAccept="pt.fe.up.cmov.validator.ClientAccepted";
+	private BroadcastReceiver bluetoothServer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +53,16 @@ public class MainActivity extends Activity implements OnClickListener {
 	   int height = display.getHeight();
 	   int smallerDimension = width < height ? width : height;
 	   smallerDimension = smallerDimension * 7 / 8;
-		
-		qrCodeEncoder = new QRCodeEncoder(BluetoothAdapter.getDefaultAdapter().getAddress(), null, Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), smallerDimension);
+	   JSONObject qrCode=new JSONObject();
+	   try {
+		qrCode.accumulate("mac", BluetoothAdapter.getDefaultAdapter().getAddress());
+		qrCode.accumulate("UUID", my_UUID);
+		qrCode.accumulate("otp",otp);
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		qrCodeEncoder = new QRCodeEncoder(qrCode.toString(), null, Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), smallerDimension);
 		Bitmap bitmap=null;
 		try {
 			bitmap = qrCodeEncoder.encodeAsBitmap();
@@ -65,9 +84,31 @@ public class MainActivity extends Activity implements OnClickListener {
 				initBluetooth();
 			}
 		});
+        this.bluetoothServer=new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(Context context, Intent intent) {
+				MainActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						Toast.makeText(MainActivity.this, "Connect peer!", Toast.LENGTH_SHORT).show();
+						
+					}
+				});
+				
+			}
+		};
+		IntentFilter blue=new IntentFilter(MainActivity.bluetoothAccept);
+		this.registerReceiver(this.bluetoothServer, blue);
 	}
 	
-	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		this.unregisterReceiver(this.bluetoothServer);
+	}
 	private void initBluetooth() {
 		blueAdapter = BluetoothAdapter.getDefaultAdapter();
 		Log.d("Main Activity","Blue "+ blueAdapter);
@@ -97,7 +138,9 @@ public class MainActivity extends Activity implements OnClickListener {
 		if(blueAdapter!=null){
 			if(blueAdapter.isEnabled()){
 				BluetoothServerSocket bs=blueAdapter.listenUsingInsecureRfcommWithServiceRecord("busTicketValidator",UUID.fromString(my_UUID));
-				
+				ServerService.socket=bs;
+				Intent serverSocket=new Intent(this,ServerService.class);
+				startService(serverSocket);
 			}else{
 				//exception needed
 				return;
