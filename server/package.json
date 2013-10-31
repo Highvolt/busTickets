@@ -1,0 +1,16 @@
+{
+  "name": "BUSTicketPro",
+  "version": "1.0.0",
+  "description": "CMOV first assignment",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "GPLv3",
+  "dependencies": {
+    "express": "~3.4.4",
+    "sqlite3": "~2.1.18"
+  }
+}

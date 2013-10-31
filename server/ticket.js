@@ -1,3 +1,5 @@
+module.exports=Ticket;
+
 function Ticket(){
     this.generateUID();
 }
