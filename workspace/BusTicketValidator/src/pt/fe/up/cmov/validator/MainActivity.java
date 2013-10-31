@@ -2,6 +2,7 @@ package pt.fe.up.cmov.validator;
 
 import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +43,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	private static String otp="0000";
 	public static String bluetoothAccept="pt.fe.up.cmov.validator.ClientAccepted";
 	private BroadcastReceiver bluetoothServer;
+	public static AtomicBoolean serviceOn=new AtomicBoolean(false);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	   JSONObject qrCode=new JSONObject();
 	   try {
 		qrCode.accumulate("mac", BluetoothAdapter.getDefaultAdapter().getAddress());
-		qrCode.accumulate("UUID", my_UUID);
+		//qrCode.accumulate("UUID", my_UUID);
 		qrCode.accumulate("otp",otp);
 		} catch (JSONException e1) {
 			// TODO Auto-generated catch block
@@ -88,11 +90,18 @@ public class MainActivity extends Activity implements OnClickListener {
 			
 			@Override
 			public void onReceive(Context context, Intent intent) {
+				String tmp=intent.getStringExtra("msg");
+				final String msg;
+				if(tmp!=null){
+					msg=tmp; 
+				}else{
+					msg="Connected peer!";
+				}
 				MainActivity.this.runOnUiThread(new Runnable() {
 					
 					@Override
 					public void run() {
-						Toast.makeText(MainActivity.this, "Connect peer!", Toast.LENGTH_SHORT).show();
+						Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
 						
 					}
 				});

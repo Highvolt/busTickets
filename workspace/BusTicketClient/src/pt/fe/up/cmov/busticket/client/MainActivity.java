@@ -3,11 +3,17 @@ package pt.fe.up.cmov.busticket.client;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,12 +42,14 @@ public class MainActivity extends Activity implements OnClickListener{
 
 	
 	private static final int REQUEST_DISCOVERABLE_RESULT = 100001;
-	private static final UUID MY_UUID = UUID.fromString("00000003-3713-11e3-aa6e-0800200c9a66");
+	private static final UUID MY_UUID = UUID.fromString("00001140-0000-1000-8000-00805F9B34FB");
 	private ArrayList<BluetoothDevice> devs=null;
 	public static String QRresult="pt.fe.up.cmov.QRCODE";
 	private JSONObject lastValue=null;
 	private BluetoothSocket devS;
-	private Boolean connected=false;
+	private AtomicBoolean connected=new AtomicBoolean(false);
+	private static final int retries=45
+			;
 	
 	private void qrProcess(Intent intent) {
 	    	String action = intent.getAction();
@@ -99,6 +107,7 @@ public class MainActivity extends Activity implements OnClickListener{
 		            	if(MY_UUID.equals(uuid.getUuid())) {
 			            	BluetoothSocket tmp = null;
 			                try {
+			                	
 			                	blueAdapter.cancelDiscovery();
 			                	Log.d("MainActivity", "UUID: " + uuid.getUuid().toString());
 			                    tmp = deviceExtra.createInsecureRfcommSocketToServiceRecord(uuid.getUuid());
@@ -212,9 +221,9 @@ public class MainActivity extends Activity implements OnClickListener{
     		else
     		{
     			Intent discoverableIntent = new
-				Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-				discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
-				startActivityForResult(discoverableIntent, REQUEST_DISCOVERABLE_RESULT);
+				Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+				//discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
+				startActivityForResult(discoverableIntent, 4);
     		}
     	}
     }
@@ -225,39 +234,82 @@ public class MainActivity extends Activity implements OnClickListener{
 				
 				@Override
 				public void run() {
+					ObjectOutputStream bo=null;
+					ObjectInputStream bi=null;
+					BluetoothDevice dev;
 					try {
-						BluetoothDevice dev=blueAdapter.getRemoteDevice(lastValue.getString("mac"));
-						devS=dev.createInsecureRfcommSocketToServiceRecord(UUID.fromString(lastValue.getString("UUID")));
-						connected=false;
-						new Thread(new Runnable() {
+						dev = blueAdapter.getRemoteDevice(lastValue.getString("mac"));
+						devS=dev.createInsecureRfcommSocketToServiceRecord(MY_UUID);
+					} catch (JSONException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					connected.set(false);
+					int tries=0;
+					while(tries<MainActivity.retries && !connected.get()){
+						tries++;
+						Log.d("Client Connecting","Try #"+tries);
+						Thread t=new Thread(new Runnable() {
 							
 							@Override
 							public void run() {
-								try {
-									Thread.sleep(5000);
-									if(connected==false){
-										devS.close();
-										Log.d("Bluetooth Timeout", "Time out validator connection");
-									}
-								} catch (InterruptedException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+							 try{	
+								 		blueAdapter.cancelDiscovery();
+										Log.d("Bluetooth", "Trying!!!");
+										devS.connect();
+										Log.d("Bluetooth", "Connected fixe");
+										connected.set(true);
+										Log.d("Bluetooth", "Connected flag "+connected.get());
+										
+			                         }catch(Exception e){
+			                        	e.printStackTrace();
+			                        	try {
+											Thread.sleep(1000);
+										} catch (InterruptedException e1) {
+											e1.printStackTrace();
+										}
+			                        	
+			                         }finally{
+			                        	 Thread.currentThread().getThreadGroup().getParent().interrupt();
+			                        	 
+			                         }
+									
+								
 								
 							}
-						}).start();
-						devS.connect();
-						connected=true;
+						});
+						t.start();
+						try {
+							Thread.sleep(7000);
+							Log.d("Bluetooth timeout", "Boolean value: "+connected.get());
+							if(connected.get()==false){
+								t.interrupt();
+								
+								Log.d("Bluetooth Timeout", "Time out validator connection");
+							}
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						} 
+						
+						
+					}
+					
+					try {
+						
 						Log.d("Bluetooth connect","Connection with device "+devS.getRemoteDevice().getAddress()+" successful");
-						Thread.sleep(100);
-						OutputStreamWriter bo=new OutputStreamWriter(devS.getOutputStream());
-						bo.write('h');
+						Thread.sleep(150);
+						bo=new ObjectOutputStream(devS.getOutputStream());
+						bi=new ObjectInputStream(devS.getInputStream());
+						JSONObject jobj=new JSONObject();
+						jobj.accumulate("text", MessageDigest.getInstance("MD5").digest(Long.toString(System.currentTimeMillis()).getBytes()));
+						bo.writeObject(jobj.toString());
 						bo.flush();
-						bo.close();
-						devS.close();
+						Log.d("Main Activity", (String) bi.readObject());
+						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -268,6 +320,26 @@ public class MainActivity extends Activity implements OnClickListener{
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}finally{
+						
+							try {
+								if(bo!=null)
+									bo.close();
+								if(bi!=null)
+									bi.close();
+								if(devS!=null)
+									devS.close();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						
 					}
 					
 				}
@@ -281,7 +353,7 @@ public class MainActivity extends Activity implements OnClickListener{
     	super.onActivityResult(requestCode, resultCode, data);
     	Log.d("MainActivity","Return "+requestCode);
     	switch (requestCode) {
-		case REQUEST_DISCOVERABLE_RESULT:
+		case 4:
 			//startDiscovery();
 			connectToValidator();
 			break;
