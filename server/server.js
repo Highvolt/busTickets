@@ -10,8 +10,6 @@ var User=require('./user.js');
 
 app.configure(function(){
   app.use(express.bodyParser());
-  app.use(express.cookieParser('CMOVProj1'));
-  app.use(express.session({'secret':'CMOVProj1'}));
   app.use(app.router);
 });
 
@@ -44,7 +42,7 @@ app.post('/buy_ticket',function(req,res){
 		res.status(400).send(JSON.stringify({'error':'needs to be JSON'}));
 		return;
 	}
-    if(req.session['UserId']!=null){
+    if(req.body.key!=null){
         res.send(JSON.stringify(new Ticket()));
         return;
     }
