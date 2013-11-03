@@ -1,13 +1,15 @@
 var express = require('express');
 var app = express();
 var fs = require('fs');
+var db=require('./busTicketdb.js').init('db.db');
 
 // file is included here:
 var Ticket=require('./ticket.js');
 var User=require('./user.js');
 //eval(fs.readFileSync('ticket.js')+'');
 //eval(fs.readFileSync('user.js'));
-
+Ticket.setDB(db);
+User.setDB(db);
 app.configure(function(){
   app.use(express.bodyParser());
   app.use(app.router);

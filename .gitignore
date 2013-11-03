@@ -44,4 +44,5 @@ results
 
 npm-debug.log
 node_modules
-
+db.db
+.DS_Store

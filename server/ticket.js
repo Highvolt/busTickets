@@ -2,9 +2,12 @@ module.exports=Ticket;
 var crypto=require('crypto');
 var fs=require('fs');
 var privKey=fs.readFileSync('./keys/rsa_priv.pem');
+var db=null;
 
 function Ticket(){
-
+}
+Ticket.setDB=function(dbc){
+    db=dbc;
 }
 
 Ticket.processRequest=function(req,res){
@@ -35,5 +38,6 @@ Ticket.createAndSign=function(user,type){
     var sign=crypto.createSign('RSA-SHA1');
     var time=new Date().getTime();
     sign.update(''+user+'-'+type+'-'+time);
-    return {'user': user,'type':type,'time':new Date().getTime(),'signature':sign.sign(privKey,'hex')};
+    //add user deviD
+    return {'user': user.id,'device':user.dev,'type':type,'time':new Date().getTime(),'signature':sign.sign(privKey,'hex')};
 }
