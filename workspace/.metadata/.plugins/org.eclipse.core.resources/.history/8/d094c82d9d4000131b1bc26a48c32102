@@ -1,0 +1,63 @@
+package pt.fe.up.cmov.validator;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+
+import android.bluetooth.BluetoothSocket;
+
+public class ClientHandler extends Thread {
+	private BluetoothSocket client;
+	
+	public ClientHandler(BluetoothSocket client) {
+		this.client=client;
+	}
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		super.run();
+		try {
+			new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					try {
+						client.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}).start();
+			client.connect();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			try {
+				client.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
+		
+		BufferedInputStream bi=null;
+		BufferedOutputStream bo=null;
+		try {
+			bi=new BufferedInputStream(client.getInputStream());
+			bo=new BufferedOutputStream(client.getOutputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+}

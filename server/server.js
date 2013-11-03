@@ -11,11 +11,15 @@ var User=require('./user.js');
 app.configure(function(){
   app.use(express.bodyParser());
   app.use(app.router);
+  app.use(function(err, req, res, next) {
+    console.log(err);
+    res.send(500);
+  });
+
 });
 
 app.get('/', function(req, res){
-  res.send('hello world2');
-    next();
+  res.send('CMOV Assignment 1');
 });
 
 app.post('/auth_user',function(req,res){
@@ -36,18 +40,21 @@ app.post('/auth_user',function(req,res){
 });
 
 
-app.post('/buy_ticket',function(req,res){
+app.post('/buy_ticket',User.verifyKey,function(req,res,next){
 	res.set('Content-Type','application/json');
 	if(req.get('Content-Type')!="application/json"){
 		res.status(400).send(JSON.stringify({'error':'needs to be JSON'}));
 		return;
 	}
-    if(req.body.key!=null){
-        res.send(JSON.stringify(new Ticket()));
+    console.log(JSON.stringify(req.body));
+    if(req.body.key!=null && (req.body.t1!=null || req.body.t2!=0 || req.body.t3!=null)){
+        //res.send(JSON.stringify(new Ticket()));
+        //res.send(JSON.stringify(Ticket.createAndSign(req.body.key,req.body.type)));
+        next();
         return;
     }
 
-	res.status(401).send(JSON.stringify('invalid login'));
-});
+	res.status(400).send(JSON.stringify('invalid login'));
+},Ticket.processRequest);
 
 app.listen(3000);
