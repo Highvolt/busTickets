@@ -25,4 +25,21 @@ User.verifyKey=function(req,res,next){
     next();
 }
 
-
+User.register=function(username,password,devID,next){
+    if(db){
+        db.run("Insert into User (username,password,devID) values (?,?,?)",username,password,devID,function(err){
+            if(err){
+                if(err.errno==19){
+                    next(-2);
+                }else{
+                    next(err);
+                }
+            }else{
+                next(null);
+            }
+        });
+    }else{
+        next(-1);
+        return;
+    }
+}
