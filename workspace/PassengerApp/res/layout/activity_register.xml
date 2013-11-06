@@ -1,0 +1,50 @@
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:fillViewport="true">
+        <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="10dip">
+          <!-- Full Name Label -->
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_username"/>
+          <EditText android:id="@+id/reg_username"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:singleLine="true"
+                android:inputType="textVisiblePassword|textNoSuggestions"
+                android:hint="@string/register_username_hint"
+                android:layout_marginBottom="20dip"/>
+          <!--  Email Label -->
+          <!-- Password Label -->
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_pass"/>
+          <EditText android:id="@+id/reg_password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/register_pass_hint"
+                android:singleLine="true"
+                android:layout_marginTop="5dip"/>
+          <!-- Register Button -->
+          <Button android:id="@+id/btnRegister"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:text="@string/register_account"
+                android:background="@layout/custom_button"
+                android:textColor="@color/white1"
+                android:textSize="18sp"/>
+          <!-- Link to Login Screen -->
+          
+ 
+        </LinearLayout>
+</ScrollView>

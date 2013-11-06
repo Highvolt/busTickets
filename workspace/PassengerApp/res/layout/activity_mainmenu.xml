@@ -1,0 +1,110 @@
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/mainmenuLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/dark"
+        android:orientation="vertical" >
+
+       <LinearLayout 
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:weightSum="1.0">
+
+           <TextView
+               android:id="@+id/textView1"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_horizontal"
+               android:text="@string/title"
+               android:textColor="@color/white1"
+               android:textSize="18sp"
+               android:paddingTop="18dip" />
+
+       </LinearLayout>
+       
+        
+       <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:layout_marginTop="20dip"
+            >
+            
+            <Button
+	            android:id="@+id/Button01"
+	            android:layout_width="0dip"
+	            android:layout_height="125dip"
+	            android:layout_weight="1"
+	            android:text="@string/buy_tickets_main"
+	            android:background="@drawable/main_menu_buttons" />
+
+            
+        </LinearLayout>
+
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:layout_marginTop="5dip"
+            >
+            
+            <Button
+                android:id="@+id/Button02"
+                android:layout_width="125dip"
+                android:layout_height="125dip"
+                android:layout_weight="0.5"
+                android:text="@string/current_tickets_main"
+                android:background="@drawable/main_menu_buttons"
+                android:layout_marginRight="2dp" />
+            
+            <Button
+	            android:id="@+id/Button03"
+	            android:layout_width="125dip"
+	            android:layout_height="125dip"
+	            android:layout_weight="0.5"
+	            android:text="@string/view_active_main"
+	            android:background="@drawable/main_menu_buttons"
+	            android:layout_marginLeft="2dp" />
+
+            
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:layout_marginTop="5dip"
+            >
+            
+            <Button
+                android:id="@+id/Button04"
+                android:layout_width="125dip"
+                android:layout_height="125dip"
+                android:layout_weight="0.5"
+                android:text="@string/validate_ticket_main"
+                android:background="@drawable/main_menu_buttons"
+                android:layout_marginRight="2dp" />
+
+            <Button
+                android:id="@+id/Button05"
+                android:layout_width="125dip"
+                android:layout_height="125dip"
+                android:layout_weight="0.5"
+                android:text="@string/inspect_ticket_main"
+                android:background="@drawable/main_menu_buttons"
+                android:layout_marginLeft="2dp" />
+            
+        </LinearLayout>
+        
+
+    </LinearLayout>

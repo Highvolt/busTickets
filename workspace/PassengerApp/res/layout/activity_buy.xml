@@ -1,0 +1,178 @@
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dark"
+    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    
+     <LinearLayout 
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:weightSum="1.0">
+
+           <TextView
+               android:id="@+id/walletTitle"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_horizontal"
+               android:text="@string/buyTicketsTitle"
+               android:textColor="@color/white1"
+               android:textSize="18sp"
+               android:paddingTop="18dip" />
+
+       </LinearLayout>
+       
+      <LinearLayout
+       android:gravity="center_vertical"
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:orientation="vertical">
+          
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_horizontal"
+              android:orientation="horizontal" >
+
+              <ImageView
+                  android:layout_width="50dp"
+                  android:layout_height="50dp"
+                  android:contentDescription="@string/img_desc"
+                  android:src="@drawable/bus_icon" />
+
+              <TextView
+                  android:id="@+id/walletT1TypeLabel"
+                  android:layout_width="50dp"
+                  android:layout_height="fill_parent"
+                  android:background="@drawable/wallet_labels"
+                  android:gravity="center"
+                  android:text="@string/walletT1Type"
+                  android:textAppearance="?android:attr/textAppearanceLarge"
+                  android:textColor="#FFFFFF"
+                   />
+              
+              <com.example.passengerapp.HorizontalNumberPicker
+                  android:id="@+id/BuyPickerT1"
+                  android:layout_width="wrap_content"
+                  android:layout_height="fill_parent"
+                  android:gravity="center_vertical"
+                  android:layout_marginTop="2dp"
+                   />
+              
+          </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dip"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+           
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/bus_icon"
+            android:contentDescription="@string/img_desc" />
+
+        <TextView
+            android:id="@+id/walletT2TypeLabel"
+            android:layout_width="50dp"
+            android:layout_height="fill_parent"
+            android:background="@drawable/wallet_labels"
+            android:gravity="center"
+            android:text="@string/walletT2Type"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:weightSum="0.25" />
+        
+         <com.example.passengerapp.HorizontalNumberPicker
+                  android:id="@+id/BuyPickerT2"
+                  android:layout_width="wrap_content"
+                  android:layout_height="fill_parent"
+                  android:gravity="center_vertical"
+                  android:layout_marginTop="2dp"
+                   />
+        
+        
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dip"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+           
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/bus_icon"
+            android:contentDescription="@string/img_desc" />
+
+        <TextView
+            android:id="@+id/walletT3TypeLabel"
+            android:layout_width="50dp"
+            android:layout_height="fill_parent"
+           
+            android:background="@drawable/wallet_labels"
+            android:gravity="center"
+            android:text="@string/walletT3Type"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:weightSum="0.25" />
+        
+        <com.example.passengerapp.HorizontalNumberPicker
+                  android:id="@+id/BuyPickerT3"
+                  android:layout_width="wrap_content"
+                  android:layout_height="fill_parent"
+                  android:gravity="center_vertical"
+                  android:layout_marginTop="2dp"
+                   />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dip"
+        android:orientation="horizontal" >
+        
+        <TextView
+            android:id="@+id/buyTicketsTotal"
+            android:layout_width="fill_parent"
+            android:layout_height="40dip"           
+            android:background="@drawable/wallet_labels"
+            android:gravity="center"
+            android:text="@string/buyTicketsTotal"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:weightSum="0.5" />
+        
+       </LinearLayout>
+       
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+        <Button
+            android:id="@+id/BuyButton"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/buy_button"
+            android:paddingTop="@dimen/cenas"
+            android:paddingBottom="@dimen/cenas"
+            android:text="@string/buyTicketsButton"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF" />
+        
+       </LinearLayout>
+          
+      </LinearLayout>
+
+    
+    
+</LinearLayout>
