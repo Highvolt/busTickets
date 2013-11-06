@@ -19,6 +19,7 @@ app.configure(function(){
   });
 
 });
+User.generateIVandKEY();
 
 app.get('/', function(req, res){
   res.send('CMOV Assignment 1');
@@ -83,7 +84,29 @@ app.post('/register',
         }
         next();
     }
-    );
+);
+
+app.post('/login',
+     function(req,res,next){
+        if(req.body.username==null || req.body.password==null || req.body.device==null ){
+            res.status(400).send(JSON.stringify({'msg':'Missing attributes','username':req.body.username==null,'password':req.body.password==null,'device':req.body.device==null}));
+        }else{
+            User.login(req.body.username,req.body.password,req.body.device,next);
+        }
+    },
+    function(data,req,res,next){
+        if(data==-1){
+                res.status(500).send('');
+        }else if(data==-2){
+                res.status(400).send(JSON.stringify({'msg':'Bad Auth information'}));
+        }else if(data.errno!=null){
+            res.status('500').send(JSON.stringify(data));
+        }else{
+                res.status(200).send(JSON.stringify({'token':data}));
+        }
+
+    }
+);
 
 
 app.listen(3000);
