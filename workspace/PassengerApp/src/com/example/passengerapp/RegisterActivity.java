@@ -1,10 +1,12 @@
 package com.example.passengerapp;
 
-import java.lang.Character.UnicodeBlock;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 
 import org.json.JSONObject;
+
+import com.example.passengerapp.APIRequestTask;
+import com.example.passengerapp.APIRequestTask.HttpRequestType;
 
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -29,6 +31,8 @@ public class RegisterActivity extends Activity {
 	private int pickerYear = 0;
     private int pickerMonth = 0;
     private int pickerDay = 0;
+    public static final int REQCODE_REGISTER = 101;
+    public String REGISTER_URL = "http://localhost/";
     
     DatePickerDialog.OnDateSetListener pickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -192,6 +196,8 @@ public class RegisterActivity extends Activity {
 			json.put("device", Settings.Secure.getString(getContentResolver(), Secure.ANDROID_ID));
 			
 			//FAZER O REQUEST
+			APIRequestTask request = new APIRequestTask(this, HttpRequestType.Post, json, REGISTER_URL, "Creating account...", REQCODE_REGISTER);
+			request.execute((Void[]) null);
 			
 		}catch(Exception e){
 		}
