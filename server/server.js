@@ -60,6 +60,9 @@ app.post('/buy_ticket',User.verifyKey,function(req,res,next){
 	res.status(400).send(JSON.stringify('invalid login'));
 },Ticket.processRequest);
 
+
+app.post("/myTickets",User.verifyKey,Ticket.getAllValidTickets);
+
 app.post('/register',
     function(req,res,next){
         if(req.body.username==null || req.body.password==null || req.body.device==null ){

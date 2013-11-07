@@ -40,6 +40,25 @@ Ticket.processRequest=function(req,res){
     res.send(JSON.stringify(tickets));
 }
 
+
+Ticket.getAllValidTickets=function(req,res){
+    console.log('get Tickets');
+    if(req.user==null){
+        res.status(403);
+        return;
+    }else{
+        db.all("Select User.id as user,user.devID as device,ticket.type as type,ticket.buyDate as time,ticket.ticketCode as signature from User,Ticket "+
+               "where user.id=ticket.userid and user.id=? and ticket.useDate is NULL",req.user.id,
+        function(err,data){
+            if(err){
+                res.send(JSON.stringify(err));
+            }else{
+                res.send(JSON.stringify(data));
+            }
+        });
+    }
+}
+
 Ticket.createAndSign=function(user,type){
     var sign=crypto.createSign('RSA-SHA1');
     var time=new Date().getTime();

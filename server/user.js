@@ -67,7 +67,7 @@ User.verifyKey=function(req,res,next){
     db.get("Select id,devID,(Select count(*) from Ticket where type=1 and userid=User.id and useDate is NULL) as t1,"+
            "(Select count(*) from Ticket where type=2 and userid=User.id and useDate is NULL) as t2,"+
            " (Select count(*) from Ticket where type=3 and userid=User.id and useDate is NULL) as t3 from User where username=? and last_login=?",user[0],user[1],function(err,row){
-        if(err){
+        if(err | row==null){
              console.log('invalid token');
             res.status(403).send(JSON.stringify({'msg':'invalid key'}));
             return;
