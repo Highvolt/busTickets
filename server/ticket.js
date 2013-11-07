@@ -64,5 +64,15 @@ Ticket.createAndSign=function(user,type){
     var time=new Date().getTime();
     sign.update(''+user+'-'+type+'-'+time);
     //add user deviD
-    return {'user': user.id,'device':user.dev,'type':type,'time':new Date().getTime()/1000|0,'signature':sign.sign(privKey,'base64')};
+    return {'user': user.id,'device':user.dev,'type':type,'time':time,'signature':sign.sign(privKey,'base64')};
+}
+
+Ticket.validateTicket=function(req,res,next){
+    if(req.user==null){
+        res.status(403).send('');
+        next();
+        return;
+    }else{
+
+    }
 }
