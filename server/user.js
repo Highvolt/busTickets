@@ -61,11 +61,22 @@ User.verifyKey=function(req,res,next){
         }
     }catch(e){
         console.log('invalid token');
-        res.status(400).send(JSON.stringify({'msg':'invalid key'}));
+        res.status(403).send(JSON.stringify({'msg':'invalid key'}));
         return;
     }
-    req.user={'id':1,'dev':'abc'};
-    next();
+    db.get("Select id,devID,(Select count(*) from Ticket where type=1 and userid=User.id and useDate is NULL) as t1,"+
+           "(Select count(*) from Ticket where type=2 and userid=User.id and useDate is NULL) as t2,"+
+           " (Select count(*) from Ticket where type=3 and userid=User.id and useDate is NULL) as t3 from User where username=? and last_login=?",user[0],user[1],function(err,row){
+        if(err){
+             console.log('invalid token');
+            res.status(403).send(JSON.stringify({'msg':'invalid key'}));
+            return;
+        }else{
+             req.user={'id':row.id,'dev':row.devID,'t1':row.t1,'t2':row.t2,'t3':row.t3};
+             next();
+
+        }
+    });
 }
 
 User.register=function(username,password,devID,next){
