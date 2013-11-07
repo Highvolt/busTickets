@@ -60,6 +60,9 @@ app.post('/buy_ticket',User.verifyKey,function(req,res,next){
 	res.status(400).send(JSON.stringify('invalid login'));
 },Ticket.processRequest);
 
+
+app.post("/myTickets",User.verifyKey,Ticket.getAllValidTickets);
+
 app.post('/register',
     function(req,res,next){
         if(req.body.username==null || req.body.password==null || req.body.device==null ){
@@ -70,19 +73,17 @@ app.post('/register',
     },
     function(data,req,res,next){
         //console.log(JSON.stringify(req));
-        if(data){
-            if(data==-1){
+        if(data==-1){
                 res.status(500).send('');
             }else if(data==-2){
                 res.status(409).send(JSON.stringify({'msg':'Username taken'}));
-            }else{
+            }else if(data.errno){
                 res.status(500).send('');
-            }
-        }else{
+            }else{
             //TODO gen token
-            res.send(JSON.stringify({'msg':'ok'}));
-        }
-        next();
+                res.send(JSON.stringify({'msg':'ok'}));
+            }
+        //next();
     }
 );
 
