@@ -53,6 +53,17 @@ User.setDB=function(dbc){
 
 User.verifyKey=function(req,res,next){
     //TODO
+    try{
+        var user=new String(User.decodeToken(req.body.key)).split('|');
+        console.log(user);
+        if(user.length!=2){
+            throw new Error();
+        }
+    }catch(e){
+        console.log('invalid token');
+        res.status(400).send(JSON.stringify({'msg':'invalid key'}));
+        return;
+    }
     req.user={'id':1,'dev':'abc'};
     next();
 }
@@ -67,7 +78,7 @@ User.register=function(username,password,devID,next){
                     next(err);
                 }
             }else{
-                next(null);
+                next({});
             }
         });
     }else{
@@ -87,10 +98,11 @@ User.decodeToken=function(token){
 User.generateToken=function(username){
     var cipher = crypto.createCipheriv("aes128", key, iv);
     cipher.setAutoPadding(true);
-    var token=cipher.update(''+username+'|'+(new Date()).getTime()/1000,'utf-8','base64');
+    var time=(new Date()).getTime()/1000|0;
+    var token=cipher.update(''+username+'|'+time,'utf-8','base64');
     token+= cipher.final('base64');
 
-    return token;
+    return {'time':time,'token':token};
 }
 
 User.login=function(username,password,devID,next){
@@ -100,7 +112,15 @@ User.login=function(username,password,devID,next){
                 next(err);
             }else{
                 if(row){
-                    next(User.generateToken(row.username));
+                    var tokenData=User.generateToken(row.username);
+                    console.log(JSON.stringify(tokenData));
+                    db.run("Update User set token=?,last_login=? where id=?;",tokenData.token,tokenData.time,row.id,function(err){
+                        if(err){
+                            next(err);
+                        }else{
+                            next(tokenData.token);
+                        }
+                    });
                 }else{
                     next(-2);
                 }

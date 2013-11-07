@@ -33,7 +33,7 @@ BusTicket.init=function(file){
                         "username VARCHAR NOT NULL UNIQUE,"+
                         "password VARCHAR NOT NULL,"+
                         "devID    VARCHAR NOT NULL UNIQUE,"+
-                        "token    VARCHAR UNIQUE"+
+                        "token    VARCHAR UNIQUE,"+
                         "last_login DATETIME"+
                         ");")
 

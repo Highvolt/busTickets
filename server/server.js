@@ -70,19 +70,17 @@ app.post('/register',
     },
     function(data,req,res,next){
         //console.log(JSON.stringify(req));
-        if(data){
-            if(data==-1){
+        if(data==-1){
                 res.status(500).send('');
             }else if(data==-2){
                 res.status(409).send(JSON.stringify({'msg':'Username taken'}));
-            }else{
+            }else if(data.errno){
                 res.status(500).send('');
-            }
-        }else{
+            }else{
             //TODO gen token
-            res.send(JSON.stringify({'msg':'ok'}));
-        }
-        next();
+                res.send(JSON.stringify({'msg':'ok'}));
+            }
+        //next();
     }
 );
 
