@@ -60,16 +60,6 @@
               android:text="@string/login_register"
               android:textColor="#0b84aa"
               android:textSize="16sp" />
-
-          <TextView
-              android:id="@+id/link_to_recover"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginBottom="40dip"
-              android:gravity="center"
-              android:text="@string/login_recover"
-              android:textColor="#0b84aa"
-              android:textSize="16sp" />
  
 		</LinearLayout>
         <!-- Login Form Ends -->

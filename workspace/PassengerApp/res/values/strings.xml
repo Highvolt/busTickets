@@ -8,7 +8,6 @@
     <string name="login_username">Username: </string>
     <string name="login_password">Password:</string>
     <string name="login_register">Don\'t have an account? Register here</string>
-    <string name="login_recover">Forgot your password? Recover it here</string>
     <string name="login_user_hint">Your username</string>
     <string name="login_pass_hint">Enter password</string>
     <string name="login_button">Login</string>
@@ -17,6 +16,9 @@
     <string name="register_username_hint">Enter desired username</string>
     <string name="register_pass_hint">Choose a password</string>
     <string name="register_account">Create an Account</string>
+    <string name="register_ccnumber">Credit Card Nº:</string>
+    <string name="register_cc_cvc">Card Security Code: </string>
+    <string name="register_ccdate">CC Expiration Date:</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title">Smartbuy</string>
     <string name="view_active_main">Active Ticket</string>

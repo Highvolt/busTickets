@@ -20,9 +20,9 @@
                 android:singleLine="true"
                 android:inputType="textVisiblePassword|textNoSuggestions"
                 android:hint="@string/register_username_hint"
-                android:layout_marginBottom="20dip"/>
-          <!--  Email Label -->
-          <!-- Password Label -->
+                android:layout_marginBottom="15dip"/>
+         
+          
           <TextView android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="#372c24"
@@ -33,7 +33,49 @@
                 android:inputType="textPassword"
                 android:hint="@string/register_pass_hint"
                 android:singleLine="true"
-                android:layout_marginTop="5dip"/>
+                android:layout_marginTop="5dip"
+                android:layout_marginBottom="15dip"/>
+          
+          
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_ccnumber"/>
+          <EditText android:id="@+id/reg_ccn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                android:layout_marginTop="5dip"
+                android:layout_marginBottom="15dip"/>
+          
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_ccdate"/>
+          
+           <EditText
+                android:id="@+id/reg_ccdate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:layout_marginTop="5dip"
+                android:focusable="false"
+                android:layout_marginBottom="15dip" />
+          
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_cc_cvc"/>
+          <EditText
+              android:id="@+id/reg_cc_cvc"
+              android:layout_width="60dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="5dip"
+              android:inputType="textNoSuggestions"
+              android:maxLength="3"
+              android:singleLine="true" />
+          
           <!-- Register Button -->
           <Button android:id="@+id/btnRegister"
                 android:layout_width="fill_parent"
