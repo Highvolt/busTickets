@@ -34,6 +34,7 @@ BusTicket.init=function(file){
                         "password VARCHAR NOT NULL,"+
                         "devID    VARCHAR NOT NULL UNIQUE,"+
                         "token    VARCHAR UNIQUE"+
+                        "last_login DATETIME"+
                         ");")
 
 				.run("CREATE TABLE CreditCard ( "+

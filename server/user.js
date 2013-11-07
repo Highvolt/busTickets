@@ -87,7 +87,7 @@ User.decodeToken=function(token){
 User.generateToken=function(username){
     var cipher = crypto.createCipheriv("aes128", key, iv);
     cipher.setAutoPadding(true);
-    var token=cipher.update(''+username+'|'+(new Date()).getTime(),'utf-8','base64');
+    var token=cipher.update(''+username+'|'+(new Date()).getTime()/1000,'utf-8','base64');
     token+= cipher.final('base64');
 
     return token;
