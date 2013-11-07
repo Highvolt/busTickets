@@ -39,5 +39,5 @@ Ticket.createAndSign=function(user,type){
     var time=new Date().getTime();
     sign.update(''+user+'-'+type+'-'+time);
     //add user deviD
-    return {'user': user.id,'device':user.dev,'type':type,'time':new Date().getTime(),'signature':sign.sign(privKey,'hex')};
+    return {'user': user.id,'device':user.dev,'type':type,'time':new Date().getTime(),'signature':sign.sign(privKey,'base64')};
 }
