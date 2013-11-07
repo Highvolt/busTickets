@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">InspectorApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title">SmartBuy</string>
+    <string name="InspectTicket_main">Inspect Ticket</string>
+    <string name="GetValidatedTickets_main">Validated Tickets</string>
+    <string name="getValidatedTicketsTitle">Validated Tickets</string>
+    <string name="title_activity_validated_tickets">ValidatedTicketsActivity</string>
+    <string name="title_activity_inspect_ticket">InspectTicketActivity</string>
+
+</resources>
