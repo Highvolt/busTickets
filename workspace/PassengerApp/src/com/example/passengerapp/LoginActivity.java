@@ -1,5 +1,6 @@
 package com.example.passengerapp;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.passengerapp.APIRequestTask.HttpRequestType;
@@ -11,6 +12,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -114,8 +116,31 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 
 	@Override
 	public void onRequestResult(boolean result, JSONObject data, int requestCode) {
-		// TODO Auto-generated method stub
-		
+		if(result){
+			String message;
+			try {
+				message = data.getString("msg");
+				if(message.equals("Bad auth information")){
+					Toast.makeText(getApplicationContext(),"Invalid login.", Toast.LENGTH_SHORT).show();
+				}
+				else if(data.has("token")){
+					Toast.makeText(getApplicationContext(),"Login successful!", Toast.LENGTH_SHORT).show();
+					//TODO do something
+					
+					finish();
+				}
+				
+			} catch (JSONException e) {
+				Log.e("Req_tag", "Error getting result.", e);
+                Toast.makeText(getApplicationContext(),
+                                "A problem was encountered. Pleasy try again later.", 
+                                Toast.LENGTH_SHORT).show();
+			}			
+		}else{
+			Log.e("Req_tag", "Request failed.");
+            Toast.makeText(getApplicationContext(),"A problem was encountered. Pleasy try again later.", 
+                            Toast.LENGTH_SHORT).show();
+		}
 	}
 
 }
