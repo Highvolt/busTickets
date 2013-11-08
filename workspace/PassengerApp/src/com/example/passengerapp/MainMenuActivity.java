@@ -3,6 +3,7 @@ package com.example.passengerapp;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,11 +11,31 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 
 public class MainMenuActivity extends Activity {
-
+	
+	public static final String SERVER_ADDRESS = "http://localhost:8080";
+	public static final int REQCODE_REGISTER = 101;
+	public static final int REQCODE_LOGIN = 102;
+	
+	private boolean hasAccount = false;
+	private String authToken = "";
+	private String username = "";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mainmenu);
+		
+		SharedPreferences settings = getSharedPreferences("user_details", MODE_PRIVATE);
+		hasAccount = settings.getBoolean("has_account", false);
+		authToken = settings.getString("auth_token", "undefined");
+		username = settings.getString("username", null);
+		
+		if(!hasAccount) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivityForResult(intent, REQCODE_LOGIN);
+		}
+		
 		
 		Button buyTickets = (Button) findViewById(R.id.Button01);
 		Button ticketWallet = (Button) findViewById(R.id.Button02);

@@ -7,11 +7,14 @@ import com.example.passengerapp.APIRequestTask.HttpRequestType;
 
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.provider.Settings.Secure;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -24,7 +27,8 @@ import android.widget.Toast;
 public class LoginActivity extends Activity implements RequestResultCallback {
 	
 	public static final int REQCODE_LOGIN = 102;
-    public String LOGIN_URL = "http://localhost/";
+	public static final int REQCODE_REGISTER = 101;
+    public String LOGIN_URL = "/login";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent i = new Intent(getApplicationContext(), RegisterActivity.class);
-				startActivity(i);
+				startActivityForResult(i, REQCODE_REGISTER);
 			}
 			
 		});
@@ -79,10 +83,11 @@ public class LoginActivity extends Activity implements RequestResultCallback {
             JSONObject json = new JSONObject();
             json.put("username", loginField);
             json.put("password", passwordField);
+            json.put("device", Settings.Secure.getString(getContentResolver(), Secure.ANDROID_ID));
             
             // Create and call HTTP request.
             APIRequestTask task = new APIRequestTask(this, HttpRequestType.Post, json,
-                            LOGIN_URL, "Logging in.", REQCODE_LOGIN);
+                            MainMenuActivity.SERVER_ADDRESS + LOGIN_URL, "Logging in.", REQCODE_LOGIN);
             task.execute((Void[]) null);
 		} catch (Exception e) {}
 		
@@ -113,6 +118,31 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		return true;
 	}
+	
+	@Override
+    public void onBackPressed() {
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            alertDialog.setTitle("Exit");
+            alertDialog.setMessage("This app needs an account to be used. Are you sure you want to leave?");
+            
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new AlertDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {}
+            });
+
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new AlertDialog.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                            Intent intent = new Intent();
+                            
+                    intent.putExtra("hasAccountTemp", false);
+                    intent.putExtra("authTokenTemp", "");
+                    setResult(Activity.RESULT_CANCELED, intent);
+                    finish();
+                    }
+            });
+            alertDialog.show();
+    }
 
 	@Override
 	public void onRequestResult(boolean result, JSONObject data, int requestCode) {
@@ -125,8 +155,10 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 				}
 				else if(data.has("token")){
 					Toast.makeText(getApplicationContext(),"Login successful!", Toast.LENGTH_SHORT).show();
-					//TODO do something
-					
+					Intent i = new Intent();
+					i.putExtra("hasAccountTemp", true);
+               	    i.putExtra("authTokenTemp", data.getString("token"));
+               	    setResult(Activity.RESULT_OK, i);
 					finish();
 				}
 				
@@ -142,5 +174,23 @@ public class LoginActivity extends Activity implements RequestResultCallback {
                             Toast.LENGTH_SHORT).show();
 		}
 	}
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Intent i = new Intent();
+        if(resultCode == Activity.RESULT_CANCELED) {
+        	setResult(Activity.RESULT_CANCELED, i);
+            finish();
+        } else {
+            String authToken = data.getStringExtra("authTokenTemp");
+            boolean hasAccount = data.getBooleanExtra("hasAccountTemp", false);
+            i.putExtra("hasAccountTemp", hasAccount);
+       	    i.putExtra("authTokenTemp", authToken);
+       	    setResult(Activity.RESULT_OK, i);
+       	    finish();
+        }
+	}
+	
+	
 
 }

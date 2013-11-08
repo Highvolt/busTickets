@@ -33,7 +33,7 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
     private int pickerMonth = 0;
     private int pickerDay = 0;
     public static final int REQCODE_REGISTER = 101;
-    public String REGISTER_URL = "http://localhost/";
+    public String REGISTER_URL = "/register";
     
     DatePickerDialog.OnDateSetListener pickerDateSetListener = new DatePickerDialog.OnDateSetListener() {
 
@@ -200,7 +200,7 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
 			json.put("csc", ccSecurityCode);
 			
 			//FAZER O REQUEST
-			APIRequestTask request = new APIRequestTask(this, HttpRequestType.Post, json, REGISTER_URL, "Creating account...", REQCODE_REGISTER);
+			APIRequestTask request = new APIRequestTask(this, HttpRequestType.Post, json, MainMenuActivity.SERVER_ADDRESS + REGISTER_URL, "Creating account...", REQCODE_REGISTER);
 			request.execute((Void[]) null);
 			
 		}catch(Exception e){
@@ -208,37 +208,18 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
 	}
 	
 	
-	 @Override
-     public void onBackPressed() {
-             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-             alertDialog.setTitle("Exit");
-             alertDialog.setMessage("This app needs an account to be used. Are you sure you want to leave?");
-             
-             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new AlertDialog.OnClickListener() {
-                     @Override
-                     public void onClick(DialogInterface arg0, int arg1) {}
-             });
-
-             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new AlertDialog.OnClickListener() {
-                     @Override
-                     public void onClick(DialogInterface arg0, int arg1) {
-                             Intent intent = new Intent();
-                             
-                     //intent.putExtra(MainActivity.EXTRA_REGISTERED, false);
-                     //intent.putExtra(MainActivity.EXTRA_USER_ID, -1);
-                     setResult(Activity.RESULT_CANCELED, intent);
-                     finish();
-                     }
-             });
-             alertDialog.show();
-     }
+	 
 	
 	 @Override
      public void onRequestResult(boolean result, JSONObject data, int requestCode) {
          if(result) {
              try {
                      String status = data.getString("msg");
-                     if(status.equals("ok")) {                    	 
+                     if(status.equals("ok")) {  
+                    	 Intent i = new Intent();
+                    	 i.putExtra("hasAccountTemp", true);
+                    	 i.putExtra("authTokenTemp", data.getString("token"));
+                    	 setResult(Activity.RESULT_OK, i);
 	                     finish();
                      } else if(status.equals("Username taken")){
                          Toast.makeText(getApplicationContext(),"Username already taken.", Toast.LENGTH_SHORT).show();   
