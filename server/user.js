@@ -84,6 +84,24 @@ User.verifyKey=function(req,res,next){
     });
 }
 
+
+User.validKeyBus=function(req,res,next){
+    db.get("Select id,devID from BUS where token=?;",req.body.key,function(err,row){
+        if(err){
+            res.status(500).send(JSON.stringify(err));
+            return;
+        }else{
+            if(row){
+                req.bus=row;
+                db.run("Update BUS set last_login=time('now') where id=?;",row.id);
+                next();
+            }else{
+                res.status(400).send(JSON.stringify({'msg':'invalid'}));
+            }
+        }
+    });
+}
+
 User.register=function(username,password,devID,number,csc,expire,next){
     if(db){
         db.run("Insert into User (username,password,devID) values (?,?,?)",username,password,devID,function(err){

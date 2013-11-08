@@ -89,6 +89,7 @@ app.post('/register',
     }
 );
 
+app.post('/validateTicket',User.validKeyBus,Ticket.validate);
 app.post('/login',
      function(req,res,next){
         if(req.body.username==null || req.body.password==null || req.body.device==null ){
