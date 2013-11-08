@@ -115,7 +115,7 @@ Ticket.validate=function(req,res,next){
 
 
 Ticket.iSvalidateTicket=function(req,res,next){
-    if(req.user==null){
+    if(req.user==null || (req.user!=null && req.user.conductor<=0)){
         res.status(403).send('');
         next();
         return;
