@@ -84,7 +84,7 @@ User.verifyKey=function(req,res,next){
     });
 }
 
-User.register=function(username,password,devID,next){
+User.register=function(username,password,devID,number,csc,expire,next){
     if(db){
         db.run("Insert into User (username,password,devID) values (?,?,?)",username,password,devID,function(err){
             if(err){
@@ -94,7 +94,14 @@ User.register=function(username,password,devID,next){
                     next(err);
                 }
             }else{
-                next({});
+                db.run("Insert into CreditCard (number,csc,expire,userid) values (?,?,?,(Select id from User where rowid=?));",number,csc,expire,this.lastID,function(err){
+                    if(err){
+                        next(err);
+                    }else{
+                        next({});
+
+                    }
+                });
             }
         });
     }else{
@@ -102,6 +109,9 @@ User.register=function(username,password,devID,next){
         return;
     }
 }
+
+
+
 
 User.decodeToken=function(token){
     var descipher=crypto.createDecipheriv("aes128", key, iv);

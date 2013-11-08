@@ -66,10 +66,11 @@ app.post("/myTickets",User.verifyKey,Ticket.getAllValidTickets);
 app.post("/verifyTicket",User.verifyKey,Ticket.iSvalidateTicket);
 app.post('/register',
     function(req,res,next){
-        if(req.body.username==null || req.body.password==null || req.body.device==null ){
-            res.status(400).send(JSON.stringify({'msg':'Missing attributes','username':req.body.username==null,'password':req.body.password==null,'device':req.body.device==null}));
+        if(req.body.username==null || req.body.password==null || req.body.device==null || req.body.number==null || req.body.csc==null || req.body.expire==null ){
+            res.status(400).send(JSON.stringify({'msg':'Missing attributes','username':req.body.username==null,'password':req.body.password==null,'device':req.body.device==null,
+            'number':req.body.number==null,'csc':req.body.csc==null,'expire':req.body.expire==null}));
         }else{
-            User.register(req.body.username,req.body.password,req.body.device,next);
+            User.register(req.body.username,req.body.password,req.body.device,req.body.number,req.body.csc,req.body.expire,next);
         }
     },
     function(data,req,res,next){
