@@ -80,6 +80,40 @@ Ticket.createAndSign=function(user,type){
     return {'user': user.id,'device':user.dev,'type':type,'time':time,'signature':signature/*(new Buffer(signature,'hex')).toString('base64')*//*sign.sign(privKey,'base64')*/};
 }
 
+Ticket.validate=function(req,res,next){
+    if(req.bus){
+        res.status(401).send('');
+        next();
+        return;
+    }else{
+         var verifySign=crypto.createVerify('RSA-SHA256');
+        if(typeof req.body.ticket == "string"){
+            req.body.ticket=JSON.parse(req.body.ticket);
+        }
+        verifySign.update(''+req.body.ticket.user+'-'+req.body.ticket.type+'-'+req.body.ticket.time);
+        console.log(''+req.body.ticket.user+'-'+req.body.ticket.type+'-'+req.body.ticket.time);
+        var descodified=verifySign.verify(pubKey,req.body.ticket.signature,'base64');
+        if(descodified){
+            var time=(new Date()).getTime();
+            db.run("Update Ticket set useDate=?,useBus=? where userid=? and buyDate=? and type=? and useDate is NULL;",time,req.bus.id,req.body.ticket.user,req.body.ticket.time,req.body.ticket.type,function(err){
+                if(err){
+                    res.status(500).send(JSON.stringify(err));
+                }else{
+                    if(this.changes==0){
+                        res.status(400).send(JSON.stringify({'valid':0,'reason':'Not found or used'}));
+                    }else{
+                        req.body.ticket.useDate=time;
+                        res.send(JSON.stringify(req.body.ticket));
+                    }
+                }
+            });
+        }else{
+            res.status(400).send(JSON.stringify({'valid':0,'reason':'fake','msg':'Fake Ticket'}));
+        }
+    }
+}
+
+
 Ticket.iSvalidateTicket=function(req,res,next){
     if(req.user==null){
         res.status(403).send('');

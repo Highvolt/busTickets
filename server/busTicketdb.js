@@ -51,7 +51,7 @@ BusTicket.init=function(file){
                         "type       INTEGER( 1 )  NOT NULL,"+
                         "buyDate    DATETIME      NOT NULL,"+
                         "useDate    DATETIME      DEFAULT ( NULL ),"+
-                        "useBus INTEGER,"+
+                        "useBus INTEGER REFERENCES Bus(id),"+
                         "Unique(userid,buyDate)"+
                         ");")
 
@@ -72,7 +72,7 @@ BusTicket.init=function(file){
                      "devID VARCHAR NOT NULL,"+
                      "password VARCHAR NOT NULL,"+
                      "token VARCHAR,"+
-                     "last_login DATETIME"+
+                     "last_login Date"+
                     ");")
 				// Insere os dados na db
 
