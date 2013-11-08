@@ -50,7 +50,8 @@ BusTicket.init=function(file){
                         "userid     INTEGER       REFERENCES User ( id ),"+
                         "type       INTEGER( 1 )  NOT NULL,"+
                         "buyDate    DATETIME      NOT NULL,"+
-                        "useDate    DATETIME      DEFAULT ( NULL )"+
+                        "useDate    DATETIME      DEFAULT ( NULL ),"+
+                        "Unique(userid,buyDate)"+
                         ");")
 
 				.run("CREATE TABLE validator ("+

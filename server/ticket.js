@@ -4,8 +4,7 @@ var fs=require('fs');
 var privKey=fs.readFileSync('./keys/rsa_priv.pem').toString();
 var pubKey=fs.readFileSync('./keys/rsa_pub.pem').toString();
 var db=null;
-
-//var KJUR=require('jsrsasign');
+var timelimit=[15,30,60];
 
 function Ticket(){
 }
@@ -102,6 +101,32 @@ Ticket.iSvalidateTicket=function(req,res,next){
         //var descodified=verify.verify((new Buffer(req.body.ticket.signature,'base64')).toString('hex'));
         var descodified=verifySign.verify(pubKey,req.body.ticket.signature,'base64');
         console.log(descodified);
-        res.send(descodified);
+        if(descodified){
+            db.get("Select * from Ticket where userid=? and buyDate=? and type=?;",req.body.ticket.user,req.body.ticket.time,req.body.ticket.type,function(err,row){
+                if(err){
+                    res.status(500).send(JSON.stringify(err));
+                }else{
+                    if(row){
+                        if(row.useDate){
+                            var timeNow=(new Date()).getTime();
+                            var timediff=timeNow-row.useDate;
+                            if(timediff>=0 && (timediff/1000/60)<timelimit[row.type-1]){
+                                res.send(JSON.stringify({'valid':1,'timeLeft':timelimit[row.type-1]-(timediff/1000/60)}));
+                            }else{
+                                res.send(JSON.stringify({'valid':0,'reason':'expired','timeLeft':timelimit[row.type-1]-(timediff/1000/60)}));
+                            }
+                            //res.send(JSON.stringify({'valid':1,''}))
+
+                        }else{
+                            res.send(JSON.stringify({'valid':0,'reason':'Not used'}));
+                        }
+                    }else{
+                        res.send(JSON.stringify({'valid':0,'reason':'Not found'}));
+                    }
+                }
+            });
+        }else{
+            res.status(400).send(JSON.stringify({'valid':0,'reason':'fake','msg':'Fake Ticket'}));
+        }
     }
 }
