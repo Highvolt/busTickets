@@ -64,6 +64,9 @@ app.post('/buy_ticket',User.verifyKey,function(req,res,next){
 app.post("/myTickets",User.verifyKey,Ticket.getAllValidTickets);
 
 app.post("/verifyTicket",User.verifyKey,Ticket.iSvalidateTicket);
+app.post("/getTicketsBus",User.verifyKey,Ticket.getAllValitedTicketsForBus);
+
+
 app.post('/register',
     function(req,res,next){
         if(req.body.username==null || req.body.password==null || req.body.device==null || req.body.number==null || req.body.csc==null || req.body.expire==null ){

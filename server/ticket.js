@@ -49,8 +49,31 @@ Ticket.getAllValidTickets=function(req,res){
         res.status(403);
         return;
     }else{
-        db.all("Select User.id as user,user.devID as device,ticket.type as type,ticket.buyDate as time,ticket.tijsrsasigncketCode as signature from User,Ticket "+
+        db.all("Select User.id as user,user.devID as device,ticket.type as type,ticket.buyDate as time,ticket.ticketCode as signature from User,Ticket "+
                "where user.id=ticket.userid and user.id=? and ticket.useDate is NULL",req.user.id,
+        function(err,data){
+            if(err){
+                res.send(JSON.stringify(err));
+            }else{
+                res.send(JSON.stringify(data));
+            }
+        });
+    }
+}
+
+Ticket.getAllValitedTicketsForBus=function(req,res){
+    console.log('get Tickets for BUS');
+    if(req.user==null|| (req.user!=null && req.user.conductor<=0)){
+        res.status(403);
+        return;
+    }else{
+        if(req.body.busID==null){
+            res.status(400).send(JSON.stringify({'busID':false}));
+            return;
+        }
+        db.all("Select User.id as user,user.devID as device,ticket.type as type,ticket.buyDate as time,ticket.ticketCode as signature,useDate from User,Ticket "+
+               "where user.id=ticket.userid and user.id=? and ticket.useDate is not NULL and ticket.useBus=? and ticket.useDate>?",req.user.id,req.body.busID,
+        (new Date()).setHours(0).setMinutes(0).setSeconds(0).getMilliseconds(0).getTime(),
         function(err,data){
             if(err){
                 res.send(JSON.stringify(err));
