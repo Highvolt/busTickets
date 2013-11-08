@@ -18,6 +18,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,7 +27,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class RegisterActivity extends Activity {
+public class RegisterActivity extends Activity implements RequestResultCallback {
 	
 	private int pickerYear = 0;
     private int pickerMonth = 0;
@@ -94,7 +95,7 @@ public class RegisterActivity extends Activity {
                  });
                  alertDialog.show();
          }
- }
+	 }
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -180,7 +181,7 @@ public class RegisterActivity extends Activity {
 				c.set(pickerYear, pickerMonth, pickerDay);
 				dateUnixConversion = (long) (c.getTimeInMillis() / 1000.0);
 				
-				buildRegisterRequest(nameField, passField, ccnField, ccdateField, cccodeField);
+				buildRegisterRequest(nameField, passField, ccnField, dateUnixConversion, cccodeField);
 			}
 		});
 		
@@ -188,12 +189,15 @@ public class RegisterActivity extends Activity {
 		
 	}
 	
-	private void buildRegisterRequest(String name, String password, String ccNumber, String ccDate, String ccSecutiryCode){
+	private void buildRegisterRequest(String name, String password, String ccNumber, long ccDate, String ccSecurityCode){
 		try{
 			JSONObject json = new JSONObject();
 			json.put("username", name);
 			json.put("password", password);
 			json.put("device", Settings.Secure.getString(getContentResolver(), Secure.ANDROID_ID));
+			json.put("number", ccNumber);
+			json.put("expire", ccDate);
+			json.put("csc", ccSecurityCode);
 			
 			//FAZER O REQUEST
 			APIRequestTask request = new APIRequestTask(this, HttpRequestType.Post, json, REGISTER_URL, "Creating account...", REQCODE_REGISTER);
@@ -202,6 +206,56 @@ public class RegisterActivity extends Activity {
 		}catch(Exception e){
 		}
 	}
+	
+	
+	 @Override
+     public void onBackPressed() {
+             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+             alertDialog.setTitle("Exit");
+             alertDialog.setMessage("This app needs an account to be used. Are you sure you want to leave?");
+             
+             alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new AlertDialog.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface arg0, int arg1) {}
+             });
+
+             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new AlertDialog.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface arg0, int arg1) {
+                             Intent intent = new Intent();
+                             
+                     //intent.putExtra(MainActivity.EXTRA_REGISTERED, false);
+                     //intent.putExtra(MainActivity.EXTRA_USER_ID, -1);
+                     setResult(Activity.RESULT_CANCELED, intent);
+                     finish();
+                     }
+             });
+             alertDialog.show();
+     }
+	
+	 @Override
+     public void onRequestResult(boolean result, JSONObject data, int requestCode) {
+         if(result) {
+             try {
+                     String status = data.getString("msg");
+                     if(status.equals("ok")) {                    	 
+	                     finish();
+                     } else if(status.equals("Username taken")){
+                         Toast.makeText(getApplicationContext(),"Username already taken.", Toast.LENGTH_SHORT).show();   
+                     }
+             } catch (Exception e) {
+                     Log.e("Req_tag", "Error getting result.", e);
+                     Toast.makeText(getApplicationContext(),
+                                     "A problem was encountered. Pleasy try again later.", 
+                                     Toast.LENGTH_SHORT).show();
+             }
+         } else {
+                 Log.e("Req_tag", "Request failed.");
+                 Toast.makeText(getApplicationContext(),
+                                 "A problem was encountered. Pleasy try again later.", 
+                                 Toast.LENGTH_SHORT).show();
+         }
+     }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
