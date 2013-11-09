@@ -184,3 +184,32 @@ User.login=function(username,password,devID,next){
     }
 
 }
+
+
+User.busLogin=function(password,devID,next){
+ if(db){
+        db.get("Select * from Bus where password=? and devID=?;",password,devID,function(err,row){
+            if(err){
+                next(err);
+            }else{
+                if(row){
+                    var tokenData=User.generateToken(row.devID);
+                    console.log(JSON.stringify(tokenData));
+                    db.run("Update Bus set token=?,last_login=? where id=?;",tokenData.token,tokenData.time,row.id,function(err){
+                        if(err){
+                            next(err);
+                        }else{
+                            next({'token':tokenData.token,'id':row.id});
+                        }
+                    });
+                }else{
+                    next(-2);
+                }
+            }
+        });
+    }else{
+        next(-1);
+        return;
+    }
+
+}
