@@ -8,6 +8,9 @@ import pt.fe.up.cmov.RestClient;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
@@ -50,6 +53,38 @@ public class BusValidator extends Activity {
 							if(request.status==200){
 								JSONObject resposta=request.getAsJSONObject();
 								Log.d(getClass().getName(), resposta.toString());
+								ValidatorData.INSTANCE.id=resposta.getInt("id");
+								ValidatorData.INSTANCE.key=resposta.getString("token");
+								Intent intent=new Intent(BusValidator.this.getApplicationContext(),MainActivity.class);
+								startActivity(intent);
+							}else{
+								if(request.status==400){
+									runOnUiThread(new Runnable() {
+										public void run() {
+											new AlertDialog.Builder(BusValidator.this)
+										    .setTitle("Erro")
+										    .setMessage("Dados invalidos.")
+										    .setNeutralButton("Fechar", new DialogInterface.OnClickListener() {
+										        public void onClick(DialogInterface dialog, int which) { 
+										            password.setText("");
+										        }
+										     }).show();
+										}
+									});
+								}else{
+									runOnUiThread(new Runnable() {
+										public void run() {
+											new AlertDialog.Builder(BusValidator.this)
+										    .setTitle("Erro")
+										    .setMessage("Não foi possivel contactar o servidor.")
+										    .setNeutralButton("Fechar", new DialogInterface.OnClickListener() {
+										        public void onClick(DialogInterface dialog, int which) { 
+										            password.setText("");
+										        }
+										     }).show();
+										}
+									});
+								}
 							}
 						} catch (JSONException e) {
 							// TODO Auto-generated catch block

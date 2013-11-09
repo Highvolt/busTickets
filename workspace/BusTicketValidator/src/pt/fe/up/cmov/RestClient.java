@@ -83,6 +83,7 @@ public class RestClient {
 
 	    } catch (Exception e) {
 	    	this.status=-1;
+	    	e.printStackTrace();
 	    }
 	    if(appContext!=null){
 	    	Intent intent=new Intent(RestClient.intentAction);
