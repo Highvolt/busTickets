@@ -14,7 +14,7 @@ import android.widget.Button;
 
 public class MainMenuActivity extends Activity implements RequestResultCallback {
 	
-	public static final String SERVER_ADDRESS = "http://localhost:8080";
+	public static final String SERVER_ADDRESS = "http://cmov.inphormatic.us/";
 	public static final int REQCODE_REGISTER = 101;
 	public static final int REQCODE_LOGIN = 102;
 	public static final int REQCODE_WALLET = 103;

@@ -222,7 +222,7 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
                     	 setResult(Activity.RESULT_OK, i);
 	                     finish();
                      } else if(status.equals("Username taken")){
-                         Toast.makeText(getApplicationContext(),"Username already taken.", Toast.LENGTH_SHORT).show();   
+                         Toast.makeText(getApplicationContext(),"Username already taken or device already has an account created.", Toast.LENGTH_SHORT).show();   
                      }
              } catch (Exception e) {
                      Log.e("Req_tag", "Error getting result.", e);
