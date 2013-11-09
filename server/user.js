@@ -116,7 +116,15 @@ User.register=function(username,password,devID,number,csc,expire,next){
                     if(err){
                         next(err);
                     }else{
-                        next({});
+                        var tokenData=User.generateToken(row.username);
+                        console.log(JSON.stringify(tokenData));
+                        db.run("Update User set token=?,last_login=? where username=?;",tokenData.token,tokenData.time,username,function(err){
+                            if(err){
+                                next(err);
+                            }else{
+                             next(tokenData.token);
+                            }
+                        });
 
                     }
                 });

@@ -105,7 +105,7 @@ app.post('/register',
                 res.status(500).send('');
             }else{
             //TODO gen token
-                res.send(JSON.stringify({'msg':'ok'}));
+                res.send(JSON.stringify(data));
             }
         //next();
     }
