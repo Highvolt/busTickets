@@ -237,6 +237,31 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
                                  Toast.LENGTH_SHORT).show();
          }
      }
+	 
+	 @Override
+    public void onBackPressed() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Exit");
+        alertDialog.setMessage("This app needs an account to be used. Are you sure you want to leave?");
+        
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new AlertDialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {}
+        });
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new AlertDialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                        Intent intent = new Intent();
+                        
+                intent.putExtra("hasAccountTemp", false);
+                intent.putExtra("authTokenTemp", "");
+                setResult(Activity.RESULT_CANCELED, intent);
+                finish();
+                }
+        });
+        alertDialog.show();
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
