@@ -51,6 +51,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_main);
 		 WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
 	        Display display = manager.getDefaultDisplay();
+	        ImageView view = (ImageView) findViewById(R.id.imageView1);     
 	   int width = display.getWidth();
 	   int height = display.getHeight();
 	   int smallerDimension = width < height ? width : height;
@@ -75,7 +76,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		if(bitmap==null){
 			Log.d("MainActivity","QR is null");
 		}
-        ImageView view = (ImageView) findViewById(R.id.imageView1);
+        
         view.setImageBitmap(bitmap);
         Button btn = (Button)findViewById(R.id.button1);
         btn.setOnClickListener(new OnClickListener() {

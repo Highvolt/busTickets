@@ -3,8 +3,10 @@
     package="pt.fe.up.cmov.validator"
     android:versionCode="1"
     android:versionName="1.0" >
-	<uses-permission android:name="android.permission.BLUETOOTH" />
-	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="10" />
@@ -23,7 +25,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:enabled="true" android:name="pt.fe.up.cmov.validator.ServerService" />
+
+        <service
+            android:name="pt.fe.up.cmov.validator.ServerService"
+            android:enabled="true" />
+
+        <activity
+            android:name="pt.fe.up.cmov.validator.BusValidator"
+            android:label="@string/title_activity_bus_validator" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

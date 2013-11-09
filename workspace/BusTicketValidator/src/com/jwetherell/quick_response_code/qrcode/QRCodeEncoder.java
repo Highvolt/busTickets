@@ -18,6 +18,7 @@ package com.jwetherell.quick_response_code.qrcode;
 
 import android.provider.ContactsContract;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.telephony.PhoneNumberUtils;
 
@@ -222,7 +223,7 @@ public final class QRCodeEncoder {
         for (int y = 0; y < height; y++) {
             int offset = y * width;
             for (int x = 0; x < width; x++) {
-                pixels[offset + x] = result.get(x, y) ? BLACK : WHITE;
+                pixels[offset + x] = result.get(x, y) ? BLACK : Color.argb(0,0, 0, 0);
             }
         }
 
