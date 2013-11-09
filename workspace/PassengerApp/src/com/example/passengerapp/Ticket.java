@@ -1,5 +1,8 @@
 package com.example.passengerapp;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Ticket {
 	int _userid;
 	String _deviceID;
@@ -19,7 +22,21 @@ public class Ticket {
 	        this._signature = signature;
 	    }
 	 
-	 public void setUserID(int id){
+	 public Ticket(JSONObject json) {
+		try {
+			this._userid = json.getInt("user");
+			this._deviceID = json.getString("device");
+			this._signature = json.getString("signature");
+			this._type = json.getInt("type");
+			this._time = json.getLong("time");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+	public void setUserID(int id){
 		 this._userid = id;
 	 }
 	 

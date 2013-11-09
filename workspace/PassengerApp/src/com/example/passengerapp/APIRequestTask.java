@@ -34,6 +34,7 @@ public class APIRequestTask extends AsyncTask<Void, Void, Void>{
     private JSONObject requestResult = null;
     private String requestUrl = null;
     private int requestCode = 0;
+    private int responseCode = 0;
     
     public APIRequestTask(RequestResultCallback callingActivity, HttpRequestType requestType, JSONObject requestData, String requestUrl, 
     		String progressMessage,int requestCode) {
@@ -71,6 +72,7 @@ public class APIRequestTask extends AsyncTask<Void, Void, Void>{
         if(response != null) {
             try {
                 this.requestResult = new JSONObject(EntityUtils.toString(response.getEntity()));
+                this.responseCode = response.getStatusLine().getStatusCode();
             } catch (Exception e) {
                 Log.e("Req Tag", "No response obtained.", e);
             }
@@ -93,7 +95,7 @@ public class APIRequestTask extends AsyncTask<Void, Void, Void>{
                 progressDialog.dismiss();
         } catch (Exception e) {
         }
-        ((RequestResultCallback) callingActivity).onRequestResult(requestResult != null, requestResult, requestCode);
+        ((RequestResultCallback) callingActivity).onRequestResult(responseCode, requestResult != null, requestResult, requestCode);
     }
 
 	

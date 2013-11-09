@@ -133,32 +133,15 @@
         
     </LinearLayout>
     
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dip"
-        android:orientation="horizontal" >
-        
-        <TextView
-            android:id="@+id/buyTicketsTotal"
-            android:layout_width="fill_parent"
-            android:layout_height="40dip"           
-            android:background="@drawable/wallet_labels"
-            android:gravity="center"
-            android:text="@string/buyTicketsTotal"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textColor="#FFFFFF"
-            android:weightSum="0.5" />
-        
-       </LinearLayout>
        
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dip"
         android:orientation="horizontal" >
         
         <Button
             android:id="@+id/BuyButton"
+            android:layout_marginTop="50dip"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
