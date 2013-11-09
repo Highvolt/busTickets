@@ -42,6 +42,25 @@ app.post('/auth_user',function(req,res){
 
 });
 
+app.post('/getPrice',User.verifyKey,function(req,res,next){
+	res.set('Content-Type','application/json');
+	if(req.get('Content-Type')!="application/json"){
+		res.status(400).send(JSON.stringify({'error':'needs to be JSON'}));
+		return;
+	}
+    console.log(JSON.stringify(req.body));
+    if(req.body.key!=null && (req.body.t1!=null || req.body.t2!=0 || req.body.t3!=null)){
+        //res.send(JSON.stringify(new Ticket()));
+        //res.send(JSON.stringify(Ticket.createAndSign(req.body.key,req.body.type)));
+        next();
+        return;
+    }
+
+	res.status(400).send(JSON.stringify('invalid login'));
+},Ticket.calculatePrice);
+
+
+
 
 app.post('/buy_ticket',User.verifyKey,function(req,res,next){
 	res.set('Content-Type','application/json');

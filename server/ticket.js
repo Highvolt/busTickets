@@ -5,6 +5,7 @@ var privKey=fs.readFileSync('./keys/rsa_priv.pem').toString();
 var pubKey=fs.readFileSync('./keys/rsa_pub.pem').toString();
 var db=null;
 var timelimit=[15,30,60];
+var prices=[50,90,150];
 
 function Ticket(){
 }
@@ -16,6 +17,9 @@ Ticket.processRequest=function(req,res){
     var t1=Number(req.body.t1);
     var t2=Number(req.body.t2);
     var t3=Number(req.body.t3);
+    var t1_bought=0;
+    var t2_bought=0;
+    var t3_bought=0;
     var tickets=[];
     //Falta adicionar à base de dados e limitar a 10 por user comecar por verificar quantos tem cada user
     if(!isNaN(t1)){
@@ -23,6 +27,7 @@ Ticket.processRequest=function(req,res){
             var t=Ticket.createAndSign(req.user,1);
             tickets.push(t);
             db.run("Insert into Ticket (ticketCode,userid,type,buyDate) values (?,?,?,?);",t.signature,t.user,t.type,t.time);
+            t1_bought++;
         }
     }
     if(!isNaN(t2)){
@@ -30,6 +35,7 @@ Ticket.processRequest=function(req,res){
             var t=Ticket.createAndSign(req.user,2);
             tickets.push(t);
             db.run("Insert into Ticket (ticketCode,userid,type,buyDate) values (?,?,?,?);",t.signature,t.user,t.type,t.time);
+            t2_bought++;
         }
     }
      if(!isNaN(t3)){
@@ -37,11 +43,59 @@ Ticket.processRequest=function(req,res){
             var t=Ticket.createAndSign(req.user,3);
             tickets.push(t);
             db.run("Insert into Ticket (ticketCode,userid,type,buyDate) values (?,?,?,?);",t.signature,t.user,t.type,t.time);
+            t3_bought++;
         }
     }
-    res.send(JSON.stringify(tickets));
+    var totalCost=t1_bought*prices[0]+prices[1]*t2_bought+prices[2]*t3_bought;
+    if(t1_bought+t2_bought+t3_bought>=10){
+        if(t1_bought>0){
+            var t=Ticket.createAndSign(req.user,1);
+            tickets.push(t);
+            db.run("Insert into Ticket (ticketCode,userid,type,buyDate) values (?,?,?,?);",t.signature,t.user,t.type,t.time);
+
+        }else if(t2_bought>0){
+            var t=Ticket.createAndSign(req.user,2);
+            tickets.push(t);
+            db.run("Insert into Ticket (ticketCode,userid,type,buyDate) values (?,?,?,?);",t.signature,t.user,t.type,t.time);
+
+        }else if(t3_bought>0){
+            var t=Ticket.createAndSign(req.user,3);
+            tickets.push(t);
+            db.run("Insert into Ticket (ticketCode,userid,type,buyDate) values (?,?,?,?);",t.signature,t.user,t.type,t.time);
+
+        }
+    }
+    res.send(JSON.stringify({'tickets':tickets,'total':totalCost}));
 }
 
+Ticket.calculatePrice=function(req,res){
+    var t1=Number(req.body.t1);
+    var t2=Number(req.body.t2);
+    var t3=Number(req.body.t3);
+    if(t1+req.user.t1>=10){
+        t1=10-req.user.t1;
+    }
+    if(t2+req.user.t2>=10){
+        t2=10-req.user.t2;
+    }
+    if(t3+req.user.t3>=10){
+        t3=10-req.user.t3;
+    }
+    var t1_gift=0;
+    var t2_gift=0;
+    var t3_gift=0;
+    if(t1+t2+t3>=10){
+        if(t1>0){
+            t1_gift++;
+        }else if(t2>0){
+            t2_gift++;
+        }else if(t3>0){
+            t3_gift++;
+        }
+    }
+    var totalCost=t1*prices[0]+t2*prices[1]+t3*prices[2];
+    res.send(JSON.stringify({'t1':t1,'t2':t2,'t3':t3,'t1_gift':t1_gift,'t2_gift':t2_gift,'t3_gift':t3_gift,'total':totalCost,'prices':prices}));
+}
 
 Ticket.getAllValidTickets=function(req,res){
     console.log('get Tickets');
