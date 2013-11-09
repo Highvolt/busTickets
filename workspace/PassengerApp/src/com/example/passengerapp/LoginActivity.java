@@ -144,13 +144,15 @@ public class LoginActivity extends Activity implements RequestResultCallback {
     }
 
 	@Override
-	public void onRequestResult(boolean result, JSONObject data, int requestCode) {
+	public void onRequestResult(int responseCode, boolean result, JSONObject data, int requestCode) {
 		if(result){
-			String message;
 			try {
-				message = data.getString("msg");
-				if(message.equals("Bad auth information")){
-					Toast.makeText(getApplicationContext(),"Invalid login.", Toast.LENGTH_SHORT).show();
+				if(data.has("msg")){
+					String message = data.getString("msg");
+                	if(message.equals("Bad Auth information"))
+                		Toast.makeText(getApplicationContext(),"Invalid login.", Toast.LENGTH_SHORT).show();
+                	else
+                		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 				}
 				else if(data.has("token")){
 					Toast.makeText(getApplicationContext(),"Login successful!", Toast.LENGTH_SHORT).show();

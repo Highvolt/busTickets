@@ -211,18 +211,21 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
 	 
 	
 	 @Override
-     public void onRequestResult(boolean result, JSONObject data, int requestCode) {
+     public void onRequestResult(int responseCode, boolean result, JSONObject data, int requestCode) {
          if(result) {
              try {
-                     String status = data.getString("msg");
-                     if(status.equals("ok")) {  
+                     if(data.has("token")){
                     	 Intent i = new Intent();
                     	 i.putExtra("hasAccountTemp", true);
                     	 i.putExtra("authTokenTemp", data.getString("token"));
                     	 setResult(Activity.RESULT_OK, i);
 	                     finish();
-                     } else if(status.equals("Username taken")){
-                         Toast.makeText(getApplicationContext(),"Username already taken or device already has an account created.", Toast.LENGTH_SHORT).show();   
+                     } else if(data.has("msg")){
+                    	 String message = data.getString("msg");
+                    	 if(message.equals("Bad Auth information"))
+                    		 Toast.makeText(getApplicationContext(),"Username already taken or device already has an account created.", Toast.LENGTH_SHORT).show();
+                    	 else
+                    		 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                      }
              } catch (Exception e) {
                      Log.e("Req_tag", "Error getting result.", e);

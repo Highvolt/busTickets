@@ -1,7 +1,5 @@
 package com.example.passengerapp;
 
-import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-public class MainMenuActivity extends Activity implements RequestResultCallback {
+public class MainMenuActivity extends Activity {
 	
 	public static final String SERVER_ADDRESS = "http://cmov.inphormatic.us/";
 	public static final int REQCODE_REGISTER = 101;
@@ -136,12 +134,6 @@ public class MainMenuActivity extends Activity implements RequestResultCallback 
 			default:
 			    return super.onOptionsItemSelected(item);
 		}
-	}
-
-	@Override
-	public void onRequestResult(boolean result, JSONObject data, int requestCode) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

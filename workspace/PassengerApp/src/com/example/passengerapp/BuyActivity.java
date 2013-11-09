@@ -183,7 +183,9 @@ public class BuyActivity extends Activity implements RequestResultCallback {
 			int t2gift, int t3gift, double total, double[] prices) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("Buy tickets");
-        String offered = "Tickets offered ";
+        String offered = "";
+        if(t1gift != 0 || t2gift != 0 || t3gift != 0)
+        	offered += "Tickets offered";
         if(t1gift != 0){
         	offered += "- " + t1gift + " T1 ";
         }
@@ -194,9 +196,9 @@ public class BuyActivity extends Activity implements RequestResultCallback {
         	offered += "- " + t3gift + " T3 ";
         }
         alertDialog.setMessage(
-        		t1 + " T1 Tickets: " + prices[0] + "€ \n" +
-        		t2 + " T2 Tickets: " + prices[1] + "€ \n" +
-        		t3 + " T3 Tickets: " + prices[2] + "€ \n" +
+        		t1 + " Type 1 Tickets: " + prices[0] + "€ \n" +
+        		t2 + " Type 2 Tickets: " + prices[1] + "€ \n" +
+        		t3 + " Type 3 Tickets: " + prices[2] + "€ \n" +
         		offered + "\n" +
         		"Price: " + total + "€." +
         		"\n Do you wanna buy these tickets?");		
@@ -228,11 +230,11 @@ public class BuyActivity extends Activity implements RequestResultCallback {
 	}
 	
 	@Override
-	public void onRequestResult(boolean result, JSONObject data, int requestCode) {
+	public void onRequestResult(int responseCode, boolean result, JSONObject data, int requestCode) {
 		if(result) {
 			if(requestCode == REQCODE_PRICES){
 				try {
-					if(data.get(null).equals("invalid login")){
+					if(responseCode == 400 || responseCode == 500){
 						Log.e("Req_tag", "Request failed.");
 			             Toast.makeText(getApplicationContext(),
 			                             "An authentication error has occured.", 
@@ -259,12 +261,32 @@ public class BuyActivity extends Activity implements RequestResultCallback {
 						buildBuyAlertDialog(t1,t2,t3,t1gift,t2gift,t3gift,total,prices);
 						
 					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (Exception e) {
+					Log.e("Req_tag", "Error getting result.", e);
+                    Toast.makeText(getApplicationContext(),
+                                    "A problem was encountered. Pleasy try again later.", 
+                                    Toast.LENGTH_SHORT).show();
 				}
 			}else if(requestCode == REQCODE_BUY){
-				
+				try {
+					JSONArray tickets = data.getJSONArray("tickets");
+					if(tickets != null){
+						DatabaseHandler db = new DatabaseHandler(this);
+						for(int i = 0; i< tickets.length(); i++){
+							Ticket t = new Ticket((JSONObject) tickets.get(i));
+							db.addTicket(t);
+						}
+						
+						Toast.makeText(getApplicationContext(),
+                                "Tickets acquired.", 
+                                Toast.LENGTH_SHORT).show();
+					}
+				}catch(Exception e){
+					Log.e("Req_tag", "Error getting result.", e);
+                    Toast.makeText(getApplicationContext(),
+                                    "A problem was encountered. Pleasy try again later.", 
+                                    Toast.LENGTH_SHORT).show();
+				}
 			}
 		}else{
 			 Log.e("Req_tag", "Request failed.");

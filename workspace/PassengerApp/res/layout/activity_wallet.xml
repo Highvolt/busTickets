@@ -80,11 +80,10 @@
         
         <TextView
             android:id="@+id/walletT1Label"
-            android:layout_width="wrap_content"
+            android:layout_width="50dip"
             android:layout_height="fill_parent"
             android:weightSum="0.5"
             android:layout_marginLeft="20dip"
-            android:text="NaN"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF" />
@@ -118,11 +117,10 @@
         
         <TextView
             android:id="@+id/walletT2Label"
-            android:layout_width="wrap_content"
+            android:layout_width="50dip"
             android:layout_height="fill_parent"
             android:weightSum="0.5"
             android:layout_marginLeft="20dip"
-            android:text="NaN"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
@@ -157,11 +155,10 @@
         
         <TextView
             android:id="@+id/walletT3Label"
-            android:layout_width="wrap_content"
+            android:layout_width="50dip"
             android:layout_height="fill_parent"
             android:weightSum="0.5"
             android:layout_marginLeft="20dip"
-            android:text="NaN"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF" />
