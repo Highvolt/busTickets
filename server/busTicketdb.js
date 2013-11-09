@@ -39,10 +39,11 @@ BusTicket.init=function(file){
 
 				.run("CREATE TABLE CreditCard ( "+
                         "id     INTEGER        PRIMARY KEY AUTOINCREMENT,"+
-                        "number NUMERIC( 16 )  NOT NULL UNIQUE,"+
+                        "number NUMERIC( 16 )  NOT NULL,"+
                         "csc    NUMERIC( 3 ) NOT NULL,"+
                         "expire VARCHAR NOT NULL,"+
-                        "userid INTEGER        REFERENCES User ( id ) "+
+                        "userid INTEGER        REFERENCES User ( id ), "+
+                        "Unique(userid,number)"+
                         ");")
 
 				.run("CREATE TABLE Ticket (" +
