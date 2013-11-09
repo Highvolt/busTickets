@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
 public class MainMenuActivity extends Activity {
 	
@@ -16,6 +17,7 @@ public class MainMenuActivity extends Activity {
 	public static final int REQCODE_REGISTER = 101;
 	public static final int REQCODE_LOGIN = 102;
 	public static final int REQCODE_WALLET = 103;
+	public static final int REQCODE_ACTIVE = 106;
 	
 	public static final String WALLET_URL = "/myTickets";
 	
@@ -71,7 +73,7 @@ public class MainMenuActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent i = new Intent(getApplicationContext(), CurrentTicketActivity.class);
-				startActivity(i);
+				startActivityForResult(i, REQCODE_ACTIVE);
 				
 			}
 		});
@@ -100,18 +102,22 @@ public class MainMenuActivity extends Activity {
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == REQCODE_LOGIN) {
-                if(resultCode == Activity.RESULT_CANCELED) {
-                        finish();
-                } else {
-                        SharedPreferences settings = getSharedPreferences("user_details", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = settings.edit();
-                        hasAccount = data.getBooleanExtra("hasAccountTemp", false);
-                        authToken = data.getStringExtra("authTokenTemp");
-                       
-                        editor.putBoolean("hasAccount", hasAccount);
-                        editor.putString("authToken", authToken);
-                        editor.commit();
-                }
+            if(resultCode == Activity.RESULT_CANCELED) {
+                    finish();
+            } else {
+                    SharedPreferences settings = getSharedPreferences("user_details", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = settings.edit();
+                    hasAccount = data.getBooleanExtra("hasAccountTemp", false);
+                    authToken = data.getStringExtra("authTokenTemp");
+                   
+                    editor.putBoolean("hasAccount", hasAccount);
+                    editor.putString("authToken", authToken);
+                    editor.commit();
+            }
+        }else if(requestCode == REQCODE_ACTIVE){
+        	if(resultCode == Activity.RESULT_CANCELED){
+        		Toast.makeText(getApplicationContext(), "There is no active ticket!", Toast.LENGTH_SHORT).show();
+        	}
         }
     }
 	
