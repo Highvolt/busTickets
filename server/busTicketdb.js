@@ -77,7 +77,7 @@ BusTicket.init=function(file){
                      "last_login Date"+
                     ");")
 				// Insere os dados na db
-
+                .run("Insert into bus (devID,password) values ('bd7dfb9326cb7f18','123456');")
 				.run("COMMIT;");
 		});
 	}
