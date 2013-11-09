@@ -139,7 +139,7 @@ app.post('/loginBust',
         if(req.body.password==null || req.body.device==null ){
             res.status(400).send(JSON.stringify({'msg':'Missing attributes'}));
         }else{
-            User.login(req.body.password,req.body.device,next);
+            User.busLogin(req.body.password,req.body.device,next);
         }
     },
     function(data,req,res,next){

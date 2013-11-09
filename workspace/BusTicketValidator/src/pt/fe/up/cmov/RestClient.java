@@ -35,6 +35,7 @@ public class RestClient {
 	public RestClient(String url,JSONObject data){
 		this.url=url;
 		this.data=data;
+		Log.d(getClass().getName(),url);
 	}
 	
 	public JSONObject toJSON(){
@@ -51,6 +52,7 @@ public class RestClient {
 	
 	public RestClient connect()
 	{
+		Log.d(getClass().getName(),"request: "+url);
 		HttpParams httpParams = new BasicHttpParams();
 	    HttpConnectionParams.setConnectionTimeout(httpParams, 15000);
 	    HttpClient httpclient = new DefaultHttpClient(httpParams);
@@ -67,6 +69,7 @@ public class RestClient {
 	    try {
 	        response = httpclient.execute(httppost);
 	        this.status=response.getStatusLine().getStatusCode();
+	        Log.d(getClass().getName(),"request: "+url+" resposta: "+status);
 	        HttpEntity entity = response.getEntity();
 
 	        if (entity != null) {
