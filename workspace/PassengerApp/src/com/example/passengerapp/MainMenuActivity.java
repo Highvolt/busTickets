@@ -2,12 +2,8 @@ package com.example.passengerapp;
 
 import org.json.JSONObject;
 
-import com.example.passengerapp.APIRequestTask.HttpRequestType;
-
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.view.Menu;
@@ -15,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class MainMenuActivity extends Activity implements RequestResultCallback {
 	

@@ -32,7 +32,8 @@
           <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
            
         <ImageView
             android:layout_width="50dp"
@@ -59,7 +60,7 @@
             android:layout_height="fill_parent"
             android:weightSum="0.5"
             android:layout_marginLeft="20dip"
-            android:text="Placeholder"
+            android:text="NaN"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF" />
@@ -70,7 +71,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dip"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
            
         <ImageView
             android:layout_width="50dp"
@@ -97,7 +99,7 @@
             android:layout_height="fill_parent"
             android:weightSum="0.5"
             android:layout_marginLeft="20dip"
-            android:text="Placeholder"
+            android:text="NaN"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF"
@@ -109,13 +111,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dip"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
            
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:src="@drawable/bus_icon"
-            android:layout_marginLeft="50dip"
             android:contentDescription="@string/img_desc" />
 
         <TextView
@@ -136,7 +138,7 @@
             android:layout_height="fill_parent"
             android:weightSum="0.5"
             android:layout_marginLeft="20dip"
-            android:text="Placeholder"
+            android:text="NaN"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="#FFFFFF" />
