@@ -102,7 +102,7 @@ app.post('/register',
             }else if(data==-2){
                 res.status(409).send(JSON.stringify({'msg':'Username taken'}));
             }else if(data.errno){
-                res.status(500).send('');
+                res.status(500).send(JSON.stringify(data));
             }else{
             //TODO gen token
                 res.send(JSON.stringify({'token':data}));
