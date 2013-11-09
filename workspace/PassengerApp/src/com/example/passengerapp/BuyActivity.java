@@ -1,16 +1,33 @@
 package com.example.passengerapp;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.example.passengerapp.APIRequestTask.HttpRequestType;
+
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-public class BuyActivity extends Activity {
+public class BuyActivity extends Activity implements RequestResultCallback {
+	
+	public static final String GET_PRICE_URL = "/getPrice";
+	public static final String BUY_URL = "/buy_ticket";
+	public static final int REQCODE_PRICES = 104;
+	public static final int REQCODE_BUY = 105;
+	public String authTokenTemp = "";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +122,39 @@ public class BuyActivity extends Activity {
 			}
 		});
 		
+		Button buyButton = (Button) findViewById(R.id.BuyButton);
+		buyButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				int t1quantity = Integer.parseInt(t1Value.getText().toString().trim());
+				int t2quantity = Integer.parseInt(t2Value.getText().toString().trim());
+				int t3quantity = Integer.parseInt(t3Value.getText().toString().trim());
+				
+				
+				SharedPreferences prefs = getSharedPreferences("user_details", MODE_PRIVATE);
+				String authToken = prefs.getString("authToken", "");
+				authTokenTemp = authToken;
+				
+				JSONObject data = new JSONObject();
+				try {
+					data.put("t1", t1quantity);
+					data.put("t2", t2quantity);
+					data.put("t3", t3quantity);
+					data.put("key", authToken);
+					
+					APIRequestTask request = new APIRequestTask(BuyActivity.this, HttpRequestType.Post, data, 
+							MainMenuActivity.SERVER_ADDRESS + GET_PRICE_URL, "Retrieving prices", REQCODE_PRICES);
+					request.execute((Void[]) null);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+		});
+		
 		
 		
 	}
@@ -127,6 +177,102 @@ public class BuyActivity extends Activity {
 			default:
 			    return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void buildBuyAlertDialog(final int t1, final int t2, final int t3, int t1gift,
+			int t2gift, int t3gift, double total, double[] prices) {
+		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setTitle("Buy tickets");
+        String offered = "Tickets offered ";
+        if(t1gift != 0){
+        	offered += "- " + t1gift + " T1 ";
+        }
+        if(t2gift != 0){
+        	offered += "- " + t2gift + " T2 ";
+        }
+        if(t3gift != 0){
+        	offered += "- " + t3gift + " T3 ";
+        }
+        alertDialog.setMessage(
+        		t1 + " T1 Tickets: " + prices[0] + "€ \n" +
+        		t2 + " T2 Tickets: " + prices[1] + "€ \n" +
+        		t3 + " T3 Tickets: " + prices[2] + "€ \n" +
+        		offered + "\n" +
+        		"Price: " + total + "€." +
+        		"\n Do you wanna buy these tickets?");		
+     // Back button.
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new AlertDialog.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {}
+        });
+
+        // Ok button.
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new AlertDialog.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+                try {    
+                    JSONObject json = new JSONObject();
+                    json.put("t1", t1);
+                    json.put("t2", t2);
+                    json.put("t3", t3);
+                    json.put("key", authTokenTemp);
+                    APIRequestTask task = new APIRequestTask(BuyActivity.this, 
+                        HttpRequestType.Post, json, 
+                        MainMenuActivity.SERVER_ADDRESS + BUY_URL, 
+                        "Buying tickets.", REQCODE_BUY);
+                    task.execute((Void[]) null);
+                } catch (Exception e) {}
+            }
+        });
+        alertDialog.show();
+	}
+	
+	@Override
+	public void onRequestResult(boolean result, JSONObject data, int requestCode) {
+		if(result) {
+			if(requestCode == REQCODE_PRICES){
+				try {
+					if(data.get(null).equals("invalid login")){
+						Log.e("Req_tag", "Request failed.");
+			             Toast.makeText(getApplicationContext(),
+			                             "An authentication error has occured.", 
+			                             Toast.LENGTH_SHORT).show();
+			             finish();
+					}else{
+						int t1, t2, t3, t1gift, t2gift, t3gift = 0;
+						double total = 0.0;
+						double[] prices = new double[3];
+						
+						t1 = data.getInt("t1");
+						t2 = data.getInt("t2");
+						t3 = data.getInt("t3");
+						t1gift = data.getInt("t1_gift");
+						t2gift = data.getInt("t2_gift");
+						t3gift = data.getInt("t3_gift");
+						total = data.getDouble("total");
+						JSONArray array = data.getJSONArray("prices");
+						
+						prices[0] = array.getDouble(0);
+						prices[1] = array.getDouble(1);
+						prices[2] = array.getDouble(2);
+						
+						buildBuyAlertDialog(t1,t2,t3,t1gift,t2gift,t3gift,total,prices);
+						
+					}
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}else if(requestCode == REQCODE_BUY){
+				
+			}
+		}else{
+			 Log.e("Req_tag", "Request failed.");
+             Toast.makeText(getApplicationContext(),
+                             "A problem was encountered. Pleasy try again later.", 
+                             Toast.LENGTH_SHORT).show();
+		}
+		
 	}
 
 }

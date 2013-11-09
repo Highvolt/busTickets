@@ -23,6 +23,7 @@ public class MainMenuActivity extends Activity implements RequestResultCallback 
 	
 	private boolean hasAccount = false;
 	private String authToken = "";
+	private String recentTicket = "";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class MainMenuActivity extends Activity implements RequestResultCallback 
 		SharedPreferences settings = getSharedPreferences("user_details", MODE_PRIVATE);
 		hasAccount = settings.getBoolean("has_account", false);
 		authToken = settings.getString("auth_token", "undefined");
+		recentTicket = settings.getString("recentTicket", "");
 		
 		if(!hasAccount) {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
