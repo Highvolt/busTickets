@@ -7,10 +7,8 @@
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="com.jwetherell.quick_response_code.CaptureActivity"/>
 <fullyQualifiedTypeName name="java.lang.String"/>
-<fullyQualifiedTypeName name="android.widget.TextView"/>
 <fullyQualifiedTypeName name="pt.fe.up.cmov.busticket.client.R.id"/>
 <fullyQualifiedTypeName name="java.lang.reflect.Method"/>
-<fullyQualifiedTypeName name="pt.fe.up.cmov.validator.R.id"/>
 <fullyQualifiedTypeName name="android.widget.Button"/>
 <fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
 <fullyQualifiedTypeName name="android.preference.PreferenceManager.OnActivityResultListener"/>
@@ -22,7 +20,6 @@
 <fullyQualifiedTypeName name="java.io.BufferedInputStream"/>
 <fullyQualifiedTypeName name="java.io.BufferedOutputStream"/>
 <fullyQualifiedTypeName name="android.bluetooth.BluetoothDevice"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="android.content.BroadcastReceiver"/>
 <fullyQualifiedTypeName name="java.lang.Runnable"/>
 <fullyQualifiedTypeName name="android.widget.Toast"/>
@@ -47,4 +44,15 @@
 <fullyQualifiedTypeName name="android.content.Intent"/>
 <fullyQualifiedTypeName name="java.util.concurrent.atomic.AtomicBoolean"/>
 <fullyQualifiedTypeName name="pt.fe.up.cmov.validator.MainActivity"/>
+<fullyQualifiedTypeName name="android.graphics.Color"/>
+<fullyQualifiedTypeName name="android.app.Application"/>
+<fullyQualifiedTypeName name="pt.fe.up.cmov.Misc"/>
+<fullyQualifiedTypeName name="android.provider.Settings.Secure"/>
+<fullyQualifiedTypeName name="pt.fe.up.cmov.validator.R.id"/>
+<fullyQualifiedTypeName name="android.widget.TextView"/>
+<fullyQualifiedTypeName name="android.provider.OpenableColumns"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="android.database.SQLException"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="android.database.sqlite.SQLiteDatabase"/>
 </qualifiedTypeNameHistroy>

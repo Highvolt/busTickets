@@ -18,15 +18,15 @@
         android:layout_gravity="center_vertical"
         android:orientation="vertical" >
 
-        <EditText
-            android:id="@+id/editText1"
+        <TextView
+            android:id="@+id/idAutocarro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/bus_username_hint" >
-
-            <requestFocus />
-        </EditText>
+            android:paddingBottom="10dp"
+            android:paddingLeft="8dp"
+            android:text="@string/bus_username_hint"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#dedede" />
 
         <EditText
             android:id="@+id/editText2"
