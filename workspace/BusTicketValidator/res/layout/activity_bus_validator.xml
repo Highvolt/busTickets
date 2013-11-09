@@ -1,10 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/LinearLayout1"
+    android:id="@+id/ScrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e74c3c"
-    android:orientation="horizontal"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -29,7 +28,7 @@
             android:textColor="#dedede" />
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
@@ -37,13 +36,11 @@
             android:inputType="textPassword" />
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/login"
+            style="@style/NewButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Entrar" 
-            style="@style/NewButton"
-            />
-
+            android:text="Entrar" />
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

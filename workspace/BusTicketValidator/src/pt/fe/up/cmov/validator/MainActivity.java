@@ -78,7 +78,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		}
         
         view.setImageBitmap(bitmap);
-        Button btn = (Button)findViewById(R.id.button1);
+        Button btn = (Button)findViewById(R.id.login);
         btn.setOnClickListener(new OnClickListener() {
 			
 			@Override
