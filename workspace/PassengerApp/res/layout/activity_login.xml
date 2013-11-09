@@ -16,7 +16,9 @@
               android:text="@string/login_username"
               android:textColor="#372c24" />
 
-          <EditText android:layout_width="fill_parent"
+          <EditText 
+              	android:id="@+id/login_user"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:layout_marginBottom="20dip"
@@ -31,7 +33,9 @@
               android:text="@string/login_password"
               android:textColor="#372c24" />
 
-          <EditText android:layout_width="fill_parent"
+          <EditText 
+                android:id="@+id/login_password"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dip"
                 android:hint="@string/login_pass_hint"

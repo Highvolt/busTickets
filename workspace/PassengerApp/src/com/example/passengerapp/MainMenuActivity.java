@@ -1,20 +1,49 @@
 package com.example.passengerapp;
 
+import org.json.JSONObject;
+
+import com.example.passengerapp.APIRequestTask.HttpRequestType;
+
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.Toast;
 
-public class MainMenuActivity extends Activity {
-
+public class MainMenuActivity extends Activity implements RequestResultCallback {
+	
+	public static final String SERVER_ADDRESS = "http://localhost:8080";
+	public static final int REQCODE_REGISTER = 101;
+	public static final int REQCODE_LOGIN = 102;
+	public static final int REQCODE_WALLET = 103;
+	
+	public static final String WALLET_URL = "/myTickets";
+	
+	private boolean hasAccount = false;
+	private String authToken = "";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mainmenu);
+		
+		SharedPreferences settings = getSharedPreferences("user_details", MODE_PRIVATE);
+		hasAccount = settings.getBoolean("has_account", false);
+		authToken = settings.getString("auth_token", "undefined");
+		
+		if(!hasAccount) {
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivityForResult(intent, REQCODE_LOGIN);
+		}
+		
 		
 		Button buyTickets = (Button) findViewById(R.id.Button01);
 		Button ticketWallet = (Button) findViewById(R.id.Button02);
@@ -72,6 +101,25 @@ public class MainMenuActivity extends Activity {
 			}
 		});
 	}
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQCODE_LOGIN) {
+                if(resultCode == Activity.RESULT_CANCELED) {
+                        finish();
+                } else {
+                        SharedPreferences settings = getSharedPreferences("user_details", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        hasAccount = data.getBooleanExtra("hasAccountTemp", false);
+                        authToken = data.getStringExtra("authTokenTemp");
+                       
+                        editor.putBoolean("hasAccount", hasAccount);
+                        editor.putString("authToken", authToken);
+                        editor.commit();
+                }
+        }
+    }
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,6 +139,12 @@ public class MainMenuActivity extends Activity {
 			default:
 			    return super.onOptionsItemSelected(item);
 		}
+	}
+
+	@Override
+	public void onRequestResult(boolean result, JSONObject data, int requestCode) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

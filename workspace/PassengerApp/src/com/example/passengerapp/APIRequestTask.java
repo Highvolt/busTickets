@@ -35,7 +35,7 @@ public class APIRequestTask extends AsyncTask<Void, Void, Void>{
     private String requestUrl = null;
     private int requestCode = 0;
     
-    public APIRequestTask(RegisterActivity callingActivity, HttpRequestType requestType, JSONObject requestData, String requestUrl, 
+    public APIRequestTask(RequestResultCallback callingActivity, HttpRequestType requestType, JSONObject requestData, String requestUrl, 
     		String progressMessage,int requestCode) {
 	    this.callingActivity = (Activity) callingActivity;
 	    this.requestType = requestType;
