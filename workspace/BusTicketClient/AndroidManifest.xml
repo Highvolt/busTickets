@@ -10,6 +10,9 @@
 	<uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+    
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="10" />
@@ -23,9 +26,9 @@
             android:name="pt.fe.up.cmov.busticket.client.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <!--  <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />-->
             </intent-filter>
         </activity>
         <activity android:name="com.jwetherell.quick_response_code.CaptureActivity"
@@ -57,7 +60,54 @@
                 <category android:name="android.intent.category.LAUNCHER"/>-->
             </intent-filter>
         </activity>
+		<activity
+            android:name="pt.fe.up.cmov.busticket.client.LoginActivity"
+            android:label="@string/app_name" >
+            
+        </activity>
+        <activity
+            android:name="pt.fe.up.cmov.busticket.client.RegisterActivity"
+            android:label="@string/title_activity_register" >
+            
+        </activity>
+        <activity
+            android:name="pt.fe.up.cmov.busticket.client.MainMenuActivity"
+            android:label="@string/title_activity_main" >
+            
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            
+        </activity>
+        <activity
+            android:name="pt.fe.up.cmov.busticket.client.BuyActivity"
+            android:label="@string/title_activity_buy" >
+            
+        </activity>
+        <activity
+            android:name="pt.fe.up.cmov.busticket.client.WalletActivity"
+            android:label="@string/title_activity_wallet" >
+            
+        </activity>
+        <activity
+            android:name="pt.fe.up.cmov.busticket.client.CurrentTicketActivity"
+            android:label="@string/title_activity_current_ticket" >
+        </activity>
+        <activity
+            android:name="pt.fe.up.cmov.busticket.client.ValidateTicketActivity"
+            android:label="@string/title_activity_validate_ticket" >
+        </activity>
+        <activity
+            android:name="pt.fe.up.cmov.busticket.client.InspectTicketActivity"
+            android:label="@string/title_activity_inspect_ticket" >
+        </activity>
+        <activity
+            android:name="pt.fe.up.cmov.busticket.client.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        
         
     </application>
 

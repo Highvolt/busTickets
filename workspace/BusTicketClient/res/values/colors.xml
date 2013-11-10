@@ -14,15 +14,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
  -->
-<resources>  
+<resources>
   <color name="transparent">#00000000</color>
-  
+
   <color name="contents_text">#ff000000</color>
-  
+
   <color name="encode_view">#ffffffff</color>
 
   <color name="possible_result_points">#c07FFF00</color>
-  
+
   <color name="result_image_border">#ff526F35</color>
   <color name="result_minor_text">#ffc0c0c0</color>
   <color name="result_points">#c07FFF00</color>
@@ -35,4 +35,10 @@
   <color name="viewfinder_frame">#ff526F35</color>
   <color name="viewfinder_laser">#ff7FFF00</color>
   <color name="viewfinder_mask">#606699FF</color>
+     <color name="blue1">#76B8F1</color>
+    <color name="grey1">#C9D1DD</color>
+    <color name="grey2">#869398</color>
+    <color name="white1">#FCFCFC</color>
+    <color name="dark">#ff000000</color>
+
 </resources>

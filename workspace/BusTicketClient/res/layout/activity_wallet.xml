@@ -1,0 +1,178 @@
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/dark"
+    android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android">
+    
+    
+     <LinearLayout 
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:weightSum="1.0">
+
+           <TextView
+               android:id="@+id/walletTitle"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_horizontal"
+               android:text="@string/wallet_title"
+               android:textColor="@color/white1"
+               android:textSize="18sp"
+               android:paddingTop="18dip" />
+
+       </LinearLayout>
+       
+     <LinearLayout
+         android:layout_width="fill_parent"
+         android:layout_height="fill_parent"
+         android:gravity="center_vertical"
+         android:orientation="vertical" >
+
+         <LinearLayout 
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:weightSum="1.0">
+
+           <TextView
+               android:id="@+id/walletAvailableTitle"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_horizontal"
+               android:text="@string/wallet_available"
+               android:textColor="@color/white1"
+               android:textSize="16sp"
+               android:layout_marginTop="28dip"
+               android:layout_marginBottom="28dip" />
+           
+
+       </LinearLayout>
+       
+         <LinearLayout
+       android:layout_width="fill_parent"
+       android:layout_height="fill_parent"
+       android:orientation="vertical">
+          
+          <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
+           
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/bus_icon"
+            android:contentDescription="@string/img_desc" />
+
+        <TextView
+            android:id="@+id/walletT1TypeLabel"
+            android:layout_width="70dp"
+            android:layout_height="fill_parent"
+            
+            android:background="@drawable/wallet_labels"
+            android:gravity="center"
+            android:text="@string/walletT1Type"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:weightSum="0.25" />
+        
+        <TextView
+            android:id="@+id/walletT1Label"
+            android:layout_width="50dip"
+            android:layout_height="fill_parent"
+            android:weightSum="0.5"
+            android:layout_marginLeft="20dip"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dip"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
+           
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/bus_icon"
+            android:contentDescription="@string/img_desc" />
+
+        <TextView
+            android:id="@+id/walletT2TypeLabel"
+            android:layout_width="70dp"
+            android:layout_height="fill_parent"
+           
+            android:background="@drawable/wallet_labels"
+            android:gravity="center"
+            android:text="@string/walletT2Type"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:weightSum="0.25" />
+        
+        <TextView
+            android:id="@+id/walletT2Label"
+            android:layout_width="50dip"
+            android:layout_height="fill_parent"
+            android:weightSum="0.5"
+            android:layout_marginLeft="20dip"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:contentDescription="@string/img_desc" />
+        
+    </LinearLayout>
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dip"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal" >
+           
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/bus_icon"
+            android:contentDescription="@string/img_desc" />
+
+        <TextView
+            android:id="@+id/walletT3TypeLabel"
+            android:layout_width="70dp"
+            android:layout_height="fill_parent"
+           
+            android:background="@drawable/wallet_labels"
+            android:gravity="center"
+            android:text="@string/walletT3Type"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF"
+            android:weightSum="0.25" />
+        
+        <TextView
+            android:id="@+id/walletT3Label"
+            android:layout_width="50dip"
+            android:layout_height="fill_parent"
+            android:weightSum="0.5"
+            android:layout_marginLeft="20dip"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF" />
+        
+    </LinearLayout>
+          
+      </LinearLayout>
+         
+     </LinearLayout>
+       
+      
+       
+      
+
+    
+    
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     android:background="@color/dark" >
+
+	<LinearLayout 
+           android:orientation="horizontal"
+           android:layout_width="fill_parent"
+           android:layout_height="wrap_content"
+           android:weightSum="1.0">
+
+           <TextView
+               android:id="@+id/settingsTitle"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:gravity="center_horizontal"
+               android:text="@string/settingsTitle"
+               android:textColor="@color/white1"
+               android:textSize="18sp"
+               android:paddingTop="18dip" />
+
+       </LinearLayout>    
+    
+    <ListView
+        android:layout_marginTop="30dip"
+        android:id="@+id/listView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView>
+
+</LinearLayout>

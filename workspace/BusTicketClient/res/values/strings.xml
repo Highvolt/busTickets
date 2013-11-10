@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BusTicketClient</string>
-    <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
-    
+
   <string name="capture_name">QR Code Capture</string>
   <string name="encoder_name">QR Code Encoder</string>
   <string name="decoder_name">QR Code Decoder</string>
@@ -43,6 +40,66 @@
   <string name="barcode_image">Barcode Image</string>
 
   <string name="capture">Capture</string>
-  
+  <string name="app_name">PassengerApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_register">Register New Account</string>
+    <string name="login_username">Username: </string>
+    <string name="login_password">Password:</string>
+    <string name="login_register">Don\'t have an account? Register here</string>
+    <string name="login_user_hint">Your username</string>
+    <string name="login_pass_hint">Enter password</string>
+    <string name="login_button">Login</string>
+    <string name="register_username">Username:</string>
+    <string name="register_pass">Password:</string>
+    <string name="register_username_hint">Enter desired username</string>
+    <string name="register_pass_hint">Choose a password</string>
+    <string name="register_account">Create an Account</string>
+    <string name="register_ccnumber">Credit Card Nº:</string>
+    <string name="register_cc_cvc">Card Security Code: </string>
+    <string name="register_ccdate">CC Expiration Date:</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title">Smartbuy</string>
+    <string name="view_active_main">Active Ticket</string>
+    <string name="buy_tickets_main">Buy Tickets</string>
+    <string name="validate_ticket_main">Validate Ticket</string>
+    <string name="inspect_ticket_main">Present Ticket</string>
+    <string name="current_tickets_main">Ticket Wallet</string>
+    <string name="title_activity_buy">BuyActivity</string>
+    <string name="title_activity_wallet">WalletActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_current_ticket">CurrentTicketActivity</string>
+    <string name="title_activity_validate_ticket">ValidateTicketActivity</string>
+    <string name="title_activity_inspect_ticket">InspectTicketActivity</string>
+
+    <string name="options_menu_home">Home</string>
+    <string name="options_menu_settings">Settings</string>
+
+    <string name="wallet_title">Ticket Wallet</string>
+    <string name="wallet_available">Available Tickets</string>
+    <string name="walletT1Type">T1:</string>
+    <string name="walletT2Type">T2:</string>
+    <string name="walletT3Type">T3:</string>
+
+    <string name="buyTicketsTitle">Buy Tickets</string>
+    <string name="buyTicketsButton">Calculate Price</string>
+
+    <string name="img_desc">Icon</string>
+
+    <string name="horizontal_picker_plus">+</string>
+    <string name="horizontal_picker_minus">-</string>
+    <string name="horizontal_picker_value">0</string>
+
+    <string name="currentTicketTitle">Active Ticket</string>
+    <string name="currentTicketType">Type:</string>
+    <string name="currentTicketValidation">Validated:</string>
+    <string name="currentTicketRemaining">Remaining: </string>
+    <string name="settingsTitle">Settings</string>
+    <string name="settings_password">New Password</string>
+    <string name="settings_password2">Confirm New Password</string>
+
+    <string name="inspect_title">Inspect Ticket</string>
+    <string name="validateTitle">Validate Ticket</string>
+
 
 </resources>
