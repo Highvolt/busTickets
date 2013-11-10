@@ -15,12 +15,16 @@ public class ServerService extends IntentService {
 	public static Boolean running=true;
 	public ServerService(){
 		super("ServerBlue");
+		
 	}
 	
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// TODO Auto-generated method stub
 		Log.d("Started", "Intent Started for Server");
+		Intent intent2=new Intent(MainActivity.bluetoothAccept);
+		intent2.putExtra("status", 1);
+		this.sendBroadcast(intent2);
 		while(true){
 			try {
 				Log.d("Server Service", "accept Block");
@@ -32,8 +36,12 @@ public class ServerService extends IntentService {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				break;
 			}
 		}
+		intent2=new Intent(MainActivity.bluetoothAccept);
+		intent2.putExtra("status", 0);
+		this.sendBroadcast(intent2);
 
 	}
 	

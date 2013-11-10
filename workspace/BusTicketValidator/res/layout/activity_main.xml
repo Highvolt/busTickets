@@ -36,7 +36,7 @@
                 android:textSize="30dp" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/bluetoothServer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -61,14 +61,6 @@
                 android:layout_margin="20dp"
                 android:src="@drawable/ic_launcher" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/login"
-            style="@style/NewButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="14dp"
-            android:text="Button" />
     </LinearLayout>
 
 </LinearLayout>

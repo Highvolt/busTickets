@@ -16,10 +16,12 @@ import com.jwetherell.quick_response_code.qrcode.QRCodeEncoder;
 import android.os.Bundle;
 import android.preference.PreferenceManager.OnActivityResultListener;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
@@ -31,6 +33,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -44,6 +47,42 @@ public class MainActivity extends Activity implements OnClickListener {
 	public static String bluetoothAccept="pt.fe.up.cmov.validator.ClientAccepted";
 	private BroadcastReceiver bluetoothServer;
 	public static AtomicBoolean serviceOn=new AtomicBoolean(false);
+	ImageView image;
+	int smallerDimension;
+	
+	private void genQrCode(){
+		JSONObject qrCode=new JSONObject();
+		   try {
+			qrCode.accumulate("mac", BluetoothAdapter.getDefaultAdapter().getAddress());
+			//qrCode.accumulate("UUID", my_UUID);
+			qrCode.accumulate("otp",otp);
+			} catch (JSONException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			qrCodeEncoder = new QRCodeEncoder(qrCode.toString(), null, Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), smallerDimension);
+			
+			try {
+				final Bitmap bitmap= qrCodeEncoder.encodeAsBitmap();
+				if(bitmap==null){
+					Log.d("MainActivity","QR is null");
+				}
+		        runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						image.setImageBitmap(bitmap);
+						
+					}
+				});
+			} catch (WriterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	        
+	}
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,59 +90,46 @@ public class MainActivity extends Activity implements OnClickListener {
 		setContentView(R.layout.activity_main);
 		 WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
 	        Display display = manager.getDefaultDisplay();
-	        ImageView view = (ImageView) findViewById(R.id.imageView1);     
+	        image = (ImageView) findViewById(R.id.imageView1);     
 	   int width = display.getWidth();
 	   int height = display.getHeight();
-	   int smallerDimension = width < height ? width : height;
+	   smallerDimension = width < height ? width : height;
 	   smallerDimension = smallerDimension * 7 / 8;
-	   JSONObject qrCode=new JSONObject();
-	   try {
-		qrCode.accumulate("mac", BluetoothAdapter.getDefaultAdapter().getAddress());
-		//qrCode.accumulate("UUID", my_UUID);
-		qrCode.accumulate("otp",otp);
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		qrCodeEncoder = new QRCodeEncoder(qrCode.toString(), null, Contents.Type.TEXT, BarcodeFormat.QR_CODE.toString(), smallerDimension);
-		Bitmap bitmap=null;
-		try {
-			bitmap = qrCodeEncoder.encodeAsBitmap();
-		} catch (WriterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if(bitmap==null){
-			Log.d("MainActivity","QR is null");
-		}
+	   genQrCode();
         
-        view.setImageBitmap(bitmap);
-        Button btn = (Button)findViewById(R.id.login);
-        btn.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				
-				initBluetooth();
-			}
-		});
+        initBluetooth();
         this.bluetoothServer=new BroadcastReceiver() {
 			
 			@Override
 			public void onReceive(Context context, Intent intent) {
+				final int status=intent.getIntExtra("status", -1);
 				String tmp=intent.getStringExtra("msg");
 				final String msg;
 				if(tmp!=null){
 					msg=tmp; 
 				}else{
-					msg="Connected peer!";
+					msg="";
 				}
 				MainActivity.this.runOnUiThread(new Runnable() {
 					
 					@Override
 					public void run() {
-						Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-						
+						if(msg!="")
+							Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+						if(status>=0){
+							TextView statusT=(TextView)MainActivity.this.findViewById(R.id.bluetoothServer);
+							switch (status) {
+							case 0:
+								if(!blueAdapter.isEnabled())
+									initBluetooth();
+								statusT.setText("Off");
+								break;
+							case 1:
+								statusT.setText("On");
+							default:
+								break;
+							}
+						}
 					}
 				});
 				
@@ -117,6 +143,12 @@ public class MainActivity extends Activity implements OnClickListener {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+		try {
+			serverService.socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.unregisterReceiver(this.bluetoothServer);
 	}
 	private void initBluetooth() {
@@ -147,6 +179,7 @@ public class MainActivity extends Activity implements OnClickListener {
 		// TODO Auto-generated method stub
 		if(blueAdapter!=null){
 			if(blueAdapter.isEnabled()){
+				genQrCode();
 				BluetoothServerSocket bs=blueAdapter.listenUsingInsecureRfcommWithServiceRecord("busTicketValidator",UUID.fromString(my_UUID));
 				ServerService.socket=bs;
 				Intent serverSocket=new Intent(this,ServerService.class);
@@ -181,6 +214,30 @@ public class MainActivity extends Activity implements OnClickListener {
 			}else{
 				Log.d("Main Activity Request Code","user canceled bluetooth activation");
 				//handle failure
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						new AlertDialog.Builder(MainActivity.this)
+					    .setTitle("Erro")
+					    .setMessage("O serviço de validação está desactivado. Activar?")
+					    .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+					        public void onClick(DialogInterface dialog, int which) { 
+					            MainActivity.this.finish();
+					        }
+					     })
+					     .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+							
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								initBluetooth();
+								
+							}
+						})
+					    .show();
+						
+					}
+				});
 			}
 			
 			break;
