@@ -78,6 +78,7 @@ public class ClientHandler extends Thread {
 			String received=(String) bi.readObject();
 			JSONObject ticket=new JSONObject(received);
 			ticket.put("useTime", Long.toString(System.currentTimeMillis()));
+			ticket.put("BusId", Integer.toString(ValidatorData.INSTANCE.id));
 			Log.d("Client Handler","Readed " + received);
 			/*JSONObject jobj=new JSONObject();
 			jobj.accumulate("text","coisas lindas");*/

@@ -188,4 +188,52 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		return null;
 		
 	}
+	
+	public JSONObject getLastValidated(Context appC){
+		JSONObject obj=new JSONObject();
+		String query="SELECT * FROM "+ TABLE_TICKETS + " t,"+ TABLE_VALIDATIONS+" v WHERE v."+KEY_TIME+"=t.time order by "+KEY_VALIDATION_TIME+" desc";
+		SQLiteDatabase db= this.getReadableDatabase();
+		Cursor c=db.rawQuery(query, null);
+		c.moveToNext();
+		c.moveToFirst();
+		if(c.isFirst()){
+			try {
+				obj.put("user", c.getString(c.getColumnIndex(KEY_USERID)));
+				obj.put("type", c.getString(c.getColumnIndex(KEY_TYPE)));
+				obj.put("time", c.getString(c.getColumnIndex(KEY_TIME)));
+				obj.put("device", c.getString(c.getColumnIndex(KEY_DEVICE)));
+				if(appC!=null){
+					if(!c.getString(c.getColumnIndex(KEY_DEVICE)).equals(Settings.Secure.getString(appC.getContentResolver(), Secure.ANDROID_ID))){
+						Log.d("Bilhete", "Forgery");
+						//TODO handle this
+					}
+				}
+				obj.put("signature", c.getString(c.getColumnIndex(KEY_SIGNATURE)));
+				obj.put("useDate", c.getString(c.getColumnIndex(KEY_VALIDATION_TIME)));
+				obj.put("busId", c.getString(c.getColumnIndex(KEY_BUSID)));
+				obj.put("validation", c.getString(c.getColumnIndex(KEY_BUS_SIGNATURE)));
+				return obj;
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		
+		return null;
+		
+	}
+	
+	
+	public void insertValidation(JSONObject obj){
+		String query="Insert into "+TABLE_VALIDATIONS+"("+KEY_TIME+","+KEY_VALIDATION_TIME+","+KEY_BUSID+","+KEY_BUS_SIGNATURE+") values (?,?,?,?)";
+		SQLiteDatabase db= this.getWritableDatabase();
+		try {
+			db.execSQL(query, (new String[]{obj.getString("time"),obj.getString("useTime"),obj.getString("BusId"),obj.getString("validation")}));
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

@@ -61,9 +61,9 @@
     <string name="title_activity_main">MainActivity</string>
     <string name="title">Smartbuy</string>
     <string name="view_active_main">Active Ticket</string>
-    <string name="buy_tickets_main">Buy Tickets</string>
-    <string name="validate_ticket_main">Validate Ticket</string>
-    <string name="inspect_ticket_main">Present Ticket</string>
+    <string name="buy_tickets_main">Comprar Bilhetes</string>
+    <string name="validate_ticket_main">Ver/Validar Bilhete</string>
+    <string name="inspect_ticket_main">Bilhete Atual</string>
     <string name="current_tickets_main">Ticket Wallet</string>
     <string name="title_activity_buy">BuyActivity</string>
     <string name="title_activity_wallet">WalletActivity</string>

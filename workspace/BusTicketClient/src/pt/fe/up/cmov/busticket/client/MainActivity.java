@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.os.Parcelable;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -55,7 +56,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private TicketView t1=null;
 	private TicketView t2=null;
 	private TicketView t3=null;
-	private ProgressDialog dialog;
+	private ProgressDialog dialog=null;
 	private JSONObject ticket=null;
 	
 	private void qrProcess(Intent intent) {
@@ -259,6 +260,22 @@ public class MainActivity extends Activity implements OnClickListener{
 	
 	private void connectToValidator() {
 		if(lastValue!=null){
+			
+				runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						if(dialog!=null){
+							dialog.cancel();
+						}
+						dialog=new ProgressDialog(MainActivity.this);
+						dialog.setMessage("A validar...");
+						dialog.show();
+					}
+				});
+				
+			
 			new Thread(new Runnable() {
 				
 				@Override
@@ -341,7 +358,16 @@ public class MainActivity extends Activity implements OnClickListener{
 							bo.writeObject(jobj.toString());
 						}
 						bo.flush();
-						Log.d("Main Activity", (String) bi.readObject());
+						
+						String value=(String) bi.readObject();
+						Log.d("Main Activity", value);
+						JSONObject receipt=new JSONObject(value);
+						if(receipt.has("invalid")){
+							//TODO process fail validation
+						}else{
+							(new DatabaseHandler(getApplicationContext())).insertValidation(receipt);
+							
+						}
 						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -360,7 +386,7 @@ public class MainActivity extends Activity implements OnClickListener{
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}finally{
-						
+						Log.d("Bluetooth connect", "Connection end");
 							try {
 								if(bo!=null)
 									bo.close();
@@ -371,6 +397,17 @@ public class MainActivity extends Activity implements OnClickListener{
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
+							}
+							if(dialog!=null){
+								runOnUiThread(new Runnable() {
+									
+									@Override
+									public void run() {
+										dialog.cancel();
+										dialog=null;
+										
+									}
+								});
 							}
 						
 					}

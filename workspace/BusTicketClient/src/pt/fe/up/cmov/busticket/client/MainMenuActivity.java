@@ -43,8 +43,6 @@ public class MainMenuActivity extends Activity {
 		
 		
 		Button buyTickets = (Button) findViewById(R.id.Button01);
-		Button ticketWallet = (Button) findViewById(R.id.Button02);
-		Button activeTicket = (Button) findViewById(R.id.Button03);
 		Button validateTicket = (Button) findViewById(R.id.Button04);
 		Button inspectTicket = (Button) findViewById(R.id.Button05);
 		
@@ -58,25 +56,9 @@ public class MainMenuActivity extends Activity {
 			}
 		});
 		
-		ticketWallet.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), WalletActivity.class);
-				startActivity(i);
-				
-			}
-		});
 		
-		activeTicket.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), CurrentTicketActivity.class);
-				startActivityForResult(i, REQCODE_ACTIVE);
-				
-			}
-		});
+		
+		
 		
 		validateTicket.setOnClickListener(new OnClickListener() {
 			
