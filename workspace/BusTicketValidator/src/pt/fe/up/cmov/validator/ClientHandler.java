@@ -7,9 +7,13 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.CharBuffer;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import pt.fe.up.cmov.RestClient;
 
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
@@ -71,10 +75,14 @@ public class ClientHandler extends Thread {
 		}
 		
 		try {
-			Log.d("Client Handler","Readed " + (String) bi.readObject());
-			JSONObject jobj=new JSONObject();
-			jobj.accumulate("text","coisas lindas");
-			bo.writeObject(jobj.toString());
+			String received=(String) bi.readObject();
+			JSONObject ticket=new JSONObject(received);
+			ticket.put("useTime", Long.toString(System.currentTimeMillis()));
+			Log.d("Client Handler","Readed " + received);
+			/*JSONObject jobj=new JSONObject();
+			jobj.accumulate("text","coisas lindas");*/
+			ticket.accumulate("validation", ValidatorData.INSTANCE.signTicket(ticket));
+			bo.writeObject(ticket.toString());
 			bo.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

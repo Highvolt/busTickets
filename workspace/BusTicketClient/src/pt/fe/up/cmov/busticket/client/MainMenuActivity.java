@@ -32,8 +32,8 @@ public class MainMenuActivity extends Activity {
 		setContentView(R.layout.activity_mainmenu);
 		
 		SharedPreferences settings = getSharedPreferences("user_details", MODE_PRIVATE);
-		hasAccount = settings.getBoolean("has_account", false);
-		authToken = settings.getString("auth_token", "undefined");
+		hasAccount = settings.getBoolean("hasAccount", false);
+		authToken = settings.getString("authToken", "undefined");
 		recentTicket = settings.getString("recentTicket", "");
 		
 		if(!hasAccount) {

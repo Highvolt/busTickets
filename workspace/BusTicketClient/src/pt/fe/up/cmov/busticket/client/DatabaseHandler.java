@@ -3,15 +3,21 @@ package pt.fe.up.cmov.busticket.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.Settings;
+import android.provider.Settings.Secure;
+import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
 
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "storedTickets";
 	
 	private static final String TABLE_TICKETS = "tickets";
@@ -26,6 +32,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private static final String KEY_VALIDATION_TIME = "validation_time";
     private static final String KEY_BUSID = "bus_id";
     private static final String KEY_BUS_SIGNATURE = "bus_signature";
+    
+   
 	
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -47,7 +55,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 				+ KEY_VALIDATION_TIME + " INTEGER PRIMARY KEY, "
 				+ KEY_BUSID + " TEXT, "
 				+ KEY_BUS_SIGNATURE + " TEXT, "
-				+ "FOREIGN KEY ("+ KEY_TIME + ") REFERENCES "+ TABLE_TICKETS + " ("+ KEY_USERID + "))";
+				+ "FOREIGN KEY ("+ KEY_TIME + ") REFERENCES "+ TABLE_TICKETS + " ("+ KEY_TIME + "))";
         db.execSQL(CREATE_TICKETS_TABLE);
         db.execSQL(CREATE_VALIDATIONS_TABLE);
 	}
@@ -149,5 +157,35 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		ticketCount[1] = c2.getCount();
 		ticketCount[2] = c3.getCount();
 		return ticketCount;
+	}
+	
+	public JSONObject getOldestTicket(int i, Context appC){
+		JSONObject obj=new JSONObject();
+		String query="SELECT * FROM "+ TABLE_TICKETS + " t WHERE t.time NOT IN (SELECT time FROM " + TABLE_VALIDATIONS + ") AND t.type = ? order by "+KEY_TIME+" asc";
+		SQLiteDatabase db= this.getReadableDatabase();
+		Cursor c=db.rawQuery(query, (new String[]{Integer.toString(i)}));
+		c.moveToNext();
+		c.moveToFirst();
+		if(c.isFirst()){
+			try {
+				obj.put("user", c.getString(c.getColumnIndex(KEY_USERID)));
+				obj.put("type", c.getString(c.getColumnIndex(KEY_TYPE)));
+				obj.put("time", c.getString(c.getColumnIndex(KEY_TIME)));
+				obj.put("device", c.getString(c.getColumnIndex(KEY_DEVICE)));
+				if(appC!=null){
+					if(!c.getString(c.getColumnIndex(KEY_DEVICE)).equals(Settings.Secure.getString(appC.getContentResolver(), Secure.ANDROID_ID))){
+						Log.d("Bilhete", "Forgery");
+						//TODO handle this
+					}
+				}
+				obj.put("signature", c.getString(c.getColumnIndex(KEY_SIGNATURE)));
+				return obj;
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return null;
+		
 	}
 }

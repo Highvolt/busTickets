@@ -21,8 +21,12 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Rect;
+import android.graphics.RectF;
+import android.graphics.drawable.shapes.OvalShape;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -83,20 +87,31 @@ public final class ViewfinderView extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        Rect frame = cameraManager.getFramingRect();
-        if (frame == null) {
+        Rect frame2 = cameraManager.getFramingRect();
+        if (frame2 == null) {
             return;
         }
+        Rect frame=new Rect(frame2);
+        
+        frame.top=frame2.left;
+        frame.bottom=frame2.right;
+        frame.right=frame2.bottom;
+        frame.left=frame2.top;
         int width = canvas.getWidth();
         int height = canvas.getHeight();
 
         // Draw the exterior (i.e. outside the framing rect) darkened
         paint.setColor(resultBitmap != null ? resultColor : maskColor);
         canvas.drawRect(0, 0, width, frame.top, paint);
-        canvas.drawRect(0, frame.top, frame.left, frame.bottom + 1, paint);
+        canvas.drawRect(0, frame.top, frame.left, frame.bottom+1, paint);
         canvas.drawRect(frame.right + 1, frame.top, width, frame.bottom + 1, paint);
         canvas.drawRect(0, frame.bottom + 1, width, height, paint);
-
+        paint.setColor(frameColor);
+        paint.setStyle(Style.STROKE);
+        canvas.drawCircle(frame.left+(frame.right-frame.left)/2, frame.top+(frame.bottom-frame.top)/2, 
+        		(frame.right-frame.left)<(frame.bottom-frame.top)?(frame.right-frame.left)/2:(frame.bottom-frame.top)/2, 
+        				paint);
+        paint.setStyle(Style.FILL);
         if (resultBitmap != null) {
             // Draw the opaque result bitmap over the scanning rectangle
             paint.setAlpha(CURRENT_POINT_OPACITY);
@@ -117,16 +132,17 @@ public final class ViewfinderView extends View {
             scannerAlpha = (scannerAlpha + 1) % SCANNER_ALPHA.length;
             int middle = frame.height() / 2 + frame.top;
             canvas.drawRect(frame.left + 2, middle - 1, frame.right - 1, middle + 2, paint);
-
+            
             Rect previewFrame = cameraManager.getFramingRectInPreview();
-            float scaleX = frame.width() / (float) previewFrame.width();
+            
+            /*float scaleX = frame.width() / (float) previewFrame.width();
             float scaleY = frame.height() / (float) previewFrame.height();
 
             List<ResultPoint> currentPossible = possibleResultPoints;
             List<ResultPoint> currentLast = lastPossibleResultPoints;
-            int frameLeft = frame.left;
-            int frameTop = frame.top;
-            if (currentPossible.isEmpty()) {
+            int frameLeft = frame.top;
+            int frameTop = frame.left;*/
+          /*  if (currentPossible.isEmpty()) {
                 lastPossibleResultPoints = null;
             } else {
                 possibleResultPoints = new ArrayList<ResultPoint>(5);
@@ -148,7 +164,7 @@ public final class ViewfinderView extends View {
                     }
                 }
             }
-
+*/
             // Request another update at the animation interval, but only
             // repaint the laser line,
             // not the entire viewfinder mask.

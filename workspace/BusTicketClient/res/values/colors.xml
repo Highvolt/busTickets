@@ -27,14 +27,14 @@
   <color name="result_minor_text">#ffc0c0c0</color>
   <color name="result_points">#c07FFF00</color>
   <color name="result_text">#ffffffff</color>
-  <color name="result_view">#b0000000</color>
+  <color name="result_view">#20000000</color>
 
   <color name="status_view">#50000000</color>
   <color name="status_text">#ffffffff</color>
 
-  <color name="viewfinder_frame">#ff526F35</color>
-  <color name="viewfinder_laser">#ff7FFF00</color>
-  <color name="viewfinder_mask">#606699FF</color>
+  <color name="viewfinder_frame">#ff006F00</color>
+  <color name="viewfinder_laser">#ff00FF00</color>
+  <color name="viewfinder_mask">#D0FFFFFF</color>
      <color name="blue1">#76B8F1</color>
     <color name="grey1">#C9D1DD</color>
     <color name="grey2">#869398</color>

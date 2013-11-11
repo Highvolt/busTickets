@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.ParcelUuid;
 import android.os.Parcelable;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
@@ -31,8 +32,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -48,13 +51,18 @@ public class MainActivity extends Activity implements OnClickListener{
 	private JSONObject lastValue=null;
 	private BluetoothSocket devS;
 	private AtomicBoolean connected=new AtomicBoolean(false);
-	private static final int retries=45
-			;
+	private static final int retries=45;
+	private TicketView t1=null;
+	private TicketView t2=null;
+	private TicketView t3=null;
+	private ProgressDialog dialog;
+	private JSONObject ticket=null;
 	
 	private void qrProcess(Intent intent) {
 	    	String action = intent.getAction();
 	    	Log.d("MainActivity",intent.getStringExtra("pt.cmov.qrCode"));
 	    	final String qr=intent.getStringExtra("pt.cmov.qrCode");
+	    	final int type=intent.getIntExtra("ticket",-1);
 	    	
 	    	MainActivity.this.runOnUiThread(new Runnable() {
 				
@@ -73,6 +81,10 @@ public class MainActivity extends Activity implements OnClickListener{
 				e.printStackTrace();
 				lastValue=null;
 			}
+	    	if(type>0){
+	    		ticket=(new DatabaseHandler(this).getOldestTicket(type,this.getApplicationContext()));
+	    		initBluetooth();
+	    	}
 	    
 	    	
 	}
@@ -188,6 +200,23 @@ public class MainActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		t1=(TicketView) findViewById(R.id.ticketView1);
+		t2=(TicketView) findViewById(R.id.ticketView2);
+		t3=(TicketView) findViewById(R.id.ticketView3);
+		t1.setDetails("0:15");
+		t1.setTitle("T1");
+		t2.setDetails("0:30");
+		t2.setTitle("T2");
+		t3.setDetails("1:00");
+		t3.setTitle("T3");
+		DatabaseHandler db = new DatabaseHandler(this);
+		int[] ticketCount = db.getNotValidatedTicketsCount();
+		t1.setQuantity(Integer.toString(ticketCount[0]));
+		t2.setQuantity(Integer.toString(ticketCount[1]));
+		t3.setQuantity(Integer.toString(ticketCount[2]));
+		t1.setOnClickListener(this);
+		t2.setOnClickListener(this);
+		t3.setOnClickListener(this);
 		Button button = (Button) findViewById(R.id.button1);
 		button.setOnClickListener(new OnClickListener() {
 			
@@ -306,7 +335,11 @@ public class MainActivity extends Activity implements OnClickListener{
 						bi=new ObjectInputStream(devS.getInputStream());
 						JSONObject jobj=new JSONObject();
 						jobj.accumulate("text", MessageDigest.getInstance("MD5").digest(Long.toString(System.currentTimeMillis()).getBytes()));
-						bo.writeObject(jobj.toString());
+						if(ticket!=null){
+							bo.writeObject(ticket.toString());
+						}else{
+							bo.writeObject(jobj.toString());
+						}
 						bo.flush();
 						Log.d("Main Activity", (String) bi.readObject());
 						
@@ -358,9 +391,15 @@ public class MainActivity extends Activity implements OnClickListener{
 			connectToValidator();
 			break;
 		case 2:
+			if(data==null){
+				Log.d("MainActivity", "User canceled");
+				
+				break;
+			}
 			Log.d("MainActivity", "Returned "+data.getAction()+" == "+MainActivity.QRresult);
 			if(data.getAction().equals(MainActivity.QRresult)){
 				Log.d("MainActivity", "Process QR");
+
 				qrProcess(data);
 			}
 			
@@ -384,11 +423,30 @@ public class MainActivity extends Activity implements OnClickListener{
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-
+	
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
-		
+		int type=0;
+		switch (v.getId()) {
+		case R.id.ticketView1:
+			type=1;
+			break;
+		case R.id.ticketView2:
+			type=2;
+			break;
+		case R.id.ticketView3:
+			type=3;
+			break;	
+		default:
+			break;
+		}
+		if(type>0){
+			Intent a=new Intent(MainActivity.this, com.jwetherell.quick_response_code.CaptureActivity.class);
+			a.putExtra("ticket", type);
+			startActivityForResult(a, 2);
+		}
 	}
 
 }

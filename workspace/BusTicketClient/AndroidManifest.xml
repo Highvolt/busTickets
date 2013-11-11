@@ -11,7 +11,7 @@
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
+     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     
     <uses-sdk
         android:minSdkVersion="10"
@@ -34,7 +34,7 @@
         <activity android:name="com.jwetherell.quick_response_code.CaptureActivity"
             android:label="@string/capture_name"
             android:icon="@drawable/ic_launcher"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:clearTaskOnLaunch="true"
             android:stateNotNeeded="true"
             android:configChanges="orientation|keyboardHidden"

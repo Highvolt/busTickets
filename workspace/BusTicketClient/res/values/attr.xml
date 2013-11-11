@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <declare-styleable name="ticket_btn">
+	  <attr name="time" format="string"/>
+	  <attr name="type" format="string"/>
+	</declare-styleable>  
+</resources>

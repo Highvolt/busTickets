@@ -8,9 +8,12 @@ import pt.fe.up.cmov.busticket.client.APIRequestTask.HttpRequestType;
 
 
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -156,10 +159,61 @@ public class BuyActivity extends Activity implements RequestResultCallback {
 			}
 			
 		});
-		
+		checkWifiConnection();
 		
 		
 	}
+	
+	
+	private void checkWifiConnection() {
+        // Enable WIFI.
+        /*WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        if(wifi != null && !wifi.isWifiEnabled()) {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Exit");
+                alertDialog.setMessage("You need network connection to login. " +
+                                "Please enable a data connection and try again.");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                                Intent intent = new Intent();
+                        setResult(Activity.RESULT_CANCELED, intent);
+                        finish();
+                        }
+                });
+                alertDialog.show(); d 
+        }*/
+		boolean internet=false;
+		 NetworkInfo info = (NetworkInfo) ((ConnectivityManager) getApplicationContext()
+				 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+
+		    if (info == null || !info.isConnected()) {
+		        internet = false;
+		    }else if (info.isRoaming()) {
+			        // here is the roaming option you can change it if you want to
+			        // disable internet while roaming, just return false
+			    	internet = false;
+			    }else{
+			    	internet =  true;
+			 }
+		    
+		    
+		    
+		    if(!internet){
+		    	AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Rede indisponivel.");
+                alertDialog.setMessage("Para aceder a esta função necessita de uma ligação à internet. " +
+                                "Por favor ligue e tente outra vez.");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                                
+                        	finish();
+                        }
+                });
+                alertDialog.show();
+		    }
+	 }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -184,10 +238,10 @@ public class BuyActivity extends Activity implements RequestResultCallback {
 	private void buildBuyAlertDialog(final int t1, final int t2, final int t3, int t1gift,
 			int t2gift, int t3gift, double total, double[] prices) {
 		AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Buy tickets");
+        alertDialog.setTitle("Compra");
         String offered = "";
         if(t1gift != 0 || t2gift != 0 || t3gift != 0)
-        	offered += "Tickets offered";
+        	offered += "Bilhetes oferecidos: ";
         if(t1gift != 0){
         	offered += "- " + t1gift + " T1 ";
         }
@@ -198,20 +252,20 @@ public class BuyActivity extends Activity implements RequestResultCallback {
         	offered += "- " + t3gift + " T3 ";
         }
         alertDialog.setMessage(
-        		t1 + " Type 1 Tickets: " + prices[0] + "� \n" +
-        		t2 + " Type 2 Tickets: " + prices[1] + "� \n" +
-        		t3 + " Type 3 Tickets: " + prices[2] + "� \n" +
+        		t1 + " Bilhetes Tipo 1: " + prices[0]/100 + "€ \n" +
+        		t2 + " Bilhetes Tipo 2: " + prices[1]/100 + "€ \n" +
+        		t3 + " Bilhetes Tipo 3: " + prices[2]/100 + "€ \n" +
         		offered + "\n" +
-        		"Price: " + total + "�." +
-        		"\n Do you wanna buy these tickets?");		
+        		"Total: " + total/100 + "€." +
+        		"\n Comprar?");		
      // Back button.
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new AlertDialog.OnClickListener() {
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Não", new AlertDialog.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface arg0, int arg1) {}
         });
 
         // Ok button.
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new AlertDialog.OnClickListener() {
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Sim", new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1) {
                 try {    
@@ -223,7 +277,7 @@ public class BuyActivity extends Activity implements RequestResultCallback {
                     APIRequestTask task = new APIRequestTask(BuyActivity.this, 
                         HttpRequestType.Post, json, 
                         MainMenuActivity.SERVER_ADDRESS + BUY_URL, 
-                        "Buying tickets.", REQCODE_BUY);
+                        "A comprar...", REQCODE_BUY);
                     task.execute((Void[]) null);
                 } catch (Exception e) {}
             }
@@ -266,7 +320,7 @@ public class BuyActivity extends Activity implements RequestResultCallback {
 				} catch (Exception e) {
 					Log.e("Req_tag", "Error getting result.", e);
                     Toast.makeText(getApplicationContext(),
-                                    "A problem was encountered. Pleasy try again later.", 
+                                    "Erro ao comunicar. Por favor tente mais tarde.", 
                                     Toast.LENGTH_SHORT).show();
 				}
 			}else if(requestCode == REQCODE_BUY){
@@ -280,20 +334,20 @@ public class BuyActivity extends Activity implements RequestResultCallback {
 						}
 						
 						Toast.makeText(getApplicationContext(),
-                                "Tickets acquired.", 
+                                "Bilhetes adicionados a sua carteira.", 
                                 Toast.LENGTH_SHORT).show();
 					}
 				}catch(Exception e){
 					Log.e("Req_tag", "Error getting result.", e);
                     Toast.makeText(getApplicationContext(),
-                                    "A problem was encountered. Pleasy try again later.", 
+                                    "Erro ao comunicar. Por favor tente mais tarde.", 
                                     Toast.LENGTH_SHORT).show();
 				}
 			}
 		}else{
 			 Log.e("Req_tag", "Request failed.");
              Toast.makeText(getApplicationContext(),
-                             "A problem was encountered. Pleasy try again later.", 
+                             "Erro ao comunicar. Por favor tente mais tarde.", 
                              Toast.LENGTH_SHORT).show();
 		}
 		

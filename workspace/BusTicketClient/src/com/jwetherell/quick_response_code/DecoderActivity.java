@@ -17,6 +17,7 @@ package com.jwetherell.quick_response_code;
 import java.io.IOException;
 import java.util.Collection;
 
+import pt.fe.up.cmov.busticket.client.MainActivity;
 import pt.fe.up.cmov.busticket.client.R;
 import com.jwetherell.quick_response_code.camera.CameraManager;
 import com.google.zxing.BarcodeFormat;
@@ -24,6 +25,7 @@ import com.google.zxing.Result;
 import com.google.zxing.ResultPoint;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -53,18 +55,21 @@ public class DecoderActivity extends Activity implements IDecoderActivity, Surfa
     protected boolean hasSurface = false;
     protected Collection<BarcodeFormat> decodeFormats = null;
     protected String characterSet = null;
+    ProgressDialog dialog;
 
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.decoder);
-        Log.v(TAG, "onCreate()");
+        Log.v(TAG, "decoder onCreate()");
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         handler = null;
         hasSurface = false;
+        dialog = ProgressDialog.show(DecoderActivity.this, "", 
+                "Loading. Please wait...", true);
     }
 
     @Override
@@ -76,7 +81,7 @@ public class DecoderActivity extends Activity implements IDecoderActivity, Surfa
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(TAG, "onResume()");
+        Log.v(TAG, "decoder onResume()");
 
         // CameraManager must be initialized here, not in onCreate().
         if (cameraManager == null) cameraManager = new CameraManager(getApplication());
@@ -101,6 +106,8 @@ public class DecoderActivity extends Activity implements IDecoderActivity, Surfa
             surfaceHolder.addCallback(this);
             surfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
         }
+        Log.v(TAG, "finished onResume()");
+        
     }
 
     @Override
@@ -133,7 +140,8 @@ public class DecoderActivity extends Activity implements IDecoderActivity, Surfa
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        if (holder == null)
+        Log.d("Decoder","Surface Created");
+    	if (holder == null)
             Log.e(TAG, "*** WARNING *** surfaceCreated() gave us a null surface!");
         if (!hasSurface) {
             hasSurface = true;
@@ -213,6 +221,7 @@ public class DecoderActivity extends Activity implements IDecoderActivity, Surfa
             cameraManager.openDriver(surfaceHolder);
             // Creating the handler starts the preview, which can also throw a
             // RuntimeException.
+            cameraManager.getCamera().setDisplayOrientation(90);
             if (handler == null) handler = new DecoderActivityHandler(this, decodeFormats, characterSet, cameraManager);
         } catch (IOException ioe) {
             Log.w(TAG, ioe);
@@ -221,5 +230,7 @@ public class DecoderActivity extends Activity implements IDecoderActivity, Surfa
             // java.?lang.?RuntimeException: Fail to connect to camera service
             Log.w(TAG, "Unexpected error initializing camera", e);
         }
+        dialog.cancel();
+        Log.d("Decoder","camera init");
     }
 }

@@ -57,8 +57,8 @@ public class CaptureActivity extends DecoderActivity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.capture);
-        Log.v(TAG, "onCreate()");
-
+        Log.v(TAG, "capture onCreate()");
+        
         //resultView = findViewById(R.id.result_view);
         //statusView = (TextView) findViewById(R.id.status_view);
 
@@ -74,7 +74,7 @@ public class CaptureActivity extends DecoderActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(TAG, "onResume()");
+        Log.v(TAG, " finished capture onResume()");
     }
 
     @Override
@@ -97,6 +97,7 @@ public class CaptureActivity extends DecoderActivity {
 
     @Override
     public void handleDecode(Result rawResult, Bitmap barcode) {
+    	Log.v(TAG, "decode up");
         drawResultPoints(barcode, rawResult);
 
         ResultHandler resultHandler = ResultHandlerFactory.makeResultHandler(this, rawResult);
@@ -109,6 +110,7 @@ public class CaptureActivity extends DecoderActivity {
        // statusView.setText(R.string.msg_default_status);
         //statusView.setVisibility(View.VISIBLE);
         viewfinderView.setVisibility(View.VISIBLE);
+        Log.v(TAG, "scanner up");
     }
 
     protected void showResults() {
@@ -139,6 +141,7 @@ public class CaptureActivity extends DecoderActivity {
         Intent intent = new Intent();
         intent.setAction(pt.fe.up.cmov.busticket.client.MainActivity.QRresult);
         intent.putExtra("pt.cmov.qrCode", resultHandler.getDisplayContents());
+        intent.putExtra("ticket", this.getIntent().getIntExtra("ticket", -1));
         setResult(Activity.RESULT_OK, intent);
         
         CaptureActivity.this.finish();

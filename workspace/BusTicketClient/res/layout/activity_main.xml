@@ -1,45 +1,74 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:ticket="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/asdasdasda"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+    <LinearLayout
+        android:id="@+id/LinearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:clickable="false"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:text="Button" />
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_world" />
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="17dp"
-        android:text="@string/capture" />
+        <Button
+            android:id="@+id/button1"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ticket1"
+            android:text="Button" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="24dp"
-        android:text="NoData" />
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="17dp"
+            android:text="@string/capture" />
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="24dp"
+            android:text="NoData" />
+
+        <pt.fe.up.cmov.busticket.client.TicketView
+            android:id="@+id/ticketView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ticket:time="0:15"
+            ticket:type="T1"
+             >
+        </pt.fe.up.cmov.busticket.client.TicketView>
+
+        <pt.fe.up.cmov.busticket.client.TicketView
+            android:id="@+id/ticketView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ticket:time="0:15"
+            ticket:type="T1" >
+        </pt.fe.up.cmov.busticket.client.TicketView>
+
+        <pt.fe.up.cmov.busticket.client.TicketView
+            android:id="@+id/ticketView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            ticket:time="0:15"
+            ticket:type="T1" >
+        </pt.fe.up.cmov.busticket.client.TicketView>
+    </LinearLayout>
+
+</ScrollView>
