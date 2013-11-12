@@ -85,7 +85,7 @@ public class ClientHandler extends Thread {
 				JSONObject req=new JSONObject();
 				req.accumulate("key", ValidatorData.INSTANCE.key);
 				req.accumulate("ticket", ticket);
-				RestClient r=new RestClient(RestClient.APIurl+"validateTicket", ticket).connect();
+				RestClient r=new RestClient(RestClient.APIurl+"validateTicket", req).connect();
 				if(r.status!=200){
 					Log.d("Validar keys", "Invalido");
 					ticket.put("invalid", 1);
