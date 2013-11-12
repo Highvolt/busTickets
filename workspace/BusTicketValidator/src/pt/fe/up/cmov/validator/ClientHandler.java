@@ -81,6 +81,20 @@ public class ClientHandler extends Thread {
 				Log.d("Validar keys", "Valido");
 				ticket.put("useTime", Long.toString(System.currentTimeMillis()));
 				ticket.put("BusId", Integer.toString(ValidatorData.INSTANCE.id));
+				
+				JSONObject req=new JSONObject();
+				req.accumulate("key", ValidatorData.INSTANCE.key);
+				req.accumulate("ticket", ticket);
+				RestClient r=new RestClient(RestClient.APIurl+"validateTicket", req).connect();
+				if(r.status!=200){
+					Log.d("Validar keys", "Invalido");
+					ticket.put("invalid", 1);
+					ticket.remove("useTime");
+					ticket.remove("BusId");
+					ticket.remove("validation");
+				}else{
+					ticket.accumulate("validation", ValidatorData.INSTANCE.signTicket(ticket));
+				}
 			}else{
 				Log.d("Validar keys", "Invalido");
 				ticket.put("invalid", 1);
@@ -91,7 +105,7 @@ public class ClientHandler extends Thread {
 			Log.d("Client Handler","Readed " + received);
 			/*JSONObject jobj=new JSONObject();
 			jobj.accumulate("text","coisas lindas");*/
-			ticket.accumulate("validation", ValidatorData.INSTANCE.signTicket(ticket));
+			
 			bo.writeObject(ticket.toString());
 			bo.flush();
 		} catch (IOException e) {

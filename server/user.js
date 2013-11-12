@@ -86,6 +86,7 @@ User.verifyKey=function(req,res,next){
 
 
 User.validKeyBus=function(req,res,next){
+    console.log("key BUS:"+req.body.key);
     db.get("Select id,devID from BUS where token=?;",req.body.key,function(err,row){
         if(err){
             res.status(500).send(JSON.stringify(err));
