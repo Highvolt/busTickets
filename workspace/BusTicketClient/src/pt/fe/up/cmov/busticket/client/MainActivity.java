@@ -56,6 +56,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private TicketView t1=null;
 	private TicketView t2=null;
 	private TicketView t3=null;
+	private MainBtn updateBtn=null;
 	private ProgressDialog dialog=null;
 	private JSONObject ticket=null;
 	
@@ -194,7 +195,58 @@ public class MainActivity extends Activity implements OnClickListener{
 		
 		
 	};
+
+
+	private IntentFilter netRec;
+
+
+	private BroadcastReceiver netR=new BroadcastReceiver() {
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			int status=intent.getIntExtra("net",-1);
+			if(status<=0){
+				MainActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						updateBtn.disable();
+						
+					}
+				});
+			}else{
+				MainActivity.this.runOnUiThread(new Runnable() {
+					
+					@Override
+					public void run() {
+						updateBtn.enable();
+						
+					}
+				});
+				
+			}
+			
+		}
+	};
 	
+	DatabaseHandler db=null;
+	ProgressDialog dialog2=null;
+	
+	void updateTicketCount(){
+		final int[] ticketCount = db.getNotValidatedTicketsCount();
+		runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				t1.setQuantity(Integer.toString(ticketCount[0]));
+				t2.setQuantity(Integer.toString(ticketCount[1]));
+				t3.setQuantity(Integer.toString(ticketCount[2]));
+			}
+		});
+		
+		
+	}
 	
 	
 	@Override
@@ -204,13 +256,14 @@ public class MainActivity extends Activity implements OnClickListener{
 		t1=(TicketView) findViewById(R.id.ticketView1);
 		t2=(TicketView) findViewById(R.id.ticketView2);
 		t3=(TicketView) findViewById(R.id.ticketView3);
+		updateBtn=(MainBtn) findViewById(R.id.mainUpdateTickets);
 		t1.setDetails("0:15");
 		t1.setTitle("T1");
 		t2.setDetails("0:30");
 		t2.setTitle("T2");
 		t3.setDetails("1:00");
 		t3.setTitle("T3");
-		DatabaseHandler db = new DatabaseHandler(this);
+		db = new DatabaseHandler(this);
 		int[] ticketCount = db.getNotValidatedTicketsCount();
 		t1.setQuantity(Integer.toString(ticketCount[0]));
 		t2.setQuantity(Integer.toString(ticketCount[1]));
@@ -218,7 +271,58 @@ public class MainActivity extends Activity implements OnClickListener{
 		t1.setOnClickListener(this);
 		t2.setOnClickListener(this);
 		t3.setOnClickListener(this);
-		Button button = (Button) findViewById(R.id.button1);
+		if(!DatabaseHandler.checkWifiConnection(getApplicationContext())){
+			updateBtn.disable();
+		}
+		updateBtn.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(final View v) {
+				
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						MainBtn m=(MainBtn) v;
+						if(!m.enable){
+							return;
+						}
+						runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								if(dialog2==null){
+									if(MainActivity.this==null){
+										Log.d("Lodo", "Main activity fail");
+									}else{
+										dialog2=new ProgressDialog(MainActivity.this);
+										dialog2.setCancelable(false);
+										dialog2.setMessage("A contactar o servidor");
+										dialog2.show();
+									}
+								}
+								
+							}
+						});
+						db.updateDataTicketsFromServer(getApplicationContext());
+						updateTicketCount();
+						runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								if(dialog2!=null){
+									dialog2.cancel();
+									dialog2=null;
+								}
+								
+							}
+						});
+					}
+				}).start();
+				
+			}
+		});
+		/*Button button = (Button) findViewById(R.id.button1);
 		button.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -236,7 +340,10 @@ public class MainActivity extends Activity implements OnClickListener{
 				startActivityForResult(a, 2);
 			}
 		});
+		*/
 		
+		netRec=new IntentFilter(NetworkChangeReceiver.action);
+		registerReceiver(netR, netRec);
 		
 	}
 	
@@ -398,6 +505,7 @@ public class MainActivity extends Activity implements OnClickListener{
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
+							updateTicketCount();
 							if(dialog!=null){
 								runOnUiThread(new Runnable() {
 									
@@ -409,6 +517,7 @@ public class MainActivity extends Activity implements OnClickListener{
 									}
 								});
 							}
+							
 						
 					}
 					

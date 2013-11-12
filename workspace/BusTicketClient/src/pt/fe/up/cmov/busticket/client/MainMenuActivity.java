@@ -42,9 +42,9 @@ public class MainMenuActivity extends Activity {
 		}
 		
 		
-		Button buyTickets = (Button) findViewById(R.id.Button01);
-		Button validateTicket = (Button) findViewById(R.id.Button04);
-		Button inspectTicket = (Button) findViewById(R.id.Button05);
+		MainBtn buyTickets = (MainBtn) findViewById(R.id.Button01);
+		MainBtn validateTicket = (MainBtn) findViewById(R.id.Button04);
+		MainBtn inspectTicket = (MainBtn) findViewById(R.id.Button05);
 		
 		buyTickets.setOnClickListener(new OnClickListener() {
 			

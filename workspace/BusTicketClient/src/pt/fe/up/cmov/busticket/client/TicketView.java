@@ -12,17 +12,20 @@ public class TicketView extends LinearLayout {
 	private TextView details=null;
 	private TextView title=null;
 	private TextView quantity=null;
-	
-	
+
 	public TicketView(Context context, AttributeSet attrs) {
         super(context, attrs);
  
         LayoutInflater layoutInflater = (LayoutInflater)context
                   .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v=layoutInflater.inflate(R.layout.ticket_btn, this);
+        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ticket_btn);
         details=(TextView)v.findViewById(R.id.ticketTime);
+        details.setText(a.getText(R.styleable.ticket_btn_time));
         quantity=(TextView)v.findViewById(R.id.ticketQuantity);
         title=(TextView)v.findViewById(R.id.ticketType);
+        title.setText(a.getText(R.styleable.ticket_btn_type));
+        a.recycle();
 	}
 	
 	public void setDetails(String a){

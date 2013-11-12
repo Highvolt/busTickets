@@ -72,7 +72,7 @@
         </activity>
         <activity
             android:name="pt.fe.up.cmov.busticket.client.MainMenuActivity"
-            android:label="@string/title_activity_main" >
+            android:label="@string/Appname2" >
             
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -107,7 +107,14 @@
             android:name="pt.fe.up.cmov.busticket.client.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
-        
+        <receiver
+            android:name="pt.fe.up.cmov.busticket.client.NetworkChangeReceiver"
+            android:label="NetworkChangeReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
         
     </application>
 

@@ -130,7 +130,7 @@ Ticket.getAllValitedTicketsForBus=function(req,res){
         (new Date()).setHours(0).setMinutes(0).setSeconds(0).getMilliseconds(0).getTime(),
         function(err,data){
             if(err){
-                res.send(JSON.stringify(err));
+                res.status(500).send(JSON.stringify(err));
             }else{
                 res.send(JSON.stringify(data));
             }

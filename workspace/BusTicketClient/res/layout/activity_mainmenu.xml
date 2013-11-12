@@ -1,16 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ticket="http://schemas.android.com/apk/res-auto"
     android:id="@+id/sdfsdfsadfasd"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal"
-    android:background="@color/white1" >
+    android:background="#2b2b2b"
+    android:orientation="horizontal" >
 
     <LinearLayout
         android:id="@+id/mainmenuLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@color/white1"
+        android:background="#2b2b2b"
         android:orientation="vertical" >
 
         <LinearLayout
@@ -24,70 +25,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                
                 android:text="@string/title"
-                android:textColor="@color/dark"
-                android:textStyle="bold"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dip"
-            android:layout_marginRight="25dip"
-            android:layout_marginTop="20dip"
-            android:orientation="horizontal"
-            android:weightSum="1.0" >
-
-            <Button
-                android:id="@+id/Button01"
-                android:layout_width="0dip"
-                android:layout_height="125dip"
-                android:layout_weight="1"
-                android:background="@drawable/main_menu_buttons"
-                android:text="@string/buy_tickets_main"
+                android:textColor="@color/white1"
+                android:textSize="18sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:id="@+id/asdasdas"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="25dip"
-            android:layout_marginRight="25dip"
-            android:layout_marginTop="5dip"
-            android:orientation="horizontal"
-            android:weightSum="1.0" >
-		 <Button
-                android:id="@+id/Button04"
-                android:layout_width="match_parent"
-                android:layout_height="125dip"
-                android:layout_weight="1.0"
-                android:background="@drawable/main_menu_buttons"
-                android:text="@string/validate_ticket_main"
-                android:textStyle="bold" />
-            
-        </LinearLayout>
+            android:orientation="vertical" >
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dip"
-            android:layout_marginRight="25dip"
-            android:layout_marginTop="5dip"
-            android:orientation="horizontal"
-            android:weightSum="1.0" >
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dip"
+                android:layout_marginRight="25dip"
+                android:layout_marginTop="20dip"
+                android:orientation="horizontal"
+                android:weightSum="1.0" >
 
-           
+                <pt.fe.up.cmov.busticket.client.MainBtn
+                    android:id="@+id/Button01"
+                    android:layout_width="0dip"
+                    android:layout_height="125dip"
+                    android:layout_weight="1"
+                    android:background="@drawable/main_menu_buttons_top"
+                    android:textStyle="bold"
+                    ticket:img="@drawable/credit7"
+                    ticket:title="@string/buy_tickets_main" />
+            </LinearLayout>
 
-            <Button
-                android:id="@+id/Button05"
-                android:layout_width="match_parent"
-                android:layout_height="125dip"
-                android:layout_weight="1.0"
-                android:background="@drawable/main_menu_buttons"
-                android:text="@string/inspect_ticket_main"
-                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dip"
+                android:layout_marginRight="25dip"
+                android:orientation="horizontal"
+                android:weightSum="1.0" >
+
+                <pt.fe.up.cmov.busticket.client.MainBtn
+                    android:id="@+id/Button04"
+                    android:layout_width="match_parent"
+                    android:layout_height="125dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/main_menu_buttons_middle"
+                    android:textStyle="bold"
+                    ticket:img="@drawable/open23"
+                    ticket:title="@string/validate_ticket_main" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dip"
+                android:layout_marginRight="25dip"
+                android:orientation="horizontal"
+                android:weightSum="1.0" >
+
+                <pt.fe.up.cmov.busticket.client.MainBtn
+                    android:id="@+id/Button05"
+                    android:layout_width="match_parent"
+                    android:layout_height="125dip"
+                    android:layout_weight="1.0"
+                    android:background="@drawable/main_menu_buttons_bottom"
+                    android:textStyle="bold"
+                    ticket:img="@drawable/entry1"
+                    ticket:title="@string/inspect_ticket_main" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

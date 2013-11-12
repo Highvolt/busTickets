@@ -59,10 +59,10 @@
     <string name="register_cc_cvc">Card Security Code: </string>
     <string name="register_ccdate">CC Expiration Date:</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title">Smartbuy</string>
+    <string name="title">AndaLine</string>
     <string name="view_active_main">Active Ticket</string>
     <string name="buy_tickets_main">Comprar Bilhetes</string>
-    <string name="validate_ticket_main">Ver/Validar Bilhete</string>
+    <string name="validate_ticket_main">Ver/Validar Bilhetes</string>
     <string name="inspect_ticket_main">Bilhete Atual</string>
     <string name="current_tickets_main">Ticket Wallet</string>
     <string name="title_activity_buy">BuyActivity</string>
@@ -81,8 +81,8 @@
     <string name="walletT2Type">T2:</string>
     <string name="walletT3Type">T3:</string>
 
-    <string name="buyTicketsTitle">Buy Tickets</string>
-    <string name="buyTicketsButton">Calculate Price</string>
+    <string name="buyTicketsTitle">Comprar Bilhetes</string>
+    <string name="buyTicketsButton">Calcular Preço</string>
 
     <string name="img_desc">Icon</string>
 
@@ -100,6 +100,6 @@
 
     <string name="inspect_title">Inspect Ticket</string>
     <string name="validateTitle">Validate Ticket</string>
-
+	<string name="Appname2">AndaLine</string>
 
 </resources>

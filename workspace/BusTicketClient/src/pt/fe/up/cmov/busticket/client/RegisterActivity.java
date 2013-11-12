@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import pt.fe.up.cmov.busticket.client.APIRequestTask.HttpRequestType;
 import pt.fe.up.cmov.busticket.client.APIRequestTask;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -83,25 +85,36 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
 	}
 	
 	 private void checkWifiConnection() {
-         // Enable WIFI.
-         WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-         if(wifi != null && !wifi.isWifiEnabled()) {
-                 AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                 alertDialog.setTitle("Exit");
-                 alertDialog.setMessage("You need network connection to create an account. " +
-                                 "Please enable a data connection and try again.");
+		 boolean internet=false;
+		 NetworkInfo info = (NetworkInfo) ((ConnectivityManager) getApplicationContext()
+				 .getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-                 // Ok button.
-                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
-                         @Override
-                         public void onClick(DialogInterface arg0, int arg1) {
-                                 Intent intent = new Intent();
-                         setResult(Activity.RESULT_CANCELED, intent);
-                         finish();
-                         }
-                 });
-                 alertDialog.show();
-         }
+		 if (info == null || !info.isConnected()) {
+		        internet = false;
+		    }else if (info.isRoaming()) {
+			        // here is the roaming option you can change it if you want to
+			        // disable internet while roaming, just return false
+			    	internet = false;
+			    }else{
+			    	internet =  true;
+			 }
+		    
+		    
+		    if(!internet){
+		    	AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Exit");
+                alertDialog.setMessage("You need network connection to login. " +
+                                "Please enable a data connection and try again.");
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface arg0, int arg1) {
+                                Intent intent = new Intent();
+                        setResult(Activity.RESULT_CANCELED, intent);
+                        finish();
+                        }
+                });
+                alertDialog.show();
+		    }
 	 }
 
 	@Override

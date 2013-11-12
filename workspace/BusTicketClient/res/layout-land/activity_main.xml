@@ -3,7 +3,8 @@
     xmlns:ticket="http://schemas.android.com/apk/res-auto"
     android:id="@+id/asdasdasdas"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/dark" >
 
     <LinearLayout
         android:id="@+id/dsfsdfsd"
@@ -11,7 +12,7 @@
         android:layout_height="459dp"
         android:orientation="vertical" >
 
-        <TextView
+        <!-- <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -37,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="24dp"
-            android:text="NoData" />
+            android:text="NoData" />-->
 
         <LinearLayout
             android:id="@+id/LinearLayout1"
@@ -87,6 +88,14 @@
                     ticket:time="0:30"
                     ticket:type="T2" >
                 </pt.fe.up.cmov.busticket.client.TicketView>
+                <pt.fe.up.cmov.busticket.client.MainBtn
+		            android:id="@+id/mainUpdateTickets"
+		            android:layout_width="match_parent"
+		            android:layout_height="120dp"
+		            android:background="@drawable/main_menu_buttons"
+		            ticket:title="Actualizar bilhetes"
+		            ticket:img="@drawable/refresh1">
+        </pt.fe.up.cmov.busticket.client.MainBtn>
             </LinearLayout>
         </LinearLayout>
 

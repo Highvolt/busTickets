@@ -3,21 +3,23 @@
     xmlns:ticket="http://schemas.android.com/apk/res-auto"
     android:id="@+id/asdasdasda"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="@color/dark" >
 
     <LinearLayout
         android:id="@+id/LinearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_gravity="center_vertical"
         android:clickable="false"
+        android:orientation="vertical"
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         tools:context=".MainActivity" >
 
-        <TextView
+        <!-- <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +45,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="24dp"
-            android:text="NoData" />
+            android:text="NoData" /> -->
+
+        
 
         <pt.fe.up.cmov.busticket.client.TicketView
             android:id="@+id/ticketView1"
@@ -58,17 +62,26 @@
             android:id="@+id/ticketView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            ticket:time="0:15"
-            ticket:type="T1" >
+            ticket:time="0:30"
+            ticket:type="T2" >
         </pt.fe.up.cmov.busticket.client.TicketView>
 
         <pt.fe.up.cmov.busticket.client.TicketView
             android:id="@+id/ticketView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            ticket:time="0:15"
-            ticket:type="T1" >
+            ticket:time="1:00"
+            ticket:type="T3" >
         </pt.fe.up.cmov.busticket.client.TicketView>
+        <pt.fe.up.cmov.busticket.client.MainBtn
+            android:id="@+id/mainUpdateTickets"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/main_menu_buttons"
+            ticket:title="Actualizar bilhetes"
+            ticket:img="@drawable/refresh1">
+        </pt.fe.up.cmov.busticket.client.MainBtn>
+        
     </LinearLayout>
 
 </ScrollView>

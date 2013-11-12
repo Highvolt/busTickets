@@ -48,7 +48,7 @@ public enum ValidatorData {
 			
 			sig.update(data.getBytes());
 			byte[] signature=sig.sign();
-			return new String(Base64.encode(signature,Base64.DEFAULT));
+			return new String(Base64.encode(signature,Base64.NO_WRAP));
 		} catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

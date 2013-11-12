@@ -6,35 +6,18 @@
                 <shape android:padding="10dp" android:shape="rectangle">
 
                     <!-- you can use any color you want I used here gray color -->
-                    <gradient android:startColor="#ff9300" 
-                        	android:centerColor="#C9872C"
-                        	android:endColor="#ff9300"
+                    <gradient android:startColor="#FFFFFF" 
+                        	android:centerColor="#BBBBBB"
+                        	android:endColor="#FFFFFF"
                         	android:angle="90"
-                        />
+                     />
 
                     <corners android:radius="5dp" />
 
                     <stroke android:width="1dp" android:color="#000000" />
                 </shape>
                 </item>
-                <item android:top="10dp" android:right="10dp" android:left="100dp" android:bottom="10dp">
-                <shape android:padding="5dp"  android:shape="rectangle">
-
-                    <!-- you can use any color you want I used here gray color -->
-                    <!-- <gradient android:color="#FFFFFF" /> -->
-					<gradient android:startColor="#EEEEEE" 
-                        	android:centerColor="#BBBBBB"
-                        	android:endColor="#EEEEEE"
-                        	android:angle="90"
-                     />
-                    <corners android:radius="15dp" />
-                    <size
-				        android:width="10dp"
-				        android:height="10dp" />
-
-                    <stroke android:width="1dp" android:color="#000000" />
-                </shape>
-                </item>
+                
                 
         </layer-list>
         
@@ -44,7 +27,7 @@
                 <shape android:padding="10dp" android:shape="rectangle">
 
                     <!-- you can use any color you want I used here gray color -->
-                    <solid android:color="#ff9300" 
+                    <solid android:color="#FFFFFF" 
                      />
 
                     <corners android:radius="5dp" />
@@ -52,20 +35,7 @@
                     <stroke android:width="1dp" android:color="#000000" />
                 </shape>
                 </item>
-                <item android:top="10dp" android:right="10dp" android:left="100dp" android:bottom="10dp">
-                <shape android:padding="5dp"  android:shape="rectangle">
-
-                    <!-- you can use any color you want I used here gray color -->
-                   <solid android:color="#FFFFFF"/>
-
-                    <corners android:radius="15dp" />
-                    <size
-				        android:width="10dp"
-				        android:height="10dp" />
-
-                    <stroke android:width="1dp" android:color="#000000" />
-                </shape>
-                </item>
+                
                 
         </layer-list></item>
 
