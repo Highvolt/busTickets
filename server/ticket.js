@@ -174,7 +174,7 @@ Ticket.validate=function(req,res,next){
         var descodified=verifySign.verify(pubKey,req.body.ticket.signature,'base64');
         if(descodified){
             var time=(new Date()).getTime();
-            if(req.ticket.useDate){
+            if(req.body.ticket.useDate){
                 time=req.ticket.useDate;
             }
             db.run("Update Ticket set useDate=?,useBus=? where userid=? and buyDate=? and type=? and useDate is NULL;",time,req.bus.id,req.body.ticket.user,req.body.ticket.time,req.body.ticket.type,function(err){
