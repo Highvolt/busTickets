@@ -61,12 +61,12 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 				String passwordField = password.getText().toString().trim();
 				
 				if(loginField.length() < 5){
-					Toast.makeText(getApplicationContext(), "Invalid login.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Nome de utilizador inválido.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
 				if(passwordField.length() < 5){
-					Toast.makeText(getApplicationContext(), "Invalid password.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Palavra-passe inválida.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
@@ -88,7 +88,7 @@ public class LoginActivity extends Activity implements RequestResultCallback {
             
             // Create and call HTTP request.
             APIRequestTask task = new APIRequestTask(this, HttpRequestType.Post, json,
-                            MainMenuActivity.SERVER_ADDRESS + LOGIN_URL, "Logging in.", REQCODE_LOGIN);
+                            MainMenuActivity.SERVER_ADDRESS + LOGIN_URL, "Autenticando o utilizador...", REQCODE_LOGIN);
             task.execute((Void[]) null);
 		} catch (Exception e) {}
 		
@@ -130,8 +130,8 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 		    if(!internet){
 		    	AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                 alertDialog.setTitle("Exit");
-                alertDialog.setMessage("You need network connection to login. " +
-                                "Please enable a data connection and try again.");
+                alertDialog.setMessage("Necessita de ligação à Internet para entrar na aplicação. " +
+                                "Por favor active uma ligação.");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
@@ -154,14 +154,14 @@ public class LoginActivity extends Activity implements RequestResultCallback {
     public void onBackPressed() {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Exit");
-            alertDialog.setMessage("This app needs an account to be used. Are you sure you want to leave?");
+            alertDialog.setMessage("É necessário criar uma conta na aplicação de modo a poder utilizá-la. Tem a certeza de que deseja sair?");
             
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new AlertDialog.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Não", new AlertDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {}
             });
 
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new AlertDialog.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Sim", new AlertDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
                             Intent intent = new Intent();
@@ -182,12 +182,12 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 				if(data.has("msg")){
 					String message = data.getString("msg");
                 	if(message.equals("Bad Auth information"))
-                		Toast.makeText(getApplicationContext(),"Invalid login.", Toast.LENGTH_SHORT).show();
+                		Toast.makeText(getApplicationContext(),"Login inválido!", Toast.LENGTH_SHORT).show();
                 	else
                 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 				}
 				else if(data.has("token")){
-					Toast.makeText(getApplicationContext(),"Login successful!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(),"Utilizador logado com sucesso.", Toast.LENGTH_SHORT).show();
 					Intent i = new Intent();
 					i.putExtra("hasAccountTemp", true);
                	    i.putExtra("authTokenTemp", data.getString("token"));
@@ -198,12 +198,12 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 			} catch (JSONException e) {
 				Log.e("Req_tag", "Error getting result.", e);
                 Toast.makeText(getApplicationContext(),
-                                "A problem was encountered. Pleasy try again later.", 
+                                "Foi encontrado um problema. Por favor tente mais tarde.", 
                                 Toast.LENGTH_SHORT).show();
 			}			
 		}else{
 			Log.e("Req_tag", "Request failed.");
-            Toast.makeText(getApplicationContext(),"A problem was encountered. Pleasy try again later.", 
+            Toast.makeText(getApplicationContext(),"Foi encontrado um problema. Por favor tente mais tarde.", 
                             Toast.LENGTH_SHORT).show();
 		}
 	}
@@ -211,10 +211,7 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Intent i = new Intent();
-        if(resultCode == Activity.RESULT_CANCELED) {
-        	setResult(Activity.RESULT_CANCELED, i);
-            finish();
-        } else {
+        if(resultCode == Activity.RESULT_OK) {
             String authToken = data.getStringExtra("authTokenTemp");
             boolean hasAccount = data.getBooleanExtra("hasAccountTemp", false);
             i.putExtra("hasAccountTemp", hasAccount);

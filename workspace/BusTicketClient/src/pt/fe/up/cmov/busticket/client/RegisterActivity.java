@@ -103,8 +103,8 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
 		    if(!internet){
 		    	AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                 alertDialog.setTitle("Exit");
-                alertDialog.setMessage("You need network connection to login. " +
-                                "Please enable a data connection and try again.");
+                alertDialog.setMessage("Necessita de ligação à Internet para entrar na aplicação. " +
+                                "Por favor active uma ligação.");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
@@ -151,34 +151,34 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
 				
 				String nameField = name.getText().toString().trim();
 				if(nameField.length() < 5){
-					Toast.makeText(getApplicationContext(), "Username is too short.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Nome de Utilizador demasiado curto.", Toast.LENGTH_SHORT).show();
 					return;
 				}else if(nameField.length() > 25){
-					Toast.makeText(getApplicationContext(), "Username is too long.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Nome de Utilizador demasiado longo.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
 				String passField = password.getText().toString().trim();
 				if(passField.length() < 5){
-					Toast.makeText(getApplicationContext(), "Password is too short.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Palavra-passe demasiado curta.", Toast.LENGTH_SHORT).show();
 					return;
 				}else if(passField.length() > 30){
-					Toast.makeText(getApplicationContext(), "Password is too long.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Palavra-passe demasiado longa.", Toast.LENGTH_SHORT).show();
 					return;
 				}else if(passField.contains(" ")){
-					Toast.makeText(getApplicationContext(), "Password can't contain spaces.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Palavra-passe não pode conter espaços.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
 				String ccnField = ccn.getText().toString().trim();
 				if(ccnField.length() != 16){
-					Toast.makeText(getApplicationContext(), "Credit card n� must be 16 digits long.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "O nº de cartão de crédito deve conter 16 dígitos.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
 				String cccodeField = cc_csc.getText().toString().trim();
 				if(cccodeField.length() != 3){
-					Toast.makeText(getApplicationContext(), "Security code must be 3 digits long.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "O código de segurança deve conter 3 dígitos.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
@@ -186,13 +186,13 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
 				Calendar c = Calendar.getInstance();
 				
 				if(ccdateField.isEmpty()){
-					Toast.makeText(getApplicationContext(), "Please enter card expiration date.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Introduza data de validade do cartão.", Toast.LENGTH_SHORT).show();
 					return;
 				}else if(pickerYear < c.get(Calendar.YEAR)){
-					Toast.makeText(getApplicationContext(), "Current card has already expired.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "O cartão actual encontra-se expirado.", Toast.LENGTH_SHORT).show();
 					return;
 				}else if(pickerYear == c.get(Calendar.YEAR) && pickerMonth < c.get(Calendar.MONTH)){
-					Toast.makeText(getApplicationContext(), "Current card has already expired.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "O cartão actual encontra-se expirado.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
@@ -243,47 +243,29 @@ public class RegisterActivity extends Activity implements RequestResultCallback 
                      } else if(data.has("msg")){
                     	 String message = data.getString("msg");
                     	 if(message.equals("Bad Auth information"))
-                    		 Toast.makeText(getApplicationContext(),"Username already taken or device already has an account created.", Toast.LENGTH_SHORT).show();
+                    		 Toast.makeText(getApplicationContext(),"Já existe uma conta associada ao nome de utilizador introduzido ou ao dispositivo utilizado.", Toast.LENGTH_SHORT).show();
                     	 else
                     		 Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
                      }
              } catch (Exception e) {
                      Log.e("Req_tag", "Error getting result.", e);
                      Toast.makeText(getApplicationContext(),
-                                     "A problem was encountered. Pleasy try again later.", 
+                                     "Foi encontrado um problema. Por favor tente mais tarde.", 
                                      Toast.LENGTH_SHORT).show();
              }
          } else {
                  Log.e("Req_tag", "Request failed.");
                  Toast.makeText(getApplicationContext(),
-                                 "A problem was encountered. Pleasy try again later.", 
+                                 "Foi encontrado um problema. Por favor tente mais tarde.", 
                                  Toast.LENGTH_SHORT).show();
          }
      }
 	 
 	 @Override
     public void onBackPressed() {
-        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-        alertDialog.setTitle("Exit");
-        alertDialog.setMessage("This app needs an account to be used. Are you sure you want to leave?");
-        
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "No", new AlertDialog.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {}
-        });
-
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Yes", new AlertDialog.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                        Intent intent = new Intent();
-                        
-                intent.putExtra("hasAccountTemp", false);
-                intent.putExtra("authTokenTemp", "");
-                setResult(Activity.RESULT_CANCELED, intent);
-                finish();
-                }
-        });
-        alertDialog.show();
+		Intent intent = new Intent();
+		setResult(Activity.RESULT_CANCELED, intent);
+		finish();
     }
 
 	@Override
