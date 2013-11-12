@@ -160,7 +160,7 @@ Ticket.createAndSign=function(user,type){
 Ticket.validate=function(req,res,next){
      console.log("validate ticket BUs:"+JSON.stringify(req.bus));
 
-    if(req.bus){
+    if(req.bus==null){
         res.status(401).send('');
         next();
         return;
