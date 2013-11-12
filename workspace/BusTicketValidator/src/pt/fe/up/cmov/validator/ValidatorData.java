@@ -1,15 +1,24 @@
 package pt.fe.up.cmov.validator;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.StreamCorruptedException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
@@ -18,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,6 +44,7 @@ public enum ValidatorData {
 	private String privKey="";
 	public int id=0;
 	protected String key;
+	private Certificate serverPub=null;
 	
 	public String signTicket(JSONObject obj){
 		
@@ -70,6 +81,51 @@ public enum ValidatorData {
 		
 	}
 	
+	public boolean validateTicket(JSONObject obj){
+		try {
+			String data=""+obj.getString("user")+'-'+obj.getString("type")+'-'+obj.getString("time");
+			Signature sig = Signature.getInstance("SHA256WithRSA");
+			sig.initVerify(this.serverPub);
+			sig.update(data.getBytes());
+			return sig.verify(Base64.decode(obj.getString("signature").getBytes(), Base64.NO_WRAP));
+		
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SignatureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return false;
+	}
+	
+	public void loadServerPub(Context c){
+		
+		try {
+			 CertificateFactory a= CertificateFactory.getInstance("X.509");
+			 serverPub=a.generateCertificate(c.getAssets().open("publickey.cer"));
+			
+		} catch (StreamCorruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (CertificateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	private ValidatorData(){
 		db=new ValidatorDatabaseHelper(App.getAppContext());
 		long existsKey=db.getReadableDatabase().compileStatement("Select count(*) from keys where creationDate=date('now');").simpleQueryForLong();
@@ -85,6 +141,8 @@ public enum ValidatorData {
 		}
 		
 	}
+	
+	
 	
 	private void genKeys() {
 		try {

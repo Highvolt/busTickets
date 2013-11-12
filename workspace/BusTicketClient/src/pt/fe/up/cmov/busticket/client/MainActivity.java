@@ -66,16 +66,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	    	final String qr=intent.getStringExtra("pt.cmov.qrCode");
 	    	final int type=intent.getIntExtra("ticket",-1);
 	    	
-	    	MainActivity.this.runOnUiThread(new Runnable() {
-				
-				@Override
-				public void run() {
-					Log.d("MainActivity",qr+" to GUI.");
-					TextView t=(TextView) MainActivity.this.findViewById(R.id.textView2);
-					t.setText(qr);
-					
-				}
-			});
+	    	
 	    	try {
 				lastValue=new JSONObject(qr);
 			} catch (JSONException e) {

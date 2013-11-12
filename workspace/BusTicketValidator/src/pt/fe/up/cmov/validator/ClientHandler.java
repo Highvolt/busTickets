@@ -77,8 +77,17 @@ public class ClientHandler extends Thread {
 		try {
 			String received=(String) bi.readObject();
 			JSONObject ticket=new JSONObject(received);
-			ticket.put("useTime", Long.toString(System.currentTimeMillis()));
-			ticket.put("BusId", Integer.toString(ValidatorData.INSTANCE.id));
+			if(ValidatorData.INSTANCE.validateTicket(ticket)){
+				Log.d("Validar keys", "Valido");
+				ticket.put("useTime", Long.toString(System.currentTimeMillis()));
+				ticket.put("BusId", Integer.toString(ValidatorData.INSTANCE.id));
+			}else{
+				Log.d("Validar keys", "Invalido");
+				ticket.put("invalid", 1);
+				
+			}
+			
+			
 			Log.d("Client Handler","Readed " + received);
 			/*JSONObject jobj=new JSONObject();
 			jobj.accumulate("text","coisas lindas");*/

@@ -29,6 +29,7 @@ public class BusValidator extends Activity {
 		App.setAppContext(getApplicationContext());
 		RestClient.appContext=getApplicationContext();
 		ValidatorData db=ValidatorData.INSTANCE;
+		db.INSTANCE.loadServerPub(this);
 		setContentView(R.layout.activity_bus_validator);
 		Misc.INSTANCE.setDevID(Secure.getString(this.getApplicationContext().getContentResolver(),  Secure.ANDROID_ID));
 		
