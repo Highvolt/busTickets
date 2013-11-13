@@ -43,21 +43,21 @@
   <string name="app_name">PassengerApp</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_register">Register New Account</string>
-    <string name="login_username">Username: </string>
-    <string name="login_password">Password:</string>
-    <string name="login_register">Don\'t have an account? Register here</string>
-    <string name="login_user_hint">Your username</string>
-    <string name="login_pass_hint">Enter password</string>
+    <string name="title_activity_register">Criar nova conta</string>
+    <string name="login_username">Nome de Utilizador: </string>
+    <string name="login_password">Palavra-passe:</string>
+    <string name="login_register">Não possui conta? Registe-se aqui.</string>
+    <string name="login_user_hint">Inserir nome de utilizador...</string>
+    <string name="login_pass_hint">Introduza palavra-passe...</string>
     <string name="login_button">Login</string>
-    <string name="register_username">Username:</string>
-    <string name="register_pass">Password:</string>
-    <string name="register_username_hint">Enter desired username</string>
-    <string name="register_pass_hint">Choose a password</string>
-    <string name="register_account">Create an Account</string>
-    <string name="register_ccnumber">Credit Card Nº:</string>
-    <string name="register_cc_cvc">Card Security Code: </string>
-    <string name="register_ccdate">CC Expiration Date:</string>
+    <string name="register_username">Nome de Utilizador:</string>
+    <string name="register_pass">Palavra-passe:</string>
+    <string name="register_username_hint">Nome de utilizador pretendido</string>
+    <string name="register_pass_hint">Introduza palavra-passe</string>
+    <string name="register_account">Registar Conta</string>
+    <string name="register_ccnumber">Nº Cartão de Crédito:</string>
+    <string name="register_cc_cvc">Código de Segurança CC: </string>
+    <string name="register_ccdate">Data de Validade CC:</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title">AndaLine</string>
     <string name="view_active_main">Active Ticket</string>
@@ -72,8 +72,8 @@
     <string name="title_activity_validate_ticket">ValidateTicketActivity</string>
     <string name="title_activity_inspect_ticket">InspectTicketActivity</string>
 
-    <string name="options_menu_home">Home</string>
-    <string name="options_menu_settings">Settings</string>
+    <string name="options_menu_home">Menu Principal</string>
+    <string name="options_menu_settings">Definições</string>
 
     <string name="wallet_title">Ticket Wallet</string>
     <string name="wallet_available">Available Tickets</string>
@@ -94,9 +94,9 @@
     <string name="currentTicketType">Type:</string>
     <string name="currentTicketValidation">Validated:</string>
     <string name="currentTicketRemaining">Remaining: </string>
-    <string name="settingsTitle">Settings</string>
-    <string name="settings_password">New Password</string>
-    <string name="settings_password2">Confirm New Password</string>
+    <string name="settingsTitle">Definições</string>
+    <string name="settings_password">Nova Palavra-passe</string>
+    <string name="settings_password2">Confirmar Nova Palavra-passe</string>
 
     <string name="inspect_title">Inspect Ticket</string>
     <string name="validateTitle">Validate Ticket</string>
