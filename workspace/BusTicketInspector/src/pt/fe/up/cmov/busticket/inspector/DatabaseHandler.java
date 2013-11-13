@@ -395,8 +395,25 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 			JSONObject res=new JSONObject();
 			res.accumulate("signature", verifySignature(obj));
 			res.accumulate("localdb", verifyLocalDB(obj));
-			if(checkWifiConnection(appC)){
-				
+			SharedPreferences settings = appC.getSharedPreferences("user_details", Activity.MODE_PRIVATE);
+    		boolean hasAccount = settings.getBoolean("hasAccount", false);
+    		String authToken = settings.getString("authToken", "undefined");
+			if(checkWifiConnection(appC) && hasAccount){
+				JSONObject req=new 
+						JSONObject();
+				req.accumulate("key", authToken);
+				req.accumulate("ticket", obj);
+				RestClient rest=new RestClient(RestClient.APIurl+"verifyTicket", req).connect();
+				if(rest.status==200){
+					if(rest.getAsJSONObject().getInt("valid")==1){
+						res.accumulate("remotedb", true);
+					}else{
+						res.accumulate("remotedb", false);
+						res.accumulate("reason", rest.getAsJSONObject().getString("reason"));
+					}
+				}else{
+					res.accumulate("remotedb", false);
+				}
 			}
 			return res;
 		} catch (JSONException e) {

@@ -67,53 +67,62 @@ public class MainActivity extends Activity implements OnClickListener{
 	private ProgressDialog dialog=null;
 	private JSONObject ticket=null;
 	
-	private void qrProcess(Intent intent) {
-	    	String action = intent.getAction();
-	    	Log.d("MainActivity",intent.getStringExtra("pt.cmov.qrCode"));
-	    	final String qr=intent.getStringExtra("pt.cmov.qrCode");
-	    	final int type=intent.getIntExtra("ticket",-1);
-	    	
-	    	
-	    	try {
-				lastValue=new JSONObject(qr);
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				lastValue=null;
-			}
-	    	if(type==1){
-	    		ticket=new JSONObject();
-	    		SharedPreferences settings = getSharedPreferences("user_details", MODE_PRIVATE);
-	    		boolean hasAccount = settings.getBoolean("hasAccount", false);
-	    		String authToken = settings.getString("authToken", "undefined");
-	    		if(hasAccount){
-	    			try {
-						ticket.accumulate("conductor", authToken);
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-	    		}else{
-	    			finish();
-	    		}
-	    		//ticket=(new DatabaseHandler(this).getOldestTicket(type,this.getApplicationContext()));
-	    		if(lastValue.has("mac")){
-	    			initBluetooth();
-	    		}else{
-	    			runOnUiThread(new Runnable() {
-						
-						@Override
-						public void run() {
-							Toast.makeText(MainActivity.this, "Dados invalidos", Toast.LENGTH_SHORT).show();
-							
+	private void qrProcess(final Intent intent) {
+		new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				String action = intent.getAction();
+		    	Log.d("MainActivity",intent.getStringExtra("pt.cmov.qrCode"));
+		    	final String qr=intent.getStringExtra("pt.cmov.qrCode");
+		    	final int type=intent.getIntExtra("ticket",-1);
+		    	
+		    	
+		    	try {
+					lastValue=new JSONObject(qr);
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					lastValue=null;
+				}
+		    	if(type==1){
+		    		ticket=new JSONObject();
+		    		SharedPreferences settings = getSharedPreferences("user_details", Activity.MODE_PRIVATE);
+		    		boolean hasAccount = settings.getBoolean("hasAccount", false);
+		    		String authToken = settings.getString("authToken", "undefined");
+
+		    		if(hasAccount){
+		    			try {
+							ticket.accumulate("conductor", authToken);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
 						}
-					});
-	    		}
-	    	}else if(type==2){
-	    		//TODO process
-	    		Log.d("validacao","valido? "+(db.validateTicket(lastValue)?"ok":"fail"));
-	    	}
-	    
+		    		}else{
+		    			finish();
+		    		}
+		    		//ticket=(new DatabaseHandler(this).getOldestTicket(type,this.getApplicationContext()));
+		    		if(lastValue.has("mac")){
+		    			initBluetooth();
+		    		}else{
+		    			runOnUiThread(new Runnable() {
+							
+							@Override
+							public void run() {
+								Toast.makeText(MainActivity.this, "Dados invalidos", Toast.LENGTH_SHORT).show();
+								
+							}
+						});
+		    		}
+		    	}else if(type==2){
+		    		//TODO process
+		    		Log.d("validacao","valido? "+(db.validateTicket(lastValue,MainActivity.this).toString()));
+		    	}
+		    
+				
+			}
+		}).start();
+	    	
 	    	
 	}
 	
