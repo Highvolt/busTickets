@@ -1,5 +1,9 @@
 package pt.fe.up.cmov.validator;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
@@ -20,6 +24,8 @@ public class ValidatorDatabaseHelper extends SQLiteOpenHelper {
 					"userid integer not null," +
 					"devid varchar not null," +
 					"usedate datetime not null," +
+					"reserved varchar," +
+					"time datetime,"+
 					"Primary key (userid,usedate)" +
 					");";
     private static final String KEYS_TABLE_CREATE =
@@ -45,6 +51,25 @@ public class ValidatorDatabaseHelper extends SQLiteOpenHelper {
 			db.execSQL("Drop if exists keys;");
 			onCreate(db);
 		}
+	}
+	
+	public void markTicketAsDuplicate(JSONObject obj){
+		SQLiteDatabase db=this.getWritableDatabase();
+		ContentValues cs=new ContentValues();
+		try {
+			cs.put("type",obj.getString("type"));
+			cs.put("userid", obj.getString("user"));
+			cs.put("devid", obj.getString("device"));
+			cs.put("usedate", obj.getString("useDate"));
+			cs.put("time", obj.getString("time"));
+			cs.put("reserved",obj.getString("useDateFromServer"));
+			db.update("Ticket", cs, "userid=? and usedate=?", new String[]{obj.getString("user"),obj.getString("useDate")});
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 
 }

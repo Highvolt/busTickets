@@ -13,6 +13,7 @@ import java.security.Signature;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pt.fe.up.cmov.Misc;
 import pt.fe.up.cmov.RestClient;
 
 import android.bluetooth.BluetoothSocket;
@@ -81,18 +82,25 @@ public class ClientHandler extends Thread {
 				Log.d("Validar keys", "Valido");
 				ticket.put("useTime", Long.toString(System.currentTimeMillis()));
 				ticket.put("BusId", Integer.toString(ValidatorData.INSTANCE.id));
-				
-				JSONObject req=new JSONObject();
-				req.accumulate("key", ValidatorData.INSTANCE.key);
-				req.accumulate("ticket", ticket);
-				RestClient r=new RestClient(RestClient.APIurl+"validateTicket", req).connect();
-				if(r.status!=200){
-					Log.d("Validar keys", "Invalido");
-					ticket.put("invalid", 1);
-					ticket.remove("useTime");
-					ticket.remove("BusId");
-					ticket.remove("validation");
+				if(Misc.INSTANCE.checkWifiConnection(sv)){
+					JSONObject req=new JSONObject();
+					req.accumulate("key", ValidatorData.INSTANCE.key);
+					req.accumulate("ticket", ticket);
+					RestClient r=new RestClient(RestClient.APIurl+"validateTicket", req).connect();
+					if(r.status!=200){
+						Log.d("Validar keys", "Invalido");
+						ticket.put("invalid", 1);
+						ticket.remove("useTime");
+						ticket.remove("BusId");
+						ticket.remove("validation");
+					}else{
+						ticket.accumulate("validation", ValidatorData.INSTANCE.signTicket(ticket));
+					}
 				}else{
+					JSONObject req=new JSONObject();
+					req.accumulate("key", ValidatorData.INSTANCE.key);
+					req.accumulate("ticket", ticket);
+					ValidatorData.INSTANCE.waitting.add(req);
 					ticket.accumulate("validation", ValidatorData.INSTANCE.signTicket(ticket));
 				}
 			}else{

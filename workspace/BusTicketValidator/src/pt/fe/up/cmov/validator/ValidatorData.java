@@ -1,19 +1,13 @@
 package pt.fe.up.cmov.validator;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
 import java.io.StreamCorruptedException;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.security.cert.Certificate;
@@ -21,20 +15,23 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.content.res.AssetManager;
+
 import android.database.Cursor;
-import android.database.SQLException;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.os.Environment;
+
 import android.util.Base64;
-import android.util.Log;
+
 
 
 public enum ValidatorData {
@@ -45,6 +42,7 @@ public enum ValidatorData {
 	public int id=0;
 	protected String key;
 	private Certificate serverPub=null;
+	public Queue<JSONObject> waitting=new LinkedList<JSONObject>();;
 	
 	public String signTicket(JSONObject obj){
 		
