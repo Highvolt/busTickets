@@ -93,8 +93,14 @@ public class ClientHandler extends Thread {
 						ticket.remove("useTime");
 						ticket.remove("BusId");
 						ticket.remove("validation");
+						Intent intent=new Intent(MainActivity.bluetoothAccept);
+						intent.putExtra("valid", false );
+						sv.sendBroadcast(intent);
 					}else{
 						ticket.accumulate("validation", ValidatorData.INSTANCE.signTicket(ticket));
+						Intent intent=new Intent(MainActivity.bluetoothAccept);
+						intent.putExtra("valid", true );
+						sv.sendBroadcast(intent);
 					}
 				}else{
 					JSONObject req=new JSONObject();
@@ -102,10 +108,18 @@ public class ClientHandler extends Thread {
 					req.accumulate("ticket", ticket);
 					ValidatorData.INSTANCE.waitting.add(req);
 					ticket.accumulate("validation", ValidatorData.INSTANCE.signTicket(ticket));
+					Intent intent=new Intent(MainActivity.bluetoothAccept);
+					intent.putExtra("valid", true );
+					intent.putExtra("later", true );
+					sv.sendBroadcast(intent);
 				}
 			}else{
 				Log.d("Validar keys", "Invalido");
 				ticket.put("invalid", 1);
+				Intent intent=new Intent(MainActivity.bluetoothAccept);
+				intent.putExtra("valid", false );
+				intent.putExtra("fake", true);
+				sv.sendBroadcast(intent);
 				
 			}
 			

@@ -73,13 +73,19 @@ public class NetworkChangeReceiver extends BroadcastReceiver {
 								try {
 									JSONObject a=r.getAsJSONObject();
 									if(a.getString("reason").equals("fake")){
-										
+										//TODO handle fake
+									}else{
+										String b=""+a.getJSONObject("data").getString("useDate")+"|"+a.getJSONObject("data").getString("useBus");
+										obj.put("useDateFromServer", b);
 									}
 								} catch (JSONException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
 								}
 								
+							}else if(r.status==500 || r.status<=0){
+								ValidatorData.INSTANCE.waitting.add(obj);
+								return;
 							}
 						}
 					}

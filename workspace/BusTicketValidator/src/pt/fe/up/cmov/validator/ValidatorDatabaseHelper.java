@@ -57,11 +57,7 @@ public class ValidatorDatabaseHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db=this.getWritableDatabase();
 		ContentValues cs=new ContentValues();
 		try {
-			cs.put("type",obj.getString("type"));
-			cs.put("userid", obj.getString("user"));
-			cs.put("devid", obj.getString("device"));
-			cs.put("usedate", obj.getString("useDate"));
-			cs.put("time", obj.getString("time"));
+
 			cs.put("reserved",obj.getString("useDateFromServer"));
 			db.update("Ticket", cs, "userid=? and usedate=?", new String[]{obj.getString("user"),obj.getString("useDate")});
 		} catch (JSONException e) {
@@ -69,6 +65,23 @@ public class ValidatorDatabaseHelper extends SQLiteOpenHelper {
 			e.printStackTrace();
 		}
 		
+		
+	}
+	
+	public void insertTicket(JSONObject obj){
+		SQLiteDatabase db=this.getWritableDatabase();
+		ContentValues cs=new ContentValues();
+		try {
+			cs.put("type",obj.getString("type"));
+			cs.put("userid", obj.getString("user"));
+			cs.put("devid", obj.getString("device"));
+			cs.put("usedate", obj.getString("useDate"));
+			cs.put("time", obj.getString("time"));
+			db.insert("Ticket",null,cs);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

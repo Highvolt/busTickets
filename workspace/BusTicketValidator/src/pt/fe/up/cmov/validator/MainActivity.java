@@ -1,6 +1,8 @@
 package pt.fe.up.cmov.validator;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -25,6 +27,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -33,6 +36,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,7 +86,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			
 	        
 	}
-	
+	TextView info=null;
+	LinearLayout back=null;
+	Timer timeout=null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +97,8 @@ public class MainActivity extends Activity implements OnClickListener {
 		 WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
 	        Display display = manager.getDefaultDisplay();
 	        image = (ImageView) findViewById(R.id.imageView1);     
+	        info=(TextView) findViewById(R.id.idAutocarro);
+	        back=(LinearLayout) findViewById(R.id.containerValidator);
 	   int width = display.getWidth();
 	   int height = display.getHeight();
 	   smallerDimension = width < height ? width : height;
@@ -104,6 +112,9 @@ public class MainActivity extends Activity implements OnClickListener {
 			public void onReceive(Context context, Intent intent) {
 				final int status=intent.getIntExtra("status", -1);
 				String tmp=intent.getStringExtra("msg");
+				final boolean valid=intent.getBooleanExtra("valid", false);
+				final boolean fake=intent.getBooleanExtra("fake", false);
+				final boolean later=intent.getBooleanExtra("later", false);
 				final String msg;
 				if(tmp!=null){
 					msg=tmp; 
@@ -114,9 +125,14 @@ public class MainActivity extends Activity implements OnClickListener {
 					
 					@Override
 					public void run() {
+						
+							
+							
+						
 						if(msg!="")
 							Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-						if(status>=0){
+						else
+							{if(status>=0){
 							TextView statusT=(TextView)MainActivity.this.findViewById(R.id.bluetoothServer);
 							switch (status) {
 							case 0:
@@ -129,8 +145,38 @@ public class MainActivity extends Activity implements OnClickListener {
 							default:
 								break;
 							}
+						}else{
+							if(valid && later==false){
+								back.setBackgroundColor(Color.GREEN);
+							}else if( later){
+								back.setBackgroundColor(Color.rgb(27, 127, 0));
+							}else if(!valid && !fake){
+								back.setBackgroundColor(Color.rgb(127, 27, 0));
+							}else if(fake){
+								back.setBackgroundColor(Color.rgb(255, 0, 0));
+							}
+							if(MainActivity.this.timeout!=null){
+								MainActivity.this.timeout.cancel();
+							}
+								timeout=new Timer();
+								timeout.schedule(new TimerTask() {
+									
+									@Override
+									public void run() {
+										runOnUiThread(new Runnable() {
+											
+											@Override
+											public void run() {
+												back.setBackgroundColor(Color.BLACK);
+												
+											}
+										});
+										
+									}
+								}, 2500);
 						}
 					}
+						}
 				});
 				
 			}
