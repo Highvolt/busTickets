@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/quantity2"
+    android:orientation="horizontal" >
+ 
+   <Button
+       android:id="@+id/btn_minus"
+       android:layout_width="42dp"
+       android:layout_height="49dp"
+       android:layout_marginLeft="0dp"
+       android:layout_marginRight="0dp"
+       android:paddingLeft="0dp"
+       android:paddingRight="0dp"
+       
+       android:layout_marginBottom="1dp"
+       android:background="@drawable/minusbtn"
+       android:text="@string/horizontal_picker_minus" />
+
+   <EditText
+       android:id="@+id/edit_text_picker"
+       android:layout_width="42dp"
+       android:layout_height="48dp"
+       android:layout_marginLeft="0dp"
+       android:layout_marginRight="0dp"
+       android:paddingLeft="0dp"
+       android:paddingRight="0dp"
+       android:ems="10"
+       android:focusable="false"
+       android:gravity="center"
+       android:inputType="number"
+       android:layout_marginTop="1dp"
+        android:layout_marginBottom="1dp"
+       android:background="@drawable/quantity"
+       
+       android:text="@string/horizontal_picker_value" >
+
+       <requestFocus />
+   </EditText>
+
+   <Button
+       android:id="@+id/btn_plus"
+       android:layout_width="42dp"
+       android:layout_height="49dp"
+       android:layout_marginLeft="0dp"
+       android:layout_marginRight="0dp"
+       android:paddingLeft="0dp"
+       android:paddingRight="0dp"
+       
+       android:layout_marginBottom="1dp"
+       android:background="@drawable/plusbtn"
+       android:text="@string/horizontal_picker_plus" />
+
+</LinearLayout>

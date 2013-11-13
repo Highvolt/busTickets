@@ -20,7 +20,7 @@ public class ValidatorDatabaseHelper extends SQLiteOpenHelper {
 		// TODO Auto-generated constructor stub
 	}
 
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
    
     private static final String TICKET_TABLE_CREATE =
     		"Create Table Ticket (" +
@@ -50,11 +50,9 @@ public class ValidatorDatabaseHelper extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
-		if(oldVersion!=newVersion){
-			db.execSQL("Drop if exists ticket;");
-			db.execSQL("Drop if exists keys;");
-			onCreate(db);
-		}
+		db.execSQL("Drop table if exists ticket;");
+		db.execSQL("Drop table if exists keys;");
+		onCreate(db);
 	}
 	
 	public void markTicketAsDuplicate(JSONObject obj){

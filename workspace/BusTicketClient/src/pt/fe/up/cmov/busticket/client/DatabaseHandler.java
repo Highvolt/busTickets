@@ -315,7 +315,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		String query="Insert into "+TABLE_VALIDATIONS+"("+KEY_TIME+","+KEY_VALIDATION_TIME+","+KEY_BUSID+","+KEY_BUS_SIGNATURE+") values (?,?,?,?)";
 		SQLiteDatabase db= this.getWritableDatabase();
 		try {
-			db.execSQL(query, (new String[]{obj.getString("time"),obj.getString("useTime"),obj.getString("BusId"),obj.getString("validation")}));
+			db.execSQL(query, (new String[]{obj.getString("time"),obj.getString("useDate"),obj.getString("BusId"),obj.getString("validation")}));
 			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block

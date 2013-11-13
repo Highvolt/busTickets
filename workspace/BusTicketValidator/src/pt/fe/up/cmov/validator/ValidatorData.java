@@ -53,7 +53,7 @@ public enum ValidatorData {
 			 PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(clear);
 			sig.initSign(fact.generatePrivate(keySpec));
 			Arrays.fill(clear, (byte) 0);
-			String data=obj.getString("time")+"-"+obj.getString("device")+"-"+obj.getString("useTime")+"-"+obj.getString("type")+"-"+obj.getString("BusId");
+			String data=obj.getString("time")+"-"+obj.getString("device")+"-"+obj.getString("useDate")+"-"+obj.getString("type")+"-"+obj.getString("BusId");
 			
 			sig.update(data.getBytes());
 			byte[] signature=sig.sign();

@@ -1,0 +1,92 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ticket="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sdfsdfsadfasd"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:background="@color/dark" >
+
+    <LinearLayout
+        android:id="@+id/mainmenuLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@color/dark"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                
+                android:text="@string/title"
+                android:textColor="@color/white1"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:layout_marginTop="20dip"
+            android:orientation="horizontal"
+            android:weightSum="1.0" >
+
+            <pt.fe.up.cmov.busticket.inspector.MainBtn
+                android:id="@+id/Button01"
+                android:layout_width="0dip"
+                android:layout_height="100dip"
+                android:layout_weight="1"
+                android:background="@drawable/main_menu_buttons"
+                ticket:title="@string/buy_tickets_main"
+                ticket:img="@drawable/credit7"
+                android:textStyle="bold" />
+
+            
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="25dip"
+            android:layout_marginRight="25dip"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal"
+            android:weightSum="1.0" >
+
+            <pt.fe.up.cmov.busticket.inspector.MainBtn
+                android:id="@+id/Button04"
+                android:layout_width="match_parent"
+                android:layout_height="100dip"
+                android:layout_weight="0.5"
+                android:background="@drawable/main_menu_buttons"
+                ticket:title="@string/validate_ticket_main"
+                ticket:img="@drawable/open23"
+                android:layout_marginRight="1dp"
+                android:textStyle="bold" />
+
+            <pt.fe.up.cmov.busticket.inspector.MainBtn
+                android:id="@+id/Button05"
+                android:layout_width="match_parent"
+                android:layout_height="100dip"
+                android:layout_weight="0.5"
+                android:background="@drawable/main_menu_buttons"
+                ticket:title="@string/inspect_ticket_main"
+                ticket:img="@drawable/entry1"
+                android:layout_marginLeft="1dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

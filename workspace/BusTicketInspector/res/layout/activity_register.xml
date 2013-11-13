@@ -1,0 +1,93 @@
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:background="@color/white1"
+  android:fillViewport="true">
+        <LinearLayout
+          android:orientation="vertical"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="10dip">
+          <!-- Full Name Label -->
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_username"/>
+          <EditText android:id="@+id/reg_username"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dip"
+                android:singleLine="true"
+                android:inputType="textVisiblePassword|textNoSuggestions"
+                android:hint="@string/register_username_hint"
+                android:layout_marginBottom="15dip"/>
+         
+          
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_pass"/>
+          <EditText android:id="@+id/reg_password"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/register_pass_hint"
+                android:singleLine="true"
+                android:layout_marginTop="5dip"
+                android:layout_marginBottom="15dip"/>
+          
+          
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_ccnumber"/>
+          <EditText android:id="@+id/reg_ccn"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textNoSuggestions"
+                android:singleLine="true"
+                android:layout_marginTop="5dip"
+                android:layout_marginBottom="15dip"/>
+          
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_ccdate"/>
+          
+           <EditText
+                android:id="@+id/reg_ccdate"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="date"
+                android:layout_marginTop="5dip"
+                android:focusable="false"
+                android:layout_marginBottom="15dip" />
+          
+          <TextView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#372c24"
+                android:text="@string/register_cc_cvc"/>
+          <EditText
+              android:id="@+id/reg_cc_cvc"
+              android:layout_width="60dp"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="5dip"
+              android:inputType="textNoSuggestions"
+              android:maxLength="3"
+              android:singleLine="true" />
+          
+          <!-- Register Button -->
+          <Button android:id="@+id/btnRegister"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dip"
+                android:text="@string/register_account"
+                android:background="@layout/custom_button"
+                android:textColor="@color/white1"
+                android:textSize="18sp"/>
+          <!-- Link to Login Screen -->
+          
+ 
+        </LinearLayout>
+</ScrollView>

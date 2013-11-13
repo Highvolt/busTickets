@@ -149,7 +149,7 @@ public class ClientHandler extends Thread {
 			Log.d("Client Handler","Readed " + received);
 			/*JSONObject jobj=new JSONObject();
 			jobj.accumulate("text","coisas lindas");*/
-			
+			Log.d("Client Handler","Enviado " + ticket.toString());
 			bo.writeObject(ticket.toString());
 			bo.flush();
 			}

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+  <string name="capture_name">QR Code Capture</string>
+  <string name="encoder_name">QR Code Encoder</string>
+  <string name="decoder_name">QR Code Decoder</string>
+
+  <string name="contents_contact">Contact info</string>
+  <string name="contents_email">Email address</string>
+  <string name="contents_location">Geographic coordinates</string>
+  <string name="contents_phone">Phone number</string>
+  <string name="contents_sms">SMS address</string>
+  <string name="contents_text">Plain text</string>
+
+  <string name="msg_default_contents">Contents</string>
+  <string name="msg_default_format">Format</string>
+  <string name="msg_default_meta">Metadata</string>
+  <string name="msg_default_mms_subject">Hi</string>
+  <string name="msg_default_status">Apontar o quadrado para o validador.</string>
+  <string name="msg_default_time">Time</string>
+  <string name="msg_default_type">Type</string>
+
+  <string name="result_address_book">Found contact info</string>
+  <string name="result_calendar">Found calendar event</string>
+  <string name="result_email_address">Found email address</string>
+  <string name="result_geo">Found geographic coordinates</string>
+  <string name="result_isbn">Found book</string>
+  <string name="result_product">Found product</string>
+  <string name="result_sms">Found SMS address</string>
+  <string name="result_tel">Found phone number</string>
+  <string name="result_text">Found plain text</string>
+  <string name="result_uri">Found URL</string>
+  <string name="result_wifi">Found WLAN Configuration</string>
+
+  <string name="wifi_changing_network">Changing Network</string>
+  <string name="wifi_ssid_label">Network Name</string>
+  <string name="wifi_type_label">Type</string>
+
+  <string name="barcode_image">Barcode Image</string>
+
+  <string name="capture">Capture</string>
+  <string name="app_name">PassengerApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_register">Criar nova conta</string>
+    <string name="login_username">Nome de Utilizador: </string>
+    <string name="login_password">Palavra-passe:</string>
+    <string name="login_register">Não possui conta? Registe-se aqui.</string>
+    <string name="login_user_hint">Inserir nome de utilizador...</string>
+    <string name="login_pass_hint">Introduza palavra-passe...</string>
+    <string name="login_button">Login</string>
+    <string name="register_username">Nome de Utilizador:</string>
+    <string name="register_pass">Palavra-passe:</string>
+    <string name="register_username_hint">Nome de utilizador pretendido</string>
+    <string name="register_pass_hint">Introduza palavra-passe</string>
+    <string name="register_account">Registar Conta</string>
+    <string name="register_ccnumber">Nº Cartão de Crédito:</string>
+    <string name="register_cc_cvc">Código de Segurança CC: </string>
+    <string name="register_ccdate">Data de Validade CC:</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title">AndaLine</string>
+    <string name="view_active_main">Active Ticket</string>
+    <string name="buy_tickets_main">Comprar Bilhetes</string>
+    <string name="validate_ticket_main">Ver/Validar Bilhetes</string>
+    <string name="inspect_ticket_main">Bilhete Atual</string>
+    <string name="current_tickets_main">Ticket Wallet</string>
+    <string name="title_activity_buy">BuyActivity</string>
+    <string name="title_activity_wallet">WalletActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_current_ticket">CurrentTicketActivity</string>
+    <string name="title_activity_validate_ticket">ValidateTicketActivity</string>
+    <string name="title_activity_inspect_ticket">InspectTicketActivity</string>
+
+    <string name="options_menu_home">Menu Principal</string>
+    <string name="options_menu_settings">Definições</string>
+
+    <string name="wallet_title">Ticket Wallet</string>
+    <string name="wallet_available">Available Tickets</string>
+    <string name="walletT1Type">T1:</string>
+    <string name="walletT2Type">T2:</string>
+    <string name="walletT3Type">T3:</string>
+
+    <string name="buyTicketsTitle">Comprar Bilhetes</string>
+    <string name="buyTicketsButton">Calcular Preço</string>
+
+    <string name="img_desc">Icon</string>
+
+    <string name="horizontal_picker_plus">+</string>
+    <string name="horizontal_picker_minus">-</string>
+    <string name="horizontal_picker_value">0</string>
+
+    <string name="currentTicketTitle">Active Ticket</string>
+    <string name="currentTicketType">Type:</string>
+    <string name="currentTicketValidation">Validated:</string>
+    <string name="currentTicketRemaining">Remaining: </string>
+    <string name="settingsTitle">Definições</string>
+    <string name="settings_password">Nova Palavra-passe</string>
+    <string name="settings_password2">Confirmar Nova Palavra-passe</string>
+
+    <string name="inspect_title">Inspect Ticket</string>
+    <string name="validateTitle">Validate Ticket</string>
+	<string name="Appname2">AndaLine</string>
+
+</resources>
