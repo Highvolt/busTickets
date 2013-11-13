@@ -182,7 +182,19 @@ Ticket.validate=function(req,res,next){
                     res.status(500).send(JSON.stringify(err));
                 }else{
                     if(this.changes==0){
-                        res.status(400).send(JSON.stringify({'valid':0,'reason':'Not found or used'}));
+                        db.get("Select useDate,useBus from Ticket where userid=? and buyDate=? and type=?;",req.body.ticket.user,req.body.ticket.time,req.body.ticket.type,function(err,data){
+                            if(err){
+                                res.status(500).send(JSON.stringify(err));
+                            }else{
+                                if(data){
+                                    res.status(400).send(JSON.stringify({'valid':0,'reason':'used','data':JSON.stringify(data)}));
+
+                                }else{
+                                    res.status(404).send(JSON.stringify({'valid':0,'reason':'Not found'}));
+
+                                }
+                            }
+                        });
                     }else{
                         req.body.ticket.useDate=time;
                         res.send(JSON.stringify(req.body.ticket));
