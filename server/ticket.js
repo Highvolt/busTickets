@@ -174,17 +174,22 @@ Ticket.validate=function(req,res,next){
         var descodified=verifySign.verify(pubKey,req.body.ticket.signature,'base64');
         if(descodified){
             var time=(new Date()).getTime();
-            if(req.body.ticket.useDate){
-                time=req.ticket.useDate;
+            if(req.body.ticket.useDate!=null){
+                time=req.body.ticket.useDate;
             }
+            console.log("values: "+time);
             db.run("Update Ticket set useDate=?,useBus=? where userid=? and buyDate=? and type=? and useDate is NULL;",time,req.bus.id,req.body.ticket.user,req.body.ticket.time,req.body.ticket.type,function(err){
                 if(err){
+                    console.log("erro update");
+
                     res.status(500).send(JSON.stringify(err));
                 }else{
                     if(this.changes==0){
                         db.get("Select useDate,useBus from Ticket where userid=? and buyDate=? and type=?;",req.body.ticket.user,req.body.ticket.time,req.body.ticket.type,function(err,data){
                             if(err){
                                 res.status(500).send(JSON.stringify(err));
+                                console.log("erro select");
+
                             }else{
                                 if(data){
                                     res.status(400).send(JSON.stringify({'valid':0,'reason':'used','data':JSON.stringify(data)}));

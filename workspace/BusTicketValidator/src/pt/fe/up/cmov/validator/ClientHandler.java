@@ -6,9 +6,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Array;
 import java.nio.CharBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
+import java.util.ArrayList;
+
+import javax.xml.validation.Validator;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,10 +81,26 @@ public class ClientHandler extends Thread {
 		
 		try {
 			String received=(String) bi.readObject();
+			ValidatorDatabaseHelper db=(new ValidatorDatabaseHelper(sv));
 			JSONObject ticket=new JSONObject(received);
-			if(ValidatorData.INSTANCE.validateTicket(ticket)){
+			if(ticket.has("conductor")){
+				Intent intent=new Intent(MainActivity.bluetoothAccept);
+				intent.putExtra("msg", "Bem-vindo ao autocarro "+ValidatorData.INSTANCE.id+".");
+				sv.sendBroadcast(intent);
+				bo.writeObject(ValidatorData.INSTANCE.pubKey);
+				bo.flush();
+				ArrayList<JSONObject> tickets=db.getAllTickets();
+				for (JSONObject jsonObject : tickets) {
+					bo.writeObject(jsonObject.toString());
+					bo.flush();
+				}
+				bo.writeObject("end");
+				bo.flush();
+				
+			}else
+				{if(ValidatorData.INSTANCE.validateTicket(ticket)){
 				Log.d("Validar keys", "Valido");
-				ticket.put("useTime", Long.toString(System.currentTimeMillis()));
+				ticket.put("useDate", Long.toString(System.currentTimeMillis()));
 				ticket.put("BusId", Integer.toString(ValidatorData.INSTANCE.id));
 				if(Misc.INSTANCE.checkWifiConnection(sv)){
 					JSONObject req=new JSONObject();
@@ -97,6 +117,7 @@ public class ClientHandler extends Thread {
 						intent.putExtra("valid", false );
 						sv.sendBroadcast(intent);
 					}else{
+						db.insertTicket(ticket);
 						ticket.accumulate("validation", ValidatorData.INSTANCE.signTicket(ticket));
 						Intent intent=new Intent(MainActivity.bluetoothAccept);
 						intent.putExtra("valid", true );
@@ -111,6 +132,7 @@ public class ClientHandler extends Thread {
 					Intent intent=new Intent(MainActivity.bluetoothAccept);
 					intent.putExtra("valid", true );
 					intent.putExtra("later", true );
+					db.insertTicket(ticket);
 					sv.sendBroadcast(intent);
 				}
 			}else{
@@ -130,6 +152,7 @@ public class ClientHandler extends Thread {
 			
 			bo.writeObject(ticket.toString());
 			bo.flush();
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

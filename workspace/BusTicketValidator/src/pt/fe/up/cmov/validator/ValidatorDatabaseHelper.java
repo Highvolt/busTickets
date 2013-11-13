@@ -1,10 +1,14 @@
 package pt.fe.up.cmov.validator;
 
+import java.util.ArrayList;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -83,6 +87,35 @@ public class ValidatorDatabaseHelper extends SQLiteOpenHelper {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public ArrayList<JSONObject> getAllTickets() {
+		// TODO Auto-generated method stub\
+		SQLiteDatabase db=this.getReadableDatabase();
+		ArrayList<JSONObject> a=new ArrayList<JSONObject>();
+		Cursor c=db.query("Ticket", null, null, null, null, null, null);
+		if(c.moveToFirst()){
+		while (c.moveToNext() ) {
+			
+				JSONObject o=new JSONObject();
+				try {
+					o.accumulate("type", c.getString(c.getColumnIndex("type")));
+					o.accumulate("user", c.getString(c.getColumnIndex("userid")));
+					o.accumulate("device", c.getString(c.getColumnIndex("devid")));
+					o.accumulate("useDate", c.getString(c.getColumnIndex("usedate")));
+					o.accumulate("reserved", c.getString(c.getColumnIndex("reserved")));
+					o.accumulate("time", c.getString(c.getColumnIndex("time")));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				a.add(o);
+			}
+			
+		
+		}
+		return a;
 	}
 
 }

@@ -37,7 +37,7 @@ import android.util.Base64;
 public enum ValidatorData {
 	INSTANCE;
 	private  ValidatorDatabaseHelper db=null;
-	private String pubKey="";
+	public String pubKey="";
 	private String privKey="";
 	public int id=0;
 	protected String key;
