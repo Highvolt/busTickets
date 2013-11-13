@@ -40,7 +40,7 @@
   <string name="barcode_image">Barcode Image</string>
 
   <string name="capture">Capture</string>
-  <string name="app_name">PassengerApp</string>
+  <string name="app_name">Inspector</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_register">Criar nova conta</string>
@@ -100,6 +100,6 @@
 
     <string name="inspect_title">Inspect Ticket</string>
     <string name="validateTitle">Validate Ticket</string>
-	<string name="Appname2">AndaLine</string>
+	<string name="Appname2">Inspector</string>
 
 </resources>

@@ -119,6 +119,10 @@ public class MainMenuActivity extends Activity {
 			case R.id.settings:
 			    startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
 			    return true;
+			case R.id.logout:
+				(new DatabaseHandler(MainMenuActivity.this)).reset(MainMenuActivity.this);
+				finish();
+			    return true;
 			default:
 			    return super.onOptionsItemSelected(item);
 		}

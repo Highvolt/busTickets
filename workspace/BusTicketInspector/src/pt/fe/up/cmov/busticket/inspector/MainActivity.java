@@ -84,6 +84,7 @@ public class MainActivity extends Activity implements OnClickListener{
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					lastValue=null;
+					return;
 				}
 		    	if(type==1){
 		    		ticket=new JSONObject();
@@ -116,7 +117,19 @@ public class MainActivity extends Activity implements OnClickListener{
 		    		}
 		    	}else if(type==2){
 		    		//TODO process
-		    		Log.d("validacao","valido? "+(db.validateTicket(lastValue,MainActivity.this).toString()));
+		    		if(lastValue.has("time")){
+		    			JSONObject data=db.validateTicket(lastValue,MainActivity.this);
+		    			Intent inte=new Intent(MainActivity.this, InspectTicketActivity.class);
+		    			try {
+							inte.putExtra("result", data.getString("result"));
+							inte.putExtra("ticket", data.getString("ticket"));
+							startActivity(inte);
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+		    			
+		    		}
 		    	}
 		    
 				
@@ -341,6 +354,13 @@ public class MainActivity extends Activity implements OnClickListener{
     		}
     	}
     }
+	
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		unregisterReceiver(netR);
+	}
 	
 	private void connectToValidator() {
 		if(lastValue!=null){

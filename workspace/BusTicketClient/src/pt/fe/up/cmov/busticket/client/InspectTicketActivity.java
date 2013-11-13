@@ -34,6 +34,7 @@ public class InspectTicketActivity extends Activity {
 	private ImageView image;
 	private int smallerDimension;
 	private long useTime;
+	private int type;
 	
 	
 	private void genQrCode(JSONObject qrCode){
@@ -108,6 +109,7 @@ public class InspectTicketActivity extends Activity {
 				bf.put(Base64.decode(lastValid.getString("useDate").getBytes(),Base64.DEFAULT));
 				bf.flip();
 				Long.toString(bf.getLong())*/
+				type=lastValid.getInt("type");
 				updateGUI();
 				
 				((TextView)findViewById(R.id.validate_bus)).setText(lastValid.getString("type"));
@@ -142,7 +144,7 @@ public class InspectTicketActivity extends Activity {
 	}
 	
 	private void updateGUI(){
-		long a=(System.currentTimeMillis()-useTime)/1000;
+		long a=(DatabaseHandler.tempos[type-1]*60)-(System.currentTimeMillis()-useTime)/1000;
 		
 		final String timeToScreen=""+((a/60/60)>0?a/60/60+":":"")+((a/60)%60>=10?(a/60)%60:"0"+(a/60)%60)+":"+((a%60)>=10?(a%60):"0"+(a%60));
 		runOnUiThread(new Runnable() {

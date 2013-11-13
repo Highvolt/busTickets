@@ -43,19 +43,11 @@ public class MainMenuActivity extends Activity {
 		}
 		
 		
-		MainBtn buyTickets = (MainBtn) findViewById(R.id.Button01);
+		
 		MainBtn validateTicket = (MainBtn) findViewById(R.id.Button04);
 		MainBtn inspectTicket = (MainBtn) findViewById(R.id.Button05);
 		
-		buyTickets.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				Intent i = new Intent(getApplicationContext(), BuyActivity.class);
-				startActivity(i);
-				
-			}
-		});
+		
 		
 		
 		
@@ -119,6 +111,10 @@ public class MainMenuActivity extends Activity {
 			    return true;
 			case R.id.settings:
 			    startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+			    return true;
+			case R.id.logout:
+			   (new DatabaseHandler(this)).reset2(this);
+			   finish();
 			    return true;
 			default:
 			    return super.onOptionsItemSelected(item);

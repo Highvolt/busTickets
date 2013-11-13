@@ -3,28 +3,30 @@
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="263" key="DIALOG_WIDTH"/>
 		<item value="344" key="DIALOG_Y_ORIGIN"/>
-		<item value="425" key="DIALOG_HEIGHT"/>
 		<item value="414" key="DIALOG_X_ORIGIN"/>
+		<item value="425" key="DIALOG_HEIGHT"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="true" key="wrap"/>
-		<item value="false" key="isRegEx"/>
 		<item value="false" key="casesensitive"/>
+		<item value="false" key="isRegEx"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="Calculate" key="selection"/>
+		<item value="" key="selection"/>
 		<list key="findhistory">
+			<item value="editor"/>
+			<item value="alert"/>
+			<item value="pt.fe.up.cmov.busticket.client"/>
+			<item value="check"/>
 			<item value="Calculate"/>
 			<item value="device"/>
 			<item value="canvas"/>
 			<item value="init"/>
-			<item value="decoder"/>
-			<item value="com.example.passengerapp."/>
-			<item value="com.example"/>
-			<item value="package pt.fe.up.cmov.busticket.client;"/>
 		</list>
 		<list key="replacehistory">
+			<item value="pt.fe.up.cmov.busticket.inspector"/>
+			<item value=""/>
 			<item value="pt.fe.up.cmov.busticket.client."/>
 		</list>
 	</section>

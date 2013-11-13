@@ -61,12 +61,12 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 				String passwordField = password.getText().toString().trim();
 				
 				if(loginField.length() < 5){
-					Toast.makeText(getApplicationContext(), "Nome de utilizador inválido.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Nome de utilizador invï¿½lido.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
 				if(passwordField.length() < 5){
-					Toast.makeText(getApplicationContext(), "Palavra-passe inválida.", Toast.LENGTH_SHORT).show();
+					Toast.makeText(getApplicationContext(), "Palavra-passe invï¿½lida.", Toast.LENGTH_SHORT).show();
 					return;
 				}
 				
@@ -130,8 +130,8 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 		    if(!internet){
 		    	AlertDialog alertDialog = new AlertDialog.Builder(this).create();
                 alertDialog.setTitle("Exit");
-                alertDialog.setMessage("Necessita de ligação à Internet para entrar na aplicação. " +
-                                "Por favor active uma ligação.");
+                alertDialog.setMessage("Necessita de ligaÃ§Ã£o Ã  Internet para entrar na aplicaÃ§Ã£o. " +
+                                "Por favor active uma ligaÃ§Ã£o.");
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Ok", new AlertDialog.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface arg0, int arg1) {
@@ -154,9 +154,9 @@ public class LoginActivity extends Activity implements RequestResultCallback {
     public void onBackPressed() {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
             alertDialog.setTitle("Exit");
-            alertDialog.setMessage("É necessário criar uma conta na aplicação de modo a poder utilizá-la. Tem a certeza de que deseja sair?");
+            alertDialog.setMessage("ï¿½ necessï¿½rio criar uma conta na aplicaï¿½ï¿½o de modo a poder utilizï¿½-la. Tem a certeza de que deseja sair?");
             
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Não", new AlertDialog.OnClickListener() {
+            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Nï¿½o", new AlertDialog.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {}
             });
@@ -182,7 +182,7 @@ public class LoginActivity extends Activity implements RequestResultCallback {
 				if(data.has("msg")){
 					String message = data.getString("msg");
                 	if(message.equals("Bad Auth information"))
-                		Toast.makeText(getApplicationContext(),"Login inválido!", Toast.LENGTH_SHORT).show();
+                		Toast.makeText(getApplicationContext(),"Login invï¿½lido!", Toast.LENGTH_SHORT).show();
                 	else
                 		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
 				}

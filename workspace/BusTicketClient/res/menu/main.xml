@@ -4,5 +4,7 @@
 		android:title="@string/options_menu_home" />
    <item android:id="@+id/settings"
 		android:title="@string/options_menu_settings" />
+   <item android:id="@+id/logout"
+		android:title="Logout" />
 
 </menu>

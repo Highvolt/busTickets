@@ -18,9 +18,9 @@
         <ImageView
             android:id="@+id/validate_img"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="150dp"
             android:layout_weight="0.30"
-            android:src="@drawable/main_menu_buttons" />
+            android:src="@drawable/approve3" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,6 +63,33 @@
                     android:textStyle="bold"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/dark" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="LocalDB:"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/dark" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="Remote:"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/dark" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="signature:"
+                    android:textStyle="bold"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/dark" />
             </LinearLayout>
 
             <LinearLayout
@@ -90,6 +117,27 @@
 
                 <TextView
                     android:id="@+id/validate_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/dark" />
+                <TextView
+                    android:id="@+id/validate_local"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/dark" />
+                <TextView
+                    android:id="@+id/validate_remote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/dark" />
+                <TextView
+                    android:id="@+id/validate_signature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"

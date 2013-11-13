@@ -35,7 +35,7 @@ import android.util.Base64;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
-
+	public static final Integer[] tempos=new Integer[]{15,30,60};
 	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "storedTickets";
 	
@@ -59,6 +59,18 @@ public class DatabaseHandler extends SQLiteOpenHelper{
    
 	public void reset(){
 		this.getWritableDatabase().delete(TABLE_TICKETS, null, null);
+	}
+	
+	public void reset2(Context mainMenuActivity){
+		this.getWritableDatabase().delete(TABLE_TICKETS, null, null);
+		SharedPreferences settings = mainMenuActivity.getSharedPreferences("user_details", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove("hasAccount");
+        editor.remove("authToken");
+       
+        
+        editor.commit();
+		
 	}
 	public DatabaseHandler(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -415,7 +427,10 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 					res.accumulate("remotedb", false);
 				}
 			}
-			return res;
+			JSONObject res2=new JSONObject();
+			res2.accumulate("result", res);
+			res2.accumulate("ticket", obj);
+			return res2;
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

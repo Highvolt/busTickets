@@ -24,7 +24,7 @@ import android.provider.Settings.Secure;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
-
+	public static final Integer[] tempos=new Integer[]{15,30,60};
 	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "storedTickets";
 	
@@ -321,5 +321,22 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public void reset(MainMenuActivity mainMenuActivity) {
+		// TODO Auto-generated method stub
+		SQLiteDatabase db=getWritableDatabase();
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_TICKETS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_VALIDATIONS);
+        // Create tables again
+        onCreate(db);
+        SharedPreferences settings = mainMenuActivity.getSharedPreferences("user_details", Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove("hasAccount");
+        editor.remove("authToken");
+       
+        
+        editor.commit();
+		
 	}
 }
