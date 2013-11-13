@@ -49,37 +49,33 @@
 
         
 
-        <pt.fe.up.cmov.busticket.inspector.TicketView
+        <pt.fe.up.cmov.busticket.inspector.MainBtn
             android:id="@+id/ticketView1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ticket:time="0:15"
-            ticket:type="T1"
-             >
-        </pt.fe.up.cmov.busticket.inspector.TicketView>
+            android:layout_height="120dp"
+            ticket:title="Obter dados"
+            ticket:img="@drawable/entry1"
+            android:background="@drawable/main_menu_buttons_top" >
+            
+        </pt.fe.up.cmov.busticket.inspector.MainBtn>
 
-        <pt.fe.up.cmov.busticket.inspector.TicketView
+        <pt.fe.up.cmov.busticket.inspector.MainBtn
             android:id="@+id/ticketView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ticket:time="0:30"
-            ticket:type="T2" >
-        </pt.fe.up.cmov.busticket.inspector.TicketView>
+            android:layout_height="120dp"
+            ticket:title="Ler Bilhete"
+            ticket:img="@drawable/open23" 
+            android:background="@drawable/main_menu_buttons_middle">
+        </pt.fe.up.cmov.busticket.inspector.MainBtn>
 
-        <pt.fe.up.cmov.busticket.inspector.TicketView
-            android:id="@+id/ticketView3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            ticket:time="1:00"
-            ticket:type="T3" >
-        </pt.fe.up.cmov.busticket.inspector.TicketView>
+        
         <pt.fe.up.cmov.busticket.inspector.MainBtn
             android:id="@+id/mainUpdateTickets"
             android:layout_width="match_parent"
             android:layout_height="100dp"
-            android:background="@drawable/main_menu_buttons"
-            ticket:title="Actualizar bilhetes"
-            ticket:img="@drawable/refresh1">
+            android:background="@drawable/main_menu_buttons_bottom"
+            ticket:title="Apagar dados"
+            ticket:img="@drawable/close15">
         </pt.fe.up.cmov.busticket.inspector.MainBtn>
         
     </LinearLayout>

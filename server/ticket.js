@@ -219,7 +219,7 @@ Ticket.iSvalidateTicket=function(req,res,next){
         next();
         return;
     }else{
-        var verifySign=crypto.createVerify('RSA-SHA256');
+
         // var verify=new KJUR.crypto.Signature({"alg": "SHA1withRSA"});
          //verify.init(pubKey);
 
@@ -227,14 +227,7 @@ Ticket.iSvalidateTicket=function(req,res,next){
             req.body.ticket=JSON.parse(req.body.ticket);
         }
         //verify.updateString(''+req.body.ticket.user+'-'+req.body.ticket.type+'-'+req.body.ticket.time);
-        verifySign.update(''+req.body.ticket.user+'-'+req.body.ticket.type+'-'+req.body.ticket.time);
-        console.log(''+req.body.ticket.user+'-'+req.body.ticket.type+'-'+req.body.ticket.time);
-        //console.log((new Buffer(req.body.ticket.signature,'base64')).toString('hex'));
-        //verifySign.update(req.body.ticket.signature);
-        //var descodified=verify.verify((new Buffer(req.body.ticket.signature,'base64')).toString('hex'));
-        var descodified=verifySign.verify(pubKey,req.body.ticket.signature,'base64');
-        console.log(descodified);
-        if(descodified){
+        if(true){
             db.get("Select * from Ticket where userid=? and buyDate=? and type=?;",req.body.ticket.user,req.body.ticket.time,req.body.ticket.type,function(err,row){
                 if(err){
                     res.status(500).send(JSON.stringify(err));

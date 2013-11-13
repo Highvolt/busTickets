@@ -103,6 +103,7 @@ public class ValidatorDatabaseHelper extends SQLiteOpenHelper {
 					o.accumulate("useDate", c.getString(c.getColumnIndex("usedate")));
 					o.accumulate("reserved", c.getString(c.getColumnIndex("reserved")));
 					o.accumulate("time", c.getString(c.getColumnIndex("time")));
+					o.accumulate("busId",ValidatorData.INSTANCE.id);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

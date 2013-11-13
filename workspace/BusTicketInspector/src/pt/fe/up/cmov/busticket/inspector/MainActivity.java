@@ -33,6 +33,7 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -44,6 +45,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity implements OnClickListener{
 
@@ -58,9 +60,9 @@ public class MainActivity extends Activity implements OnClickListener{
 	private BluetoothSocket devS;
 	private AtomicBoolean connected=new AtomicBoolean(false);
 	private static final int retries=45;
-	private TicketView t1=null;
-	private TicketView t2=null;
-	private TicketView t3=null;
+	private MainBtn t1=null;
+	private MainBtn t2=null;
+
 	private MainBtn updateBtn=null;
 	private ProgressDialog dialog=null;
 	private JSONObject ticket=null;
@@ -95,9 +97,21 @@ public class MainActivity extends Activity implements OnClickListener{
 	    			finish();
 	    		}
 	    		//ticket=(new DatabaseHandler(this).getOldestTicket(type,this.getApplicationContext()));
-	    		initBluetooth();
+	    		if(lastValue.has("mac")){
+	    			initBluetooth();
+	    		}else{
+	    			runOnUiThread(new Runnable() {
+						
+						@Override
+						public void run() {
+							Toast.makeText(MainActivity.this, "Dados invalidos", Toast.LENGTH_SHORT).show();
+							
+						}
+					});
+	    		}
 	    	}else if(type==2){
 	    		//TODO process
+	    		Log.d("validacao","valido? "+(db.validateTicket(lastValue)?"ok":"fail"));
 	    	}
 	    
 	    	
@@ -255,69 +269,24 @@ public class MainActivity extends Activity implements OnClickListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		t1=(TicketView) findViewById(R.id.ticketView1);
-		t2=(TicketView) findViewById(R.id.ticketView2);
-		t3=(TicketView) findViewById(R.id.ticketView3);
+		t1=(pt.fe.up.cmov.busticket.inspector.MainBtn) findViewById(R.id.ticketView1);
+		t2=(pt.fe.up.cmov.busticket.inspector.MainBtn) findViewById(R.id.ticketView2);
+		
 		updateBtn=(MainBtn) findViewById(R.id.mainUpdateTickets);
-		t1.setDetails("0:15");
-		t1.setTitle("T1");
-		t2.setDetails("0:30");
-		t2.setTitle("T2");
-		t3.setDetails("1:00");
-		t3.setTitle("T3");
+		
+		
 		db = new DatabaseHandler(this);
 		
 		t1.setOnClickListener(this);
 		t2.setOnClickListener(this);
-		t3.setOnClickListener(this);
-		if(!DatabaseHandler.checkWifiConnection(getApplicationContext())){
-			updateBtn.disable();
-		}
+		
+		
 		updateBtn.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(final View v) {
 				
-				new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						MainBtn m=(MainBtn) v;
-						if(!m.enable){
-							return;
-						}
-						runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								if(dialog2==null){
-									if(MainActivity.this==null){
-										Log.d("Lodo", "Main activity fail");
-									}else{
-										dialog2=new ProgressDialog(MainActivity.this);
-										dialog2.setCancelable(false);
-										dialog2.setMessage("A contactar o servidor");
-										dialog2.show();
-									}
-								}
-								
-							}
-						});
-						db.updateDataTicketsFromServer(getApplicationContext());
-						updateTicketCount();
-						runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								if(dialog2!=null){
-									dialog2.cancel();
-									dialog2=null;
-								}
-								
-							}
-						});
-					}
-				}).start();
+				db.reset();
 				
 			}
 		});
@@ -583,6 +552,21 @@ public class MainActivity extends Activity implements OnClickListener{
 			break;
 		case R.id.ticketView2:
 			type=2;
+			if(DatabaseHandler.PUBKEY==null){
+				AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+	            alertDialog.setTitle("Sem chave");
+	            alertDialog.setMessage("Primeiro precisa de uma chave. Ver validador.");
+	            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok", new AlertDialog.OnClickListener() {
+	                    @Override
+	                    public void onClick(DialogInterface arg0, int arg1) {
+	                          
+	                   
+	                    
+	                    }
+	            });
+	            alertDialog.show();
+	            return;
+			}
 			break;
 		default:
 			break;

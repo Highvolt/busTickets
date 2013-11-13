@@ -1,5 +1,14 @@
 package pt.fe.up.cmov.busticket.inspector;
 
+import java.nio.ByteBuffer;
+import java.security.InvalidKeyException;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +30,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.provider.Settings;
 import android.provider.Settings.Secure;
+import android.text.method.MovementMethod;
+import android.util.Base64;
 import android.util.Log;
 
 public class DatabaseHandler extends SQLiteOpenHelper{
@@ -42,6 +53,7 @@ public class DatabaseHandler extends SQLiteOpenHelper{
     private static final String KEY_BUSID = "bus_id";
     private static final String KEY_BUS_SIGNATURE = "bus_signature";
 	private static final String KEY_RESERVED="reserved";
+	
 	protected static String PUBKEY;
     
    
@@ -61,7 +73,8 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 				+ KEY_DEVICE + " TEXT,"
                 + KEY_TYPE + " INTEGER,"
 				+ KEY_TIME + " INTEGER PRIMARY KEY, " 
-				+KEY_RESERVED+" Text,"
+				+KEY_RESERVED+" Text," 
+				+KEY_BUSID+		" INTEGER,"
                 + KEY_USETIME + " TEXT" +")";
 		
 		
@@ -88,23 +101,13 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 		values.put(KEY_TIME, t.getTime());
 		values.put(KEY_USETIME, t.getSignature());
 		values.put(KEY_RESERVED, t.getReserved());
+		values.put(KEY_BUSID, t.getBUS());
 		long res=db.insert(TABLE_TICKETS, null, values);
 		db.close();
 		return res;
 	}
 
-	public void addValidation(Validation v){
-		SQLiteDatabase db = this.getWritableDatabase();
-		
-		ContentValues values = new ContentValues();
-		values.put(KEY_TIME, v.getTime());
-		values.put(KEY_VALIDATION_TIME, v.getValidationTime());
-		values.put(KEY_BUS_SIGNATURE, v.getBusSignature());
-		values.put(KEY_BUSID, v.getBusID());
-		
-		db.insert(TABLE_VALIDATIONS, null, values);
-		db.close();
-	}
+	
 	
 	
 	public List<Ticket> getAllTickets(){
@@ -322,5 +325,84 @@ public class DatabaseHandler extends SQLiteOpenHelper{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	
+	private boolean verifySignature(JSONObject obj){
+		Signature sig;
+		try {
+			sig = Signature.getInstance("SHA1WithRSA");
+			KeyFactory fact=KeyFactory.getInstance("RSA");
+			 byte[] clear = Base64.decode(DatabaseHandler.PUBKEY, Base64.DEFAULT);
+			 X509EncodedKeySpec keySpec = new X509EncodedKeySpec(clear);
+			 
+			sig.initVerify(fact.generatePublic(keySpec));
+			String a=obj.getString("time")+"-"+obj.getString("device")+"-"+obj.getString("useDate")+"-"+obj.getString("type")+"-"+obj.getString("busId");
+			sig.update(a.getBytes());
+			return sig.verify(Base64.decode(obj.getString("validation"), Base64.DEFAULT));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SignatureException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return false;
+	}
+	
+	
+	public boolean verifyLocalDB(JSONObject obj){
+		SQLiteDatabase db=getReadableDatabase();
+		try {
+			Cursor c=db.query(TABLE_TICKETS, null, KEY_TIME+"=?", (new String[]{obj.getString("time")}), null, null, null);
+			if(c.moveToFirst()){
+				return true;
+			}
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	
+	
+	public JSONObject validateTicket(JSONObject obj,Context appC){
+		//time(base64),validation(base64),busId(int),device(string),useDate(base64),type(int),user(int)
+		try {
+			ByteBuffer bf=ByteBuffer.allocate(8);
+			bf.put(Base64.decode(obj.getString("time").getBytes(),Base64.DEFAULT));
+			bf.flip();
+			long time=bf.getLong();
+			obj.put("time", time);
+			ByteBuffer bf2=ByteBuffer.allocate(8);
+			bf2.put(Base64.decode(obj.getString("useDate").getBytes(),Base64.DEFAULT));
+			bf2.flip();
+			long useDate=bf2.getLong();
+			obj.put("useDate", useDate);
+			JSONObject res=new JSONObject();
+			res.accumulate("signature", verifySignature(obj));
+			res.accumulate("localdb", verifyLocalDB(obj));
+			if(checkWifiConnection(appC)){
+				
+			}
+			return res;
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

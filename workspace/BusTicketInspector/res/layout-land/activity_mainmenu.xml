@@ -41,14 +41,15 @@
             android:orientation="horizontal"
             android:weightSum="1.0" >
 
-            <pt.fe.up.cmov.busticket.inspector.MainBtn
-                android:id="@+id/Button01"
-                android:layout_width="0dip"
+           <pt.fe.up.cmov.busticket.inspector.MainBtn
+                android:id="@+id/Button04"
+                android:layout_width="match_parent"
                 android:layout_height="100dip"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:background="@drawable/main_menu_buttons"
-                ticket:title="@string/buy_tickets_main"
-                ticket:img="@drawable/credit7"
+                ticket:title="Começar a validar"
+                ticket:img="@drawable/open23"
+                android:layout_marginRight="1dp"
                 android:textStyle="bold" />
 
             
@@ -62,18 +63,10 @@
             android:layout_marginRight="25dip"
             android:layout_marginTop="5dip"
             android:orientation="horizontal"
-            android:weightSum="1.0" >
+            android:weightSum="1.0"
+            android:visibility="invisible" >
 
-            <pt.fe.up.cmov.busticket.inspector.MainBtn
-                android:id="@+id/Button04"
-                android:layout_width="match_parent"
-                android:layout_height="100dip"
-                android:layout_weight="0.5"
-                android:background="@drawable/main_menu_buttons"
-                ticket:title="@string/validate_ticket_main"
-                ticket:img="@drawable/open23"
-                android:layout_marginRight="1dp"
-                android:textStyle="bold" />
+            
 
             <pt.fe.up.cmov.busticket.inspector.MainBtn
                 android:id="@+id/Button05"

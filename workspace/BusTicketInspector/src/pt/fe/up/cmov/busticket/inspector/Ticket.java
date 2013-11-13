@@ -10,6 +10,7 @@ public class Ticket {
 	long _time;
 	String _signature;
 	String _reserved;
+	private int _bus;
 	
 	public Ticket(){
 		
@@ -30,6 +31,7 @@ public class Ticket {
 			this._signature = json.getString("useDate");
 			this._type = json.getInt("type");
 			this._time = json.getLong("time");
+			this._bus=json.getInt("busId");
 			if(json.has("reserved")){
 				this._reserved=json.getString("reserved");
 			}else{
@@ -85,5 +87,10 @@ public class Ticket {
 	public String getReserved() {
 		// TODO Auto-generated method stub
 		return _reserved;
+	}
+
+	public int getBUS() {
+		// TODO Auto-generated method stub
+		return _bus;
 	}
 }
