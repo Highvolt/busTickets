@@ -64,7 +64,7 @@ User.verifyKey=function(req,res,next){
         res.status(403).send(JSON.stringify({'msg':'invalid key'}));
         return;
     }
-    db.get("Select id,devID as dev, (Select count(*) from Conductor where Conductor.id=user.id) as conductor,"+
+    db.get("Select id,devID as dev, (Select count(*) from Conductor where Conductor.userId=user.id) as conductor,"+
            "(Select count(*) from Ticket where type=1 and userid=User.id and useDate is NULL) as t1,"+
            "(Select count(*) from Ticket where type=2 and userid=User.id and useDate is NULL) as t2,"+
            " (Select count(*) from Ticket where type=3 and userid=User.id and useDate is NULL) as t3 from User where username=? and last_login=?",user[0],user[1],function(err,row){
@@ -93,6 +93,7 @@ User.validKeyBus=function(req,res,next){
             return;
         }else{
             if(row){
+                console.log("BUs:"+JSON.stringify(row));
                 req.bus=row;
                 db.run("Update BUS set last_login=time('now') where id=?;",row.id);
                 next();
